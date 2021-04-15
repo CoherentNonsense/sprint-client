@@ -1,18 +1,6 @@
-/* #game-content{display:flex !important;}
-div.mid-screencontainer{position:relative;}
-div.side-screencontainer{flex-grow: 1 !important;}
-#arrow-box{width:114px !important;height:114px !important;}
-div.bottom-box-left-menu{height:98px !important;}
-div.arrows{width:30px !important;height:30px !important;}
-div.arrows > img{width:30px;}
-#bottom-box{z-index:2;position:relative;width:auto !important;}
-#world-time, #world-position{position:relative; z-index:2}
-#hotbar-box{z-index:2;position:relative;width:max-content !important;} */
 ::-webkit-scrollbar{height:6px;}
 .side-section-scroll, #console-scroll, #stats-scroll{padding-top:30px !important;}
 #consoleDiv, #statsDiv {display:flex !important; flex-direction:column !important;}
-.worldtile, #world-box {background-color: rgb(28, 28, 75); color: white}
-body {overflow: hidden;}
 
 .tab-text {
     padding: 0 6px;
@@ -39,31 +27,6 @@ body {overflow: hidden;}
 .tab-selected {
     color: inherit;
     text-decoration: underline;
-}
-
-.sprint-chat {
-    height: calc(100% - 30px) !important;
-}
-.sprint-chat-container {
-    width: 100%;
-    margin-bottom: 26px;
-    padding: 2px 5px;
-}
-.sprint-chat-message:first-child {
-}
-.sprint-chat-message {
-    font-size: 14px;
-    padding: 3px 0;
-    margin-bottom: 3px;
-}
-.sprint-chat-input {
-    border-top: 1px solid black;
-    width: 100%;
-    padding: 5px;
-    outline: none;
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 0;
 }
 
 .sprint-info {

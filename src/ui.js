@@ -1,3 +1,5 @@
+import config from "./config.js";
+
 /**
  * @file ui.js
  * @description This class makes it much easier to manipulate the UI as well as sets up a bunch of stuff to integrate my HTML into the game
@@ -45,7 +47,7 @@ const UI = {
     consoleInfoMenu.bind();
 
     // lets me initialize tab in debug mode
-    if (UI.client.env == "dev")
+    if (config.env == "dev")
     {
       UI.tabMenus["console"].selectTab(1);
     }
@@ -60,9 +62,11 @@ const UI = {
     statsHTML.removeChild(statsHTML.childNodes[1]);
     UI.tabMenus["stats"] = new TabMenu(statsHTML, statsInfoMenu);
     UI.tabMenus["stats"].addTab("SPRINT");
-    UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "the sprint client allows users to easily download extensions for UI game. it also sets up a framework for users to easily create their own extensions and share them with others.");
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { statsInfoMenu.open("CoherentNonsense", "developer") });
+    UI.tabMenus["stats"].getTab("SPRINT").addPara("version", config.version);
+    UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "sprint allows you to easily download extensions from a list of player created content. it sets up a framework to easily create your own extensions for other players to use.");
     UI.tabMenus["stats"].getTab("SPRINT").addItem("help", "extensions", "ext", () => { statsInfoMenu.open("extensions", "extensions are programs that you run on this client. you can download extensions or make your own in the \"extensions\" tab below.")});
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "0.0.1", "001", () => { statsInfoMenu.open("ver 0.0.1", "The foundation for creating and downloading extensions was made. Not very usefule. 2/5"); });
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { statsInfoMenu.open("CoherentNonsense", "developer") });
     UI.tabMenus["stats"].addTab(username, accountStatsHTML);
     statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
     UI.tabMenus["stats"].selectTab(1); // the default stat tab is (1)

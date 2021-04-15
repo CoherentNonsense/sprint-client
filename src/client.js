@@ -1,3 +1,4 @@
+import config from "./config.js";
 import UI from "./ui.js";
 import ExtensionManager from "./extensionManager.js";
 
@@ -10,10 +11,6 @@ class SprintClient
 
   constructor()
   {
-    /**
-     * The environment variable for development and production differences
-     */
-    this.env = "dev";
 
     /**
      * Client Modules (not Travelers' modules!)
@@ -64,7 +61,7 @@ class SprintClient
    */
   debug(message)
   {
-    if (this.env == "dev")
+    if (config.env == "dev")
     {
       console.log("SPRINT_CLIENT_DEBUG::" + message);
     }
