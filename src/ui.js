@@ -1,5 +1,5 @@
 /**
- * fileName: ui.js
+ * @file ui.js
  * @description This class makes it much easier to manipulate the UI as well as sets up a bunch of stuff to integrate my HTML into the game
  *              This only encompasses UI that is connected to the game"s UI. If I make anything that can be completely separate,
  *              such as a texture editor, it will not be done here.
