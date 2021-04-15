@@ -1,0 +1,16 @@
+{
+  "name": "sprint_client",
+  "version": "0.0.1",
+  "description": "A client for the game thetravelers.online",
+  "scripts": {
+    "start": "serve ."
+  },
+  "author": "Chris Tangles",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.24.0"
+  },
+  "dependencies": {
+    "serve": "^11.3.2"
+  }
+}

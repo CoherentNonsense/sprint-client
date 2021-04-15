@@ -1,0 +1,132 @@
+/* #game-content{display:flex !important;}
+div.mid-screencontainer{position:relative;}
+div.side-screencontainer{flex-grow: 1 !important;}
+#arrow-box{width:114px !important;height:114px !important;}
+div.bottom-box-left-menu{height:98px !important;}
+div.arrows{width:30px !important;height:30px !important;}
+div.arrows > img{width:30px;}
+#bottom-box{z-index:2;position:relative;width:auto !important;}
+#world-time, #world-position{position:relative; z-index:2}
+#hotbar-box{z-index:2;position:relative;width:max-content !important;} */
+::-webkit-scrollbar{height:6px;}
+.side-section-scroll, #console-scroll, #stats-scroll{padding-top:30px !important;}
+#consoleDiv, #statsDiv {display:flex !important; flex-direction:column !important;}
+.worldtile, #world-box {background-color: rgb(28, 28, 75); color: white}
+body {overflow: hidden;}
+
+.tab-text {
+    padding: 0 6px;
+}
+.tab-menu {
+    display: flex;
+    position: absolute;
+    background-color: #fff;
+    z-index: 2;
+    width: calc(100% - 10px);
+    overflow: hidden;
+    /* scrollbar-width: thin; */
+    padding-right: 5px;
+    padding-bottom: 5px;
+    box-sizing: border-box;
+}
+.tab-menu-item {
+    padding: 7px 5px 0 5px;
+    color: #888;
+    min-width: max-content;
+    user-select: none;
+}
+
+.tab-selected {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.sprint-chat {
+    height: calc(100% - 30px) !important;
+}
+.sprint-chat-container {
+    width: 100%;
+    margin-bottom: 26px;
+    padding: 2px 5px;
+}
+.sprint-chat-message:first-child {
+}
+.sprint-chat-message {
+    font-size: 14px;
+    padding: 3px 0;
+    margin-bottom: 3px;
+}
+.sprint-chat-input {
+    border-top: 1px solid black;
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+}
+
+.sprint-info {
+    min-height: 50%;
+    width: 100%;
+    border-top: 1px solid black;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.supplies-infotitle {
+    margin-bottom: 10px;
+    padding: 0;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.supplies-infodesc {
+    font-size: 14px;
+    margin: 0 auto 10px;
+}
+
+.sprint-window {
+    position: absolute;
+    background-color: blue;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #000;
+}
+.sprint-window-handle {
+    height: 30px;
+    width: 100%;
+    border-bottom: 1px solid black;
+}
+input.sprint-window-close {
+    position: absolute;
+    /* background-color: rgb(255, 106, 106); */
+    top: 5px;
+    left: 5px;
+    height: 20px;
+    width: 20px;
+    border-radius: 3px;
+    padding: 0;
+    margin: 0;
+    line-height: 20px;
+    border: none;
+}
+.sprint-window-close:hover {
+    cursor: pointer;
+}
+.sprint-window-body {
+    flex-grow: 1;
+    width: 100%;
+}
+.sprint-window-resize {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 20px;
+    width:20px;
+}
+.sprint-window-resize:hover {
+    cursor: nwse-resize;
+}

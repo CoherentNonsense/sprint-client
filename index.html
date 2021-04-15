@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>the travelers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+    <meta name="twitter:title" content="the travelers"><meta name="twitter:description" content="a text-based adventure mmo">
+    <link id="styleCss" rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./sprintClient.css">
+</head>
+<body>
+
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="CA0B0334">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="rLF1bI3WTEdwJZJD3l0mCdh6IR1oDojyB9bZYeF1wEGMtuauhHkk6Xdz0x1HpMgCMOKn68KTkThMpaCnFXoDBId54JzO/uXjZ1FK5KqXggULoBiHIIpGWDKY7+CFJioKHIs6wxkPJ4GqR5oY6L4cRk6UB2OcquS2cJqCYOdsT2uMFq1Y5AtH3szJ+LX0MaJc">
+</div>
+        <div id="init-cover" style="display: none;"></div>
+        <div id="homepage" class="homepage clearback" style="opacity: 0; display: none;">
+            <div class="header">
+                <h2 class="banner-title">the&nbsp;travelers</h2>&nbsp;
+                <h3 class="game-subtitle">a text-based adventure mmo</h3>
+            </div>
+
+            <!-- login/signup/forgot password -->
+            <div id="main-content-dip" class="content-dip homepage-content-dip" style="background-color: rgba(62, 62, 62, 0.6); height: 600px;">
+                <div id="start-page" style="opacity: 0; padding: 10px 0px 0px; background-color: rgba(0, 0, 0, 0); display: none;">
+                    <div class="homepage-content-dip-spacer"></div>
+                    <div id="login-screen" class="startpage-optionbox" style="opacity:0;display:none">
+                        <h3 class="post-title" style="padding:0">wake up</h3>
+                        <p class="start-desc">your body rests somewhere in the ashes.</p>
+
+                        <p id="password-changed" style="display:none;font-size:14px;">password changed successfully, please log in with the new password.</p>
+    
+                        <input type="text" id="loginname-txt" placeholder="username or email" maxlength="200" style="font-size: 20px;">
+                        <input type="password" id="loginpass-txt" placeholder="password" maxlength="100" style="font-size: 20px;">
+                
+                        <p id="badlogin" class="clearback"></p>
+
+                        <div class="clearback" style="display:inline-block;">
+                        </div>
+                        <br>
+                
+                        <input type="checkbox" id="login-remember"><label for="login-remember" class="rememberme">remember me</label><br>
+                        <input type="button" id="login-btn" value="wake up" onclick="SOCKET.login();">
+                        <input type="button" id="signup-switch" class="linkbtn clearback" value="new traveler? sign up here" onclick="SOCKET.switchstart();" style="font-size:18px;">
+
+                        <br>
+                        <input type="button" class="linkbtn clearback" value="forgot password?" onclick="SOCKET.switchforgot();">
+                    </div>
+                    <div id="signup-screen" class="startpage-optionbox" style="opacity: 1; display: none;">
+                        <h3 class="post-title" style="padding:0">create an account</h3>
+                        <p class="start-desc">enter the endless wastes and discover what lies hidden.</p>
+
+                        <input type="text" id="signupname-txt" placeholder="choose a username" maxlength="16" style="font-size: 20px;">
+                        <input type="text" id="signupemail-txt" placeholder="email (optional)" maxlength="200" style="font-size: 20px;">
+                        <p id="email-info">your email will only ever be used to<br>reset your password if you forget it.</p>
+
+                        <input type="password" id="signuppass-txt" placeholder="choose a password" maxlength="100" style="font-size: 20px;">
+                        <input type="password" id="signupconfirmpass-txt" placeholder="confirm password" maxlength="100" style="font-size: 20px;">
+
+                        <p id="badsignup" class="clearback"></p>
+
+                        <div class="clearback" style="display:inline-block;">
+                        </div>
+                        <br>
+
+                        <input type="checkbox" id="signup-remember"><label for="signup-remember" class="rememberme">remember me</label><br>
+                        <input type="button" id="signup-btn" value="join" onclick="SOCKET.signup();">
+                        <input type="button" id="login-switch" class="linkbtn clearback" value="asleep somewhere? log in here" onclick="SOCKET.switchstart();" style="font-size:18px;">
+                
+                        <input type="button" class="linkbtn clearback" value="forgot password?" onclick="SOCKET.switchforgot();">
+                    </div>
+                    <div id="forgot-screen" class="startpage-optionbox" style="opacity:0;display:none">
+                        <h3 class="post-title" style="padding:0">forgot password</h3>
+                        <p id="forgot-desc" class="start-desc">enter your email and you'll get a verification code to change your password.</p>
+    
+                        <input type="text" id="forgotemail-txt" placeholder="account email" maxlength="200" style="font-size: 20px;">
+                        <input type="text" id="forgotcode-txt" placeholder="enter code" maxlength="9" style="font-size: 20px;width: 145px;display:none;text-transform:uppercase;">
+
+                        <div id="forgot-newpassbox" class="clearback" style="display:none;">
+                            <input type="password" id="forgotpass-txt" placeholder="enter new password" maxlength="100" style="font-size: 20px;">
+                            <input type="password" id="forgotconfirmpass-txt" placeholder="confirm password" maxlength="100" style="font-size: 20px;">
+                        </div>
+                        <p id="badforgot" class="clearback" style="font-size: 14px;display:inline-block;margin:auto;"></p><br>
+
+                        <input type="button" id="forgot-getcode-btn" value="get code" onclick="SOCKET.forgot(1);">
+                        <input type="button" id="forgot-entercode-btn" value="continue" onclick="SOCKET.forgot(2);" style="display:none">
+                        <input type="button" id="forgot-reset-btn" value="reset" onclick="SOCKET.forgot(3);" style="display:none">
+
+                        <input type="button" class="linkbtn clearback" value="go back" onclick="SOCKET.switchforgot();" style="font-size:18px;">
+                    </div>
+                    <div id="autolog-screen" class="startpage-optionbox" style="opacity: 1; background-color: rgba(0, 0, 0, 0); color: white; position: relative;">
+                        <span id="autolog-username">you are <b>cohnon</b></span>
+                        <br>
+                        <br>
+                        <div class="clearback" style="display:inline-block;">
+                        </div>
+                        <br>
+                        <br>
+                        <input type="button" id="autolog-btn" value="done." onclick="" style="margin:10px 0 0;">
+                        <span style="text-decoration:underline;font-size:14px;cursor:pointer;display:block;margin:15px 0 20px;" onclick="SOCKET.logout();">logout</span>
+                        <div id="autolog-tip">tip:</div>
+                        <div id="autolog-motd">the travelers is fully compatible with mobile devices.</div>
+                    </div>
+                </div>
+            </div><!--
+
+                FORUM BOXES
+         --><div class="news-area clearback"><!--
+            ---><div class="content-box floating-content-box">
+                    <h3 class="post-title">about</h3>
+                    <p class="post-body" style="padding-bottom:15px;">
+                        You wake up in the dust and ash with no memory, endless black clouds overhead smothering the world like a blanket. You have only a backpack and a device displaying a coordinate system. You feel an urge to find the center of the world, not far from where you woke.
+                        <br><br>
+                        The Travelers is a text-based adventure MMO about a post-apocalyptic world. Discover the secrets the wasteland, waiting to be uncovered by travelers exploring to the corners of the Earth.
+                        <br><br>
+                        <a href="/howtoplay" target="_blank" style="color:#0089ff">[how to play]</a>
+                    </p>
+                </div><!--
+            ---><div class="content-box floating-content-box" style="position:relative;overflow:initial;padding-bottom:10px;">
+                    <div id="adblock-msg" style="position:absolute;background-color: rgba(0,0,0,0);width: 300px;text-align: center;margin: auto;left: 0;right: 0;top: 100px;opacity: 0.5;"></div>
+                    <div style="background-color: rgba(0,0,0,0);text-align: center;width: calc(100% - 30px);margin: 0 auto;">
+						<!-- square -->
+						<script>
+						</script>
+                    </div>
+                </div><!--
+            ---><div class="content-box floating-content-box">
+                    <h3 class="post-title">leaderboard</h3>
+                    <p class="post-body" style="padding-bottom:15px;">the current top 5 players for xp are listed below.</p>
+                    <p id="leaderboard-list" class="post-body"><p class="lboard-wide clearback">1)</p><span class="lboard-main"><b>LightningWB</b>: level 280</span><br><span class="lboard-sub">31872430 total xp</span><div class="clearback" style="height:5px"></div><p class="lboard-wide clearback">2)</p><span class="lboard-main"><b>Meepcom</b>: level 238</span><br><span class="lboard-sub">20328280 total xp</span><div class="clearback" style="height:5px"></div><p class="lboard-wide clearback">3)</p><span class="lboard-main"><b>Slime_tiger</b>: level 219</span><br><span class="lboard-sub">16082003 total xp</span><div class="clearback" style="height:5px"></div><p class="lboard-wide clearback">4)</p><span class="lboard-main"><b>pfg</b>: level 213</span><br><span class="lboard-sub">14918766 total xp</span><div class="clearback" style="height:5px"></div><p class="lboard-wide clearback">5)</p><span class="lboard-main"><b>Bramblery</b>: level 212</span><br><span class="lboard-sub">14683121 total xp</span><div class="clearback" style="height:5px"></div><br><a target="_blank" class="floating-box-link" href="./leaderboard">[view leaderboard]</a></p>
+                </div><!--
+            ---><div class="content-box floating-content-box">
+                    <h3 class="post-title">latest version</h3>
+                    <h4 id="changelog-date" class="post-subtitle">Release v1.1.4 • 1/1/2021</h4>
+                    <p id="changelog-desc" class="post-body">• Fixed slowness issues during DB saves that caused players to disconnect every two minutes 
+<br>• Fixed the selection icon for “hands” in the pre-battle phase to properly show 8sp, it previously showed 3sp or 5sp
+<br>• Fixed two-player interactions not immediately ending when you kill an offline player within 5 seconds of the window opening
+<br>• Fixed Constitution not...<br><br><a target="_blank" class="floating-box-link" href="./changelog">[view changelog]</a></p>
+                </div><!--
+            ---><div class="content-box floating-content-box">
+                    <h3 class="post-title">donate</h3>
+                    <p class="post-body">I've spent hundreds of hours developing The Travelers and I plan to keep it going as long as I can. 
+                        The site costs $20 a month to run and $25 a year to keep the domain. I can handle this myself, but if you want
+                        to donate to show your appreciation and help keep the mystery alive, here's a few links. Thanks for playing!
+                        <br>
+                        <br>PayPal/Venmo: torogadude@gmail.com
+                        <br>Bitcoin: <span style="font-size:12px;">3Hap8CWvLZVAJnU8L8F8hXf8WEkRBEwazr</span>
+                        <br>Ethereum: <span style="font-size:12px;">0xD805732a2053F8F3395Ff7DDCa390ad64804F166</span>
+                    </p>
+                </div><!--
+            ---><div class="content-box floating-content-box" style="position:relative;overflow:initial;padding-bottom:10px;">
+                    <div style="background-color: rgba(0,0,0,0);text-align: center;width: calc(100% - 30px);margin: 0 auto;">
+                        <!-- square2 -->
+                    </div>
+                </div><!--
+        ---></div>
+        </div>
+
+        <div id="site-background" style="opacity: 0; display: none;"></div>
+
+        <!-- death screen -->
+        <div id="death-screen" style="display:none;">
+            <p id="death-title"></p>
+            <p id="death-desc"></p>
+            <input type="button" id="death-reincarnate-btn" value="reincarnate" onclick="YOU.reincarnate();">
+        </div>
+
+        <!-- startup story sequence -->
+        <div id="begin-sequence" style="display:none;opacity:0">
+            <div id="begin-text" style="opacity:0"></div>
+            <br>
+            <input type="button" id="begin-nextBtn" value="..." onclick="SOCKET.beginSeq(1);" style="display:none;opacity:0">
+        </div>
+
+        <!-- dropdown menu -->
+        <div id="dropdown-menu" style="display:none;">
+            <div id="tut-skip" class="ddMenu-item unselectable" onclick="TUT.skip();ENGINE.toggleMenu();" style="display:none;font-weight:bold;">skip tutorial</div>
+            <a href="./howtoplay" target="_blank" class="nonlink ddMenu-item unselectable">how to play</a>
+            <a href="./changelog" target="_blank" class="nonlink ddMenu-item unselectable">changelog</a>
+            <a href="./leaderboard" target="_blank" class="nonlink ddMenu-item unselectable">leaderboard</a>
+            <div class="ddMenu-item unselectable" onclick="SETTINGS.open();">game settings</div>
+            <div class="ddMenu-item unselectable" onclick="PLAYERSTATS.open();">statistics</div>
+            <div class="ddMenu-item unselectable" onclick="ACC.open();">your account</div>
+            <div class="ddMenu-item unselectable" onclick="SOCKET.logout();" style="border-bottom:none !important">log out</div>
+        </div>
+
+        <!-- account popup -->
+        <div id="account-menu" class="settings-menu" style="display:none">
+            <p class="settings-title">your account<span class="menu-close" onclick="ACC.close();ENGINE.toggleMenu();">close</span></p>
+            <div id="account-loading">loading...</div>
+            <div id="account-main" style="display:none;">
+                <div id="account-email" style="font-size: 16px;margin: 10px 0 0;"></div>
+                <div id="account-username" style="font-size: 16px;margin-bottom:20px;"></div>
+                
+                <!--
+                <input id="change-emailBtn" type="button" onclick="ACC.toggleEmailBox();" class="account-settings-btns"  value="change email" />
+                <div id="change-emailBox" class="account-settings-box" style="display:none">
+                    hi
+                </div>
+                -->
+
+                <input id="change-passwordBtn" type="button" onclick="ACC.togglePassBox();" class="account-settings-btns" value="change password">
+                <div id="change-passwordBox" class="account-settings-box" style="display:none">
+                    <input type="password" id="change-oldpassTxt" placeholder="old password" class="account-changepass-boxes" maxlength="100">
+                    <input type="password" id="change-newpassTxt" placeholder="new password" class="account-changepass-boxes" maxlength="100">
+                    <input type="password" id="change-conpassTxt" placeholder="confirm password" class="account-changepass-boxes" maxlength="100">
+                    <input id="submit-newPass" type="button" value="submit" class="account-settings-btns" style="font-size:14px;display: inline-block;margin-bottom:0;" onclick="ACC.changepass();"><span id="bad-changepass" class="account-badspan"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- playerstats popup -->
+        <div id="playerstats-menu" class="settings-menu" style="display:none">
+            <p class="settings-title">player stats<span class="menu-close" onclick="PLAYERSTATS.close();ENGINE.toggleMenu();">close</span></p>
+            <div id="playerstats-info" style="font-size: 16px;margin: 10px 0 0;"></div>
+        </div>
+
+        <!-- settings popup -->
+        <div id="settings-menu" class="settings-menu" style="display:none">
+            <p class="settings-title">game settings<span class="menu-close" onclick="SETTINGS.close();ENGINE.toggleMenu();">close</span></p>
+            
+            <!-- darkmode -->
+            <div class="settings-sect" onclick="SETTINGS.toggleDarkMode();" style="cursor:pointer;">
+                <div class="settings-check" id="set-darkmode"></div> toggle darkmode
+            </div>
+            <br>
+
+            <!-- disable hover text-->
+            <div class="settings-sect" onclick="SETTINGS.toggleHover();" style="cursor:pointer;">
+                <div class="settings-check settings-checked" id="set-hover"></div> toggle hover-text
+            </div>
+            <br>
+
+            <!-- autowalk past-->
+            <div class="settings-sect">
+                <div class="settings-check settings-checked" id="set-autowalkpast" onclick="SETTINGS.toggleAutoPast();"></div><span onclick="SETTINGS.toggleAutoPast();" style="cursor:pointer;"> auto-walk past events after </span><input id="set-autowalkpast-time" type="number" min="1" max="100" value="30" onchange="SETTINGS.setAutopastTime(this.value);"><span onclick="SETTINGS.toggleAutoPast();" style="cursor:pointer;"> cycles</span>
+            </div>
+            <br>
+
+            <!-- notifications-->
+            <div class="settings-sect" onclick="SETTINGS.toggleNotifAny();" style="cursor:pointer;">
+                <div class="settings-check settings-checked" id="set-notifAny"></div> enable notifications
+            </div>
+            <br>
+            <div id="notif-sub0000" class="settings-sect" style="cursor:pointer;margin-left: 40px;">
+                notifications can activate after <input id="set-notification-timeout" type="number" min="1" value="10" onchange="SETTINGS.setNotifTimeout(this.value);"> cycles without inputs
+            </div>
+            <br>
+            <div id="notif-sub0" class="settings-sect" onclick="SETTINGS.toggleNotifSound();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check" id="set-notifSound"></div> enable notification sound effect
+            </div>
+            <br>
+            <div id="notif-sub00" class="settings-sect" onclick="SETTINGS.toggleNotifDesktop();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check" id="set-notifDesktop"></div> enable desktop notifications
+            </div>
+            <br>
+            <div id="notif-sub1" class="settings-sect" onclick="SETTINGS.toggleNotifTraveler();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check settings-checked" id="set-notifTraveler"></div> notify for nearby travelers
+            </div>
+            <br>
+            <div id="notif-sub3" class="settings-sect" onclick="SETTINGS.toggleNotifHouse();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check settings-checked" id="set-notifHouse"></div> notify for nearby houses
+            </div>
+            <br>
+            <div id="notif-sub2" class="settings-sect" onclick="SETTINGS.toggleNotifCity();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check settings-checked" id="set-notifCity"></div> notify for nearby cities
+            </div>
+            <br>
+            <div id="notif-sub5" class="settings-sect" onclick="SETTINGS.toggleNotifBuild();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check settings-checked" id="set-notifBuild"></div> notify for structures built by travelers
+            </div>
+            <br>
+            <div id="notif-sub000" class="settings-sect" onclick="SETTINGS.toggleNotifUnknown();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check settings-checked" id="set-notifUnknown"></div> notify for other unknown new locations
+            </div>
+            <br>
+            <div id="notif-sub4" class="settings-sect" onclick="SETTINGS.toggleNotifLevel();" style="cursor:pointer;margin-left: 40px;">
+                <div class="settings-check settings-checked" id="set-notifLevel"></div> notify when leveling up
+            </div>
+            <br>
+
+            <!-- supply/craft view-->
+            <div class="settings-sect">
+                show supplies and craftable items as:
+                <select id="set-supply-view" class="settings-dropdown" onchange="SETTINGS.setSupplyView(parseInt(this.value))">
+                    <option value="1" selected="selected">icon</option>
+                    <option value="2">list</option>
+                </select>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <span id="settings-savetoserver" class="hotbar-btn unselectable" onclick="SETTINGS.saveToServer();">save settings to server</span>
+            <br>
+            <br>
+            <span id="settings-loadfromserver" class="hotbar-btn unselectable" onclick="SETTINGS.loadFromServer();">load settings from server</span>
+        </div>
+        <div id="ddMenu-backblock" style="display:none;" onclick="if(event.target !== this)return;ENGINE.toggleMenu();SETTINGS.close();ACC.close();PLAYERSTATS.close();">
+        </div>
+
+        <!-- loot popup -->
+        <div id="loot-popup" style="display:none;"><!--
+        ---><div id="loot-title"></div><!--
+        ---><div id="loot-desc"></div><!--
+        ---><div style="margin: 0 5px 29px;font-size: 14px;text-align: left;">
+                <span style="float:left;">your supplies</span>
+            
+                <span style="float:right;">available loot</span>
+            </div><!--
+        ---><div style="margin:0 5px 5px;font-size:0;"><!--why, if you remove this font-size:0, does the vert space of this box get so much bigger?-->
+                <div style="display:inline-block;width:50%;text-align:left;">
+                    <div class="stat-bar mini" style="display:inline-block;vertical-align:top;"><div id="looting-barFillerEl" class="stat-bar-filler"></div></div><!--
+                ---><span id="loot-barRatio"></span><!--
+
+                ---><select onchange="LOOT.popSort=parseInt(this.value);LOOT.popLootLists();" class="loot-dropdown">
+                        <option value="0" selected="selected">sort by count</option>
+                        <option value="1">sort by name</option>
+                        <option value="2">sort by weight</option>
+                    </select>
+                </div><!--
+            ---><div style="display:inline-block;width:50%;text-align:right;"><!--
+                ---><span id="loot-takeAll" class="spanlink" onclick="LOOT.takeall();">take all</span><!--
+
+                ---><span id="loot-otherBarRatio"></span><!--
+
+                ---><div class="stat-bar mini" style="display:inline-block;vertical-align:top;"><div id="looting-otherBarFillerEl" class="stat-bar-filler" style="float:right;"></div></div>
+                </div>
+            </div><!--
+
+        ---><div id="your-loot" class="loot-contain scrollbar"></div><!--
+        ---><div id="other-loot" class="loot-contain scrollbar"></div><!--
+
+        ---><input id="loot-takeBtn" type="button" value="continue" onclick="LOOT.take(this);"><!--
+            <input id="loot-leaveBtn" type='button' value='don&#39;t loot' onclick="LOOT.leave(this);" style="margin-bottom: 20px;"/>
+    ---></div>
+        <div id="loot-blocker" style="display:none"></div>
+
+        <!-- general typing popup -->
+        <div id="genmsg-popup" style="display:none"><!--
+        ---><p id="genmsg-desc"></p><!--
+        ---><textarea id="genmsg-textbox" maxlength="200" class="scrollbar"></textarea><!--
+
+        ---><input type="button" id="genmsg-sendBtn" class="focus" value="send" style="margin: 20px 5px 0;" onclick="MSG.send();"><!--
+        ---><input type="button" id="genmsg-closeBtn" class="focus" value="close" style="margin: 20px 5px 0;" onclick="MSG.close();"><!--
+    ---></div>
+        <div id="genmsg-blocker" style="display:none"></div>
+
+        <!-- player interaction popup -->
+        <div id="int-popup" class="scrollbar" style="display:none;"><!--
+        ---><div id="int-chatbox" class="chat-box">
+                <div id="int-messagebox" class="chat-msgbox scrollbar">
+                    <div id="int-areainfo" class="clearback"></div>
+                    <div id="int-messages" class="clearback"></div>
+                </div>
+                <textarea id="int-textbox" maxlength="200" class="typebox scrollbar" placeholder="say something"></textarea>
+                <span id="int-sending" style="display:none;font-size: 14px;">sending...</span>
+                <input type="button" id="int-sendBtn" class="chat-sendBtn" value="speak" onclick="INT.sendMessage(this);">
+            </div><!--
+        ---><div id="int-atthisloc">at this location:</div><!--
+        ---><div id="int-usernames" class="scrollbar"></div><!--
+        ---><input type="button" id="int-leaveBtn" class="focus" value="leave" style="margin: 20px 0 30px;" onclick="INT.leaveInit();"><!--
+    ---></div>
+        <div id="int-blocker" style="display:none"></div>
+
+        <!-- PVP popup -->
+        <div id="pvp-popup" class="scrollbar" style="display:none;"><!--
+        ---><div id="pvp-challengeblock" style="display:none;">
+                <h1 id="pvp-chal-title"></h1><!--
+            ---><p id="pvp-chal-desc">
+                    you have 1 minute before the battle begins to choose your weapon. if you don't know how to battle, <a href="./howtoplay#battle" target="_blank" style="color:#0089ff">quickly read through here</a>.
+                    <br><br>
+                    select your weapon:
+                </p><!--
+            
+            ---><div id="pvp-chal-supplies" class="scrollbar"></div><!--
+                
+            ---><p id="pvp-chal-startingin">starting in...</p><!--
+            ---><p id="pvp-chal-timer" class="pvp-timer" style="margin: 0 0 30px;"></p><!--
+            ---><p id="pvp-chal-waiting"></p><!--
+            ---><input id="pvp-chal-ready" type="button" class="focus" value="ready" style="margin: 20px 0 0;" onclick="PVP.ready();"><!--
+        ---></div><!--
+        ---><div id="pvp-fightingblock" style="display:none;position:relative;"><!--
+            ---><h1 id="pvp-fight-round" class="pvp-title"></h1><!--
+            ---><p id="pvp-fight-timer" class="pvp-timer" style="margin: 10px 0;"></p><!--
+            ---><p class="o_d" id="pvp-fight-desc" style="margin: 10px auto 20px;opacity: 1;font-size: 16px;"></p><!--
+            ---><div id="pvp-fight-yourbox"><!--
+                ---><div id="pvp-fight-aheavy" class="fightbtn unselectable" onclick="PVP.fightOpt('h', this);" style="display: block;margin: 0 auto 15px;">heavy attack</div><!--
+                ---><div id="pvp-fight-aleft" class="fightbtn unselectable" onclick="PVP.fightOpt('al', this);" style="margin-right: 30px;">attack left</div><!--
+                ---><div id="pvp-fight-aright" class="fightbtn unselectable" onclick="PVP.fightOpt('ar', this);" style="margin-left: 30px;">attack right</div><!--
+                ---><p class="o_d o_d-topadjust" style="">offense (costs stamina)</p><!--
+                ---><p class="o_d">defense (gains stamina)</p><!--
+                ---><div id="pvp-fight-dleft" class="fightbtn unselectable" onclick="PVP.fightOpt('dl', this);" style="margin-right: 30px;">dodge left</div><!--
+                ---><div id="pvp-fight-dright" class="fightbtn unselectable" onclick="PVP.fightOpt('dr', this);" style="margin-left: 30px;">dodge right</div><!--
+                ---><div id="pvp-fight-dblock" class="fightbtn unselectable" onclick="PVP.fightOpt('b', this);" style="display: block;margin: 15px auto 0;">block</div><!--
+                ---><div>
+                        <div id="pvp-fight-statbox">
+                            <p id="pvp-fight-youweapdesc"></p>
+
+                            <p class="stat-bar-title">health<span id="pvp-you-hp-notif" class="pvp-notif"></span></p>
+                            <div id="fight-healthbar-you" class="stat-bar">
+                                <div id="fight-healthbar-filler-you-slide" class="stat-bar-filler filler-slide-hp"></div>
+                                <div id="fight-healthbar-filler-you" class="stat-bar-filler"></div>
+                            </div>
+                            <p id="fight-hp-you" class="stat-subbar-info"></p>
+                        
+                            <p class="stat-bar-title">stamina<span id="pvp-you-sp-notif" class="pvp-notif"></span></p>
+                            <div id="fight-staminabar-you" class="stat-bar">
+                                <div id="fight-staminabar-filler-you-slide" class="stat-bar-filler filler-slide-sp"></div>
+                                <div id="fight-staminabar-filler-you" class="stat-bar-filler"></div>
+                            </div>
+                            <p id="fight-sp-you" class="stat-subbar-info"></p>
+                        </div>
+                    </div><!--
+            ---></div><!--
+            ---><div id="pvp-fight-oppbox"><!--
+                ---><h2 id="pvp-fight-oppname"></h2><!--
+                ---><p id="pvp-fight-oppdesc"></p><!--
+                ---><p id="pvp-fight-oppchoice-desc">opponent's choice</p><!--
+                ---><div id="pvp-fight-oppchoice"></div><!--
+                ---><div id="pvp-fight-opplevel"></div><!--
+                ---><div style="margin-top: 20px;">
+                        <div id="pvp-fight-statbox-opp">
+                            <p class="stat-bar-title">health<span id="pvp-opp-hp-notif" class="pvp-notif"></span></p>
+                            <div id="fight-healthbar-opp" class="stat-bar">
+                                <div id="fight-healthbar-filler-opp-slide" class="stat-bar-filler filler-slide-hp"></div>
+                                <div id="fight-healthbar-filler-opp" class="stat-bar-filler"></div>
+                            </div>
+                            <p id="fight-hp-opp" class="stat-subbar-info"></p>
+                        
+                            <p class="stat-bar-title">stamina<span id="pvp-opp-sp-notif" class="pvp-notif"></span></p>
+                            <div id="fight-staminabar-opp" class="stat-bar">
+                                <div id="fight-staminabar-filler-opp-slide" class="stat-bar-filler filler-slide-sp"></div>
+                                <div id="fight-staminabar-filler-opp" class="stat-bar-filler"></div>
+                            </div>
+                            <p id="fight-sp-opp" class="stat-subbar-info"></p>
+                        </div>
+                    </div><!--
+            ---></div><!--
+            ---><div id="pvp-fight-introview" style="display:none">
+                    <div class="pvp-intro-floater">
+                        <h2 id="pvp-intro-opp" class="pvp-intro-title"></h2>
+                        <p id="pvp-intro-opp-level" class="pvp-intro-level"></p>
+                        <p id="pvp-intro-opp-desc" class="pvp-intro-weapon"></p>
+                        <p id="pvp-intro-opp-total" class="pvp-intro-total"></p>
+                        <p id="pvp-intro-opp-stats" class="pvp-intro-stats"></p>
+
+                        <p class="pvp-intro-versus">versus</p>
+
+                        <h2 id="pvp-intro-you" class="pvp-intro-title"></h2>
+                        <p id="pvp-intro-you-level" class="pvp-intro-level"></p>
+                        <p id="pvp-intro-you-desc" class="pvp-intro-weapon"></p>
+                        <p id="pvp-intro-you-total" class="pvp-intro-total"></p>
+                        <p id="pvp-intro-you-stats" class="pvp-intro-stats"></p>
+                    </div>
+                </div><!--
+        ---></div><!--
+        ---><div id="pvp-endblock" style="display:none;">
+                <h1 id="pvp-end-title" class="pvp-title"></h1><!--
+            ---><p id="pvp-end-timer" class="pvp-timer" style="margin: 10px 0;"></p><!--
+            ---><p id="pvp-end-desc"></p><!--
+
+            ---><div id="pvp-end-chatbox" class="chat-box">
+                    <div id="pvp-end-messagebox" class="chat-msgbox scrollbar">
+                        <div class="clearback"><div id="pvp-end-areainfo" class="init-message"></div></div>
+                        <div id="pvp-end-messages" class="clearback"></div>
+                    </div>
+                    <textarea id="pvp-end-textbox" maxlength="200" class="typebox scrollbar" placeholder="say something"></textarea>
+                    <span id="pvp-end-sending" style="display:none;font-size: 14px;">sending...</span>
+                    <input type="button" id="pvp-end-sendBtn" class="chat-sendBtn" value="speak" onclick="PVP.sendEndMessage(this);">
+                </div><!--
+
+            ---><input id="pvp-end-killnow" type="button" class="focus" value="execute now" style="margin: 20px 0 0;" onclick="PVP.execute();"><!--
+        ---></div><!--
+    ---></div>
+        <div id="pvp-mid-chat" style="display:none"><!--
+        ---><div id="pvp-mid-chatbox" class="chat-box">
+                <div id="pvp-mid-messagebox" class="chat-msgbox scrollbar" style="height:150px">
+                    <div id="pvp-mid-messages" class="clearback"></div>
+                </div>
+                <textarea id="pvp-mid-textbox" maxlength="200" class="typebox scrollbar" placeholder="say something"></textarea>
+                <span id="pvp-mid-sending" style="display:none;font-size: 14px;">sending...</span>
+                <input type="button" id="pvp-mid-sendBtn" class="chat-sendBtn" value="speak" onclick="PVP.sendMidMessage(this);">
+            </div><!--
+    ---></div>
+        <div id="pvp-blocker" style="display:none"></div>
+
+        <div id="int-leavemsg-pop" style="display:none">
+            <div id="int-showmsgs-side">
+                <p id="int-showmsg-desc"></p>
+                <div id="int-showmsgs"></div>
+                <input type="button" value="close" style="margin: 20px 4px 30px;" onclick="INT.cancelOfflineMsg();">
+            </div>
+            <div id="int-leavemsg-side">
+                <p id="int-leavemsg-desc" style="font-size: 16px;margin: 0 auto 25px;"></p>
+                <textarea id="int-leavemsg-textbox" maxlength="200" class="typebox scrollbar" placeholder="your message"></textarea><!--
+            ---><input id="int-leavemsg-send" type="button" value="send" style="margin: 20px 4px 30px;"><!--
+            ---><input id="int-leavemsg-remove" type="button" value="delete" style="margin: 20px 4px 30px;display:none"><!--
+            ---><input type="button" value="cancel" style="margin: 20px 4px 30px;" onclick="INT.cancelOfflineMsg();"><!--
+        ---></div>
+        </div>
+        <div id="int-leavemsg-blocker" style="display:none"></div>
+        
+
+        <!-- disconnect popup -->
+        <div id="dc-popup" style="display:none"><!--
+        ---><p id="dc-desc">connection to the server was lost. you can refresh the page to attempt to reconnect, or close this window while the game awaits reconnection.</p><!--
+
+        ---><input type="button" id="dc-refreshBtn" class="focus" value="refresh" style="margin: 20px 5px 0;" onclick="DC.refresh();"><!--
+        ---><input type="button" id="dc-closeBtn" class="focus" value="close" style="margin: 20px 5px 0;" onclick="DC.close();"><!--
+    ---></div>
+        <div id="dc-blocker" style="display:none"></div>
+
+        <!-- actual game -->
+        <div id="game-content" style="opacity: 1;">
+            <div id="event-cycle" style="display: none;">
+                <span id="event-cycle-text">cycle: 0.9</span>
+                <br>
+                <span id="event-time-text">20:06, summer, day 69, year 223</span>
+            </div>
+            <div id="event-popup" style="display: none;">
+                <h1 id="event-title"></h1>
+                <p id="event-desc" class="scrollbar"></p>
+
+                <div id="event-btnBox" style="margin-bottom: 20px;"></div>
+            </div>
+            <div id="event-blocker" style="display: none;"></div>
+
+            <!-- main screen divs -->
+            <div class="side-screencontainer">
+                <div id="statsDiv" class="side-section-div">
+                    <h2 id="stats-username" class="side-section-title">cohnon</h2>
+                    <div id="stats-scroll" class="side-section-scroll scrollbar" style="text-align: center;">
+                        <div id="stats-effects" style="display:none">
+                            <p id="stats-title"><b>current effects:</b></p>
+                            <div id="stats-current"></div>
+                        </div>
+
+                        <p id="stats-level" class="stat-bar-title"><span style="font-size:16px;">level </span><b>129</b></p>
+
+                        <div id="stats-levelbar" class="stat-bar"><div id="stats-levelbar-filler" class="stat-bar-filler" style="width: 14.6527%;"></div></div>
+                        <p id="stats-xp" class="stat-subbar-info"><b>68179xp</b> to go</p>
+                        
+                        <p class="stat-bar-title">health</p>
+                        <div id="stats-healthbar" class="stat-bar"><div id="stats-healthbar-filler" class="stat-bar-filler" style="width: 100%;"></div></div>
+                        <p id="stats-hp" class="stat-subbar-info">100/100</p>
+                        
+                        <p class="stat-bar-title">stamina</p>
+                        <div id="stats-staminabar" class="stat-bar"><div id="stats-staminabar-filler" class="stat-bar-filler" style="width: 100%;"></div></div>
+                        <p id="stats-sp" class="stat-subbar-info">30/30</p>
+
+                        <p id="stats-dmg">base damage: 10</p><br>
+
+                        <div id="stats-upgrades" style="">
+                            <p id="stats-skillpoint-btndesc">you have <b>28</b> skill upgrades available!</p>
+                            <input id="stats-skillpoint-upgrade" type="button" value="upgrade" onclick="XP.openSkillBox()">
+                        </div>
+                        <div id="stats-skillpoint-box" style="display:none">
+                            <p class="upgrade-desc">skill points: <span id="stats-upgrade-points-remaining"></span></p><!--
+                        ---><input id="stats-skillpoint-upgrade-reset" class="stat-apply-btn" type="button" value="reset" onclick="XP.openSkillBox()" style="margin: 0 auto 5px;display: block;">
+
+                            <div style="text-align:center;">
+                                <div style="display:inline-block;">
+                                    <div class="stat-upgrade-num-holder">max hp:<p id="stat-skill-health-total" class="stat-upgrade-nums"></p><input onclick="XP.addSkillPoint('hp')" class="stat-upgrade-btn" type="button" value="+8"><input onclick="XP.addSkillPoint('hp', true)" class="stat-upgrade-btn" type="button" value="x10"></div>
+                                    <div class="stat-upgrade-num-holder">max sp:<p id="stat-skill-stamina-total" class="stat-upgrade-nums"></p><input onclick="XP.addSkillPoint('sp')" class="stat-upgrade-btn" type="button" value="+2"><input onclick="XP.addSkillPoint('sp', true)" class="stat-upgrade-btn" type="button" value="x10"></div>
+                                    <div class="stat-upgrade-num-holder">base dmg:<p id="stat-skill-damage-total" class="stat-upgrade-nums"></p><input onclick="XP.addSkillPoint('dmg')" class="stat-upgrade-btn" type="button" value="+1"><input onclick="XP.addSkillPoint('dmg', true)" class="stat-upgrade-btn" type="button" value="x10"></div>
+                                    <div class="stat-upgrade-num-holder">carry:<p id="stat-skill-carry-total" class="stat-upgrade-nums"></p><input onclick="XP.addSkillPoint('carry')" class="stat-upgrade-btn" type="button" value="+25"><input onclick="XP.addSkillPoint('carry', true)" class="stat-upgrade-btn" type="button" value="x10"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="text-align:center;">
+                                <input id="stats-skillpoint-upgrade-cancel" class="stat-apply-btn" type="button" value="cancel" onclick="XP.closeSkillBox()" style="margin: 15px 3px 0 0"><!--
+                            ---><input id="stats-skillpoint-upgrade-confirm" class="stat-apply-btn" type="button" value="upgrade" onclick="XP.applySkills()" style="margin: 15px 0 0 3px;">
+                            </div>
+                        </div>
+
+                        <input type="button" id="stats-resetallBtn" value="reset all skill points" onclick="XP.openResetAllBox();">
+                        <div id="stats-resetall" style="display:none;">
+                            <p id="stats-resetall-desc">are you sure? if you choose to revert all your skills to their original values, you will clear your crafting queue, and you will <b>lose 10% of your current level, rounded up</b>.</p>
+                            <input type="button" class="stat-apply-btn" value="cancel" onclick="XP.closeResetAllBox();">
+                            <input id="stats-resetall-confirm" type="button" class="stat-apply-btn" value="confirm reset" onclick="XP.confirmResetAll();">
+                        </div>
+
+                        <input type="button" id="hands-suicide" style="font-size: 14px;padding: 1px 5px;display: block;margin: 20px auto 10px;" value="commit suicide" onclick="HANDS.suicide();">
+                    </div>
+                </div>
+                <div id="consoleDiv" class="side-section-div" style="margin-bottom: 0;">
+                    <h2 class="side-section-title">events</h2>
+                    <div id="console-scroll" class="side-section-scroll scrollbar"><p class="log" style="opacity:0.09999999999999998"><span style="opacity:0.6">[11:43]</span> another year has passed. the world decays further, the past descending deeper into time.</p><p class="log" style="opacity:0.19999999999999996"><span style="opacity:0.6">[12:39]</span> the mountain's edge gives way to the shadows of the woods.</p><p class="log" style="opacity:0.30000000000000004"><span style="opacity:0.6">[13:00]</span> leveled up!</p><p class="log" style="opacity:0.4"><span style="opacity:0.6">[13:00]</span> you're now level <b>129</b>.</p><p class="log" style="opacity:0.5"><span style="opacity:0.6">[13:18]</span> a short structure, weathered from time, is barely noticeable among the dead trees in the wasteland. the knob has been broken off the front door, leaving it to swing freely in the wind.</p><p class="log" style="opacity:0.6"><span style="opacity:0.6">[14:32]</span> a yellow home sticks out of the ground like a stain in the landscape, no accompanying road or houses nearby to indicate it as part of a neighborhood. the siding is peeling, the windows are broken, and the door hangs open, unmoving in the dead atmosphere.</p><p class="log" style="opacity:0.7"><span style="opacity:0.6">[15:02]</span> there's a unique odor in the air as you enter the house, the door clattering off its hinges. a once comfortable home has fallen to now-dead insects. all the furniture was removed from the living room, scrapes still marking the floor from when they were stolen. a light flickers in the kitchen.</p><p class="log" style="opacity:0.8"><span style="opacity:0.6">[15:03]</span> you earned <b>25xp</b>.</p><p class="log" style="opacity:0.9"><span style="opacity:0.6">[15:03]</span> the hot air rests still over the wasteland.</p><p class="log" style="opacity:1"><span style="opacity:0.6">[15:54]</span> your feet begin to sink softly into the mud as steaming swamps stretch ahead.</p><p class="log" style="opacity:1"><span style="opacity:0.6">[15:54]</span> the sludge hardens into sand and grass as the swamp falls behind.</p><p class="log" style="opacity:1"><span style="opacity:0.6">[16:05]</span> the old trees break out of the cracked sand, casting what little light there is into shadow.</p><p class="log" style="opacity:1"><span style="opacity:0.6">[16:16]</span> the shadows of the great forest turn to light, revealing deserts stretching to the horizon.</p><p class="log" style="opacity:1"><span style="opacity:0.6">[16:17]</span> the wasted sands yield to colossal mountains, their peaks shrouded by the floating ash.</p><p id="enginelog-latestmessage" class="log" style="opacity: 1; transition: opacity 1500ms ease 0s;"><span style="opacity:0.6">[16:17]</span> the cascading rocks finally disperse, revealing the broken wasteland ahead.</p></div>
+                </div>
+            </div><!--
+
+        ---><div class="mid-screencontainer scrollbar"><!--
+            ---><div id="mid-menu" onclick="ENGINE.toggleMenu()" class="unselectable">
+                    menu
+                </div><!--
+            ---><div id="world-time">
+                    cycle:
+                    <p id="time-countdown" style="display: inline;">0.9</p>
+                    <p id="time-ofday">20:06, summer, day 69, year 223</p>
+                </div><!--
+            ---><div id="world-position">
+                    tracker:
+                    <p id="world-coords" style="display: inline;">-263260, -220252</p>
+                    <p id="world-biome">wasteland</p>
+                </div>
+            
+                <div id="build-overlay-top" class="build-overlay" style="display:none;"></div>
+                <div id="build-overlay-bottom" class="build-overlay" style="display:none;"></div>
+                <div id="build-overlay-left" class="build-overlay" style="display:none;"></div>
+                <div id="build-overlay-right" class="build-overlay" style="display:none;"></div>
+                <div id="world-box"><span class="worldtile unselectable" id="-263275|-220237">,</span><span class="worldtile unselectable" id="-263274|-220237">,</span><span class="worldtile unselectable" id="-263273|-220237">,</span><span class="worldtile unselectable" id="-263272|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220237">,</span><span class="worldtile unselectable" id="-263266|-220237">,</span><span class="worldtile unselectable" id="-263265|-220237">,</span><span class="worldtile unselectable" id="-263264|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220237">,</span><span class="worldtile unselectable" id="-263257|-220237">,</span><span class="worldtile unselectable" id="-263256|-220237">,</span><span class="worldtile unselectable" id="-263255|-220237">,</span><span class="worldtile unselectable" id="-263254|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220237">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220237">,</span><br><span class="worldtile unselectable" id="-263275|-220238">,</span><span class="worldtile unselectable" id="-263274|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220238">,</span><span class="worldtile unselectable" id="-263267|-220238">,</span><span class="worldtile unselectable" id="-263266|-220238">,</span><span class="worldtile unselectable" id="-263265|-220238">,</span><span class="worldtile unselectable" id="-263264|-220238">,</span><span class="worldtile unselectable" id="-263263|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220238">,</span><span class="worldtile unselectable" id="-263256|-220238">,</span><span class="worldtile unselectable" id="-263255|-220238">,</span><span class="worldtile unselectable" id="-263254|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220238">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220238">,</span><br><span class="worldtile unselectable" id="-263275|-220239">,</span><span class="worldtile unselectable" id="-263274|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220239">,</span><span class="worldtile unselectable" id="-263266|-220239">,</span><span class="worldtile unselectable" id="-263265|-220239">,</span><span class="worldtile unselectable" id="-263264|-220239">,</span><span class="worldtile unselectable" id="-263263|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220239">,</span><span class="worldtile unselectable" id="-263255|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220239">,</span><span class="worldtile unselectable" id="-263246|-220239">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220239">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220240">,</span><span class="worldtile unselectable" id="-263274|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220240">,</span><span class="worldtile unselectable" id="-263265|-220240">,</span><span class="worldtile unselectable" id="-263264|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220240">,</span><span class="worldtile unselectable" id="-263248|-220240">,</span><span class="worldtile unselectable" id="-263247|-220240">,</span><span class="worldtile unselectable" id="-263246|-220240">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220240">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220241">,</span><span class="worldtile unselectable" id="-263274|-220241">,</span><span class="worldtile unselectable" id="-263273|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220241">,</span><span class="worldtile unselectable" id="-263265|-220241">,</span><span class="worldtile unselectable" id="-263264|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220241">,</span><span class="worldtile unselectable" id="-263249|-220241">,</span><span class="worldtile unselectable" id="-263248|-220241">,</span><span class="worldtile unselectable" id="-263247|-220241">,</span><span class="worldtile unselectable" id="-263246|-220241">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220241">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220242">,</span><span class="worldtile unselectable" id="-263274|-220242">,</span><span class="worldtile unselectable" id="-263273|-220242">,</span><span class="worldtile unselectable" id="-263272|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220242">,</span><span class="worldtile unselectable" id="-263265|-220242">,</span><span class="worldtile unselectable" id="-263264|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220242">,</span><span class="worldtile unselectable" id="-263250|-220242">,</span><span class="worldtile unselectable" id="-263249|-220242">,</span><span class="worldtile unselectable" id="-263248|-220242">,</span><span class="worldtile unselectable" id="-263247|-220242">,</span><span class="worldtile unselectable" id="-263246|-220242">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220242">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220243">,</span><span class="worldtile unselectable" id="-263274|-220243">,</span><span class="worldtile unselectable" id="-263273|-220243">,</span><span class="worldtile unselectable" id="-263272|-220243">,</span><span class="worldtile unselectable" id="-263271|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220243">,</span><span class="worldtile unselectable" id="-263266|-220243">,</span><span class="worldtile unselectable" id="-263265|-220243">,</span><span class="worldtile unselectable" id="-263264|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220243">,</span><span class="worldtile unselectable" id="-263257|-220243">,</span><span class="worldtile unselectable" id="-263256|-220243">,</span><span class="worldtile unselectable" id="-263255|-220243">,</span><span class="worldtile unselectable" id="-263254|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220243">,</span><span class="worldtile unselectable" id="-263250|-220243">,</span><span class="worldtile unselectable" id="-263249|-220243">,</span><span class="worldtile unselectable" id="-263248|-220243">,</span><span class="worldtile unselectable" id="-263247|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220243">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220243">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220244">,</span><span class="worldtile unselectable" id="-263274|-220244">,</span><span class="worldtile unselectable" id="-263273|-220244">,</span><span class="worldtile unselectable" id="-263272|-220244">,</span><span class="worldtile unselectable" id="-263271|-220244">,</span><span class="worldtile unselectable" id="-263270|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220244">,</span><span class="worldtile unselectable" id="-263266|-220244">,</span><span class="worldtile unselectable" id="-263265|-220244">,</span><span class="worldtile unselectable" id="-263264|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220244">,</span><span class="worldtile unselectable" id="-263258|-220244">,</span><span class="worldtile unselectable" id="-263257|-220244">,</span><span class="worldtile unselectable" id="-263256|-220244">,</span><span class="worldtile unselectable" id="-263255|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220244">,</span><span class="worldtile unselectable" id="-263249|-220244">,</span><span class="worldtile unselectable" id="-263248|-220244">,</span><span class="worldtile unselectable" id="-263247|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220244">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220244">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220245">,</span><span class="worldtile unselectable" id="-263274|-220245">,</span><span class="worldtile unselectable" id="-263273|-220245">,</span><span class="worldtile unselectable" id="-263272|-220245">,</span><span class="worldtile unselectable" id="-263271|-220245">,</span><span class="worldtile unselectable" id="-263270|-220245">,</span><span class="worldtile unselectable" id="-263269|-220245">,</span><span class="worldtile unselectable" id="-263268|-220245">,</span><span class="worldtile unselectable" id="-263267|-220245">,</span><span class="worldtile unselectable" id="-263266|-220245">,</span><span class="worldtile unselectable" id="-263265|-220245">,</span><span class="worldtile unselectable" id="-263264|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220245">,</span><span class="worldtile unselectable" id="-263258|-220245">,</span><span class="worldtile unselectable" id="-263257|-220245">,</span><span class="worldtile unselectable" id="-263256|-220245">,</span><span class="worldtile unselectable" id="-263255|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220245">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220245">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220246">,</span><span class="worldtile unselectable" id="-263274|-220246">,</span><span class="worldtile unselectable" id="-263273|-220246">,</span><span class="worldtile unselectable" id="-263272|-220246">,</span><span class="worldtile unselectable" id="-263271|-220246">,</span><span class="worldtile unselectable" id="-263270|-220246">,</span><span class="worldtile unselectable" id="-263269|-220246">,</span><span class="worldtile unselectable" id="-263268|-220246">,</span><span class="worldtile unselectable" id="-263267|-220246">,</span><span class="worldtile unselectable" id="-263266|-220246">,</span><span class="worldtile unselectable" id="-263265|-220246">,</span><span class="worldtile unselectable" id="-263264|-220246">t</span><span class="worldtile unselectable" id="-263263|-220246">t</span><span class="worldtile unselectable" id="-263262|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220246">,</span><span class="worldtile unselectable" id="-263258|-220246">,</span><span class="worldtile unselectable" id="-263257|-220246">,</span><span class="worldtile unselectable" id="-263256|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220246">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220246">,</span><span class="worldtile unselectable" id="-263245|-220246">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220247">,</span><span class="worldtile unselectable" id="-263274|-220247">,</span><span class="worldtile unselectable" id="-263273|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220247">,</span><span class="worldtile unselectable" id="-263270|-220247">,</span><span class="worldtile unselectable" id="-263269|-220247">,</span><span class="worldtile unselectable" id="-263268|-220247">,</span><span class="worldtile unselectable" id="-263267|-220247">,</span><span class="worldtile unselectable" id="-263266|-220247">,</span><span class="worldtile unselectable" id="-263265|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220247">,</span><span class="worldtile unselectable" id="-263258|-220247">,</span><span class="worldtile unselectable" id="-263257|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220247">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220247">,</span><span class="worldtile unselectable" id="-263246|-220247">,</span><span class="worldtile unselectable" id="-263245|-220247">,</span><br><span class="worldtile unselectable" id="-263275|-220248">,</span><span class="worldtile unselectable" id="-263274|-220248">,</span><span class="worldtile unselectable" id="-263273|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220248">,</span><span class="worldtile unselectable" id="-263269|-220248">,</span><span class="worldtile unselectable" id="-263268|-220248">,</span><span class="worldtile unselectable" id="-263267|-220248">,</span><span class="worldtile unselectable" id="-263266|-220248">,</span><span class="worldtile unselectable" id="-263265|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220248">,</span><span class="worldtile unselectable" id="-263261|-220248">,</span><span class="worldtile unselectable" id="-263260|-220248">,</span><span class="worldtile unselectable" id="-263259|-220248">,</span><span class="worldtile unselectable" id="-263258|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220248">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220248">,</span><span class="worldtile unselectable" id="-263246|-220248">,</span><span class="worldtile unselectable" id="-263245|-220248">,</span><br><span class="worldtile unselectable" id="-263275|-220249">,</span><span class="worldtile unselectable" id="-263274|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220249">,</span><span class="worldtile unselectable" id="-263268|-220249">,</span><span class="worldtile unselectable" id="-263267|-220249">,</span><span class="worldtile unselectable" id="-263266|-220249">,</span><span class="worldtile unselectable" id="-263265|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220249">,</span><span class="worldtile unselectable" id="-263261|-220249">,</span><span class="worldtile unselectable" id="-263260|-220249">,</span><span class="worldtile unselectable" id="-263259|-220249">,</span><span class="worldtile unselectable" id="-263258|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220249">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220249">,</span><span class="worldtile unselectable" id="-263246|-220249">,</span><span class="worldtile unselectable" id="-263245|-220249">,</span><br><span class="worldtile unselectable" id="-263275|-220250">,</span><span class="worldtile unselectable" id="-263274|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220250">,</span><span class="worldtile unselectable" id="-263267|-220250">,</span><span class="worldtile unselectable" id="-263266|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220250">,</span><span class="worldtile unselectable" id="-263261|-220250">,</span><span class="worldtile unselectable" id="-263260|-220250">,</span><span class="worldtile unselectable" id="-263259|-220250">,</span><span class="worldtile unselectable" id="-263258|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220250">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220250">,</span><span class="worldtile unselectable" id="-263246|-220250">,</span><span class="worldtile unselectable" id="-263245|-220250">,</span><br><span class="worldtile unselectable" id="-263275|-220251">,</span><span class="worldtile unselectable" id="-263274|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220251">,</span><span class="worldtile unselectable" id="-263260|-220251">,</span><span class="worldtile unselectable" id="-263259|-220251">,</span><span class="worldtile unselectable" id="-263258|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220251">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220251">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220252">,</span><span class="worldtile unselectable" id="-263274|-220252">,</span><span class="worldtile unselectable" id="-263273|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220252"><b>&amp;</b></span><span class="worldtile unselectable" id="-263259|-220252">,</span><span class="worldtile unselectable" id="-263258|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220252">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220252">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220253">,</span><span class="worldtile unselectable" id="-263274|-220253">,</span><span class="worldtile unselectable" id="-263273|-220253">,</span><span class="worldtile unselectable" id="-263272|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220253">,</span><span class="worldtile unselectable" id="-263251|-220253">,</span><span class="worldtile unselectable" id="-263250|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220253">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220253">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220254">,</span><span class="worldtile unselectable" id="-263274|-220254">,</span><span class="worldtile unselectable" id="-263273|-220254">,</span><span class="worldtile unselectable" id="-263272|-220254">,</span><span class="worldtile unselectable" id="-263271|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220254">t</span><span class="worldtile unselectable" id="-263264|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220254">,</span><span class="worldtile unselectable" id="-263252|-220254">,</span><span class="worldtile unselectable" id="-263251|-220254">,</span><span class="worldtile unselectable" id="-263250|-220254">,</span><span class="worldtile unselectable" id="-263249|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220254">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220254">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220255">,</span><span class="worldtile unselectable" id="-263274|-220255">,</span><span class="worldtile unselectable" id="-263273|-220255">,</span><span class="worldtile unselectable" id="-263272|-220255">,</span><span class="worldtile unselectable" id="-263271|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220255">t</span><span class="worldtile unselectable" id="-263264|-220255">t</span><span class="worldtile unselectable" id="-263263|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220255">,</span><span class="worldtile unselectable" id="-263253|-220255">,</span><span class="worldtile unselectable" id="-263252|-220255">,</span><span class="worldtile unselectable" id="-263251|-220255">,</span><span class="worldtile unselectable" id="-263250|-220255">,</span><span class="worldtile unselectable" id="-263249|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220255">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220255">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263274|-220256">,</span><span class="worldtile unselectable" id="-263273|-220256">,</span><span class="worldtile unselectable" id="-263272|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220256">,</span><span class="worldtile unselectable" id="-263265|-220256">,</span><span class="worldtile unselectable" id="-263264|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220256">,</span><span class="worldtile unselectable" id="-263253|-220256">,</span><span class="worldtile unselectable" id="-263252|-220256">,</span><span class="worldtile unselectable" id="-263251|-220256">,</span><span class="worldtile unselectable" id="-263250|-220256">,</span><span class="worldtile unselectable" id="-263249|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220256">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220256">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263274|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220257">,</span><span class="worldtile unselectable" id="-263265|-220257">,</span><span class="worldtile unselectable" id="-263264|-220257">,</span><span class="worldtile unselectable" id="-263263|-220257">,</span><span class="worldtile unselectable" id="-263262|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220257">,</span><span class="worldtile unselectable" id="-263254|-220257">,</span><span class="worldtile unselectable" id="-263253|-220257">,</span><span class="worldtile unselectable" id="-263252|-220257">,</span><span class="worldtile unselectable" id="-263251|-220257">,</span><span class="worldtile unselectable" id="-263250|-220257">,</span><span class="worldtile unselectable" id="-263249|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220257">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220257">,</span><span class="worldtile unselectable" id="-263246|-220257">,</span><span class="worldtile unselectable" id="-263245|-220257">,</span><br><span class="worldtile unselectable" id="-263275|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263274|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220258">,</span><span class="worldtile unselectable" id="-263265|-220258">,</span><span class="worldtile unselectable" id="-263264|-220258">,</span><span class="worldtile unselectable" id="-263263|-220258">,</span><span class="worldtile unselectable" id="-263262|-220258">,</span><span class="worldtile unselectable" id="-263261|-220258">,</span><span class="worldtile unselectable" id="-263260|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220258">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220258">,</span><span class="worldtile unselectable" id="-263253|-220258">,</span><span class="worldtile unselectable" id="-263252|-220258">,</span><span class="worldtile unselectable" id="-263251|-220258">,</span><span class="worldtile unselectable" id="-263250|-220258">,</span><span class="worldtile unselectable" id="-263249|-220258">,</span><span class="worldtile unselectable" id="-263248|-220258">,</span><span class="worldtile unselectable" id="-263247|-220258">,</span><span class="worldtile unselectable" id="-263246|-220258">,</span><span class="worldtile unselectable" id="-263245|-220258">,</span><br><span class="worldtile unselectable" id="-263275|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263274|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220259">,</span><span class="worldtile unselectable" id="-263265|-220259">,</span><span class="worldtile unselectable" id="-263264|-220259">,</span><span class="worldtile unselectable" id="-263263|-220259">,</span><span class="worldtile unselectable" id="-263262|-220259">,</span><span class="worldtile unselectable" id="-263261|-220259">,</span><span class="worldtile unselectable" id="-263260|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220259">,</span><span class="worldtile unselectable" id="-263254|-220259">,</span><span class="worldtile unselectable" id="-263253|-220259">,</span><span class="worldtile unselectable" id="-263252|-220259">,</span><span class="worldtile unselectable" id="-263251|-220259">,</span><span class="worldtile unselectable" id="-263250|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220259">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220259">,</span><span class="worldtile unselectable" id="-263247|-220259">,</span><span class="worldtile unselectable" id="-263246|-220259">,</span><span class="worldtile unselectable" id="-263245|-220259">,</span><br><span class="worldtile unselectable" id="-263275|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263274|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220260">,</span><span class="worldtile unselectable" id="-263265|-220260">,</span><span class="worldtile unselectable" id="-263264|-220260">,</span><span class="worldtile unselectable" id="-263263|-220260">,</span><span class="worldtile unselectable" id="-263262|-220260">,</span><span class="worldtile unselectable" id="-263261|-220260">,</span><span class="worldtile unselectable" id="-263260|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220260">,</span><span class="worldtile unselectable" id="-263254|-220260">,</span><span class="worldtile unselectable" id="-263253|-220260">,</span><span class="worldtile unselectable" id="-263252|-220260">,</span><span class="worldtile unselectable" id="-263251|-220260">,</span><span class="worldtile unselectable" id="-263250|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220260">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220260">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220261">,</span><span class="worldtile unselectable" id="-263274|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220261">,</span><span class="worldtile unselectable" id="-263262|-220261">,</span><span class="worldtile unselectable" id="-263261|-220261">,</span><span class="worldtile unselectable" id="-263260|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220261">,</span><span class="worldtile unselectable" id="-263254|-220261">,</span><span class="worldtile unselectable" id="-263253|-220261">,</span><span class="worldtile unselectable" id="-263252|-220261">,</span><span class="worldtile unselectable" id="-263251|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220261">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220261">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220262">,</span><span class="worldtile unselectable" id="-263274|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263266|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220262">,</span><span class="worldtile unselectable" id="-263254|-220262">,</span><span class="worldtile unselectable" id="-263253|-220262">,</span><span class="worldtile unselectable" id="-263252|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220262">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220262">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220263">M</span><span class="worldtile unselectable" id="-263274|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263273|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263267|-220263">,</span><span class="worldtile unselectable" id="-263266|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220263">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220263">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220264">M</span><span class="worldtile unselectable" id="-263274|-220264">M</span><span class="worldtile unselectable" id="-263273|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263272|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220264">,</span><span class="worldtile unselectable" id="-263267|-220264">,</span><span class="worldtile unselectable" id="-263266|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220264">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220264">&nbsp;</span><br><span class="worldtile unselectable" id="-263275|-220265">M</span><span class="worldtile unselectable" id="-263274|-220265">M</span><span class="worldtile unselectable" id="-263273|-220265">M</span><span class="worldtile unselectable" id="-263272|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220265">,</span><span class="worldtile unselectable" id="-263267|-220265">,</span><span class="worldtile unselectable" id="-263266|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263259|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263258|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220265">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220265">,</span><br><span class="worldtile unselectable" id="-263275|-220266">M</span><span class="worldtile unselectable" id="-263274|-220266">M</span><span class="worldtile unselectable" id="-263273|-220266">M</span><span class="worldtile unselectable" id="-263272|-220266">M</span><span class="worldtile unselectable" id="-263271|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220266">,</span><span class="worldtile unselectable" id="-263268|-220266">,</span><span class="worldtile unselectable" id="-263267|-220266">,</span><span class="worldtile unselectable" id="-263266|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263260|-220266">,</span><span class="worldtile unselectable" id="-263259|-220266">,</span><span class="worldtile unselectable" id="-263258|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220266">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220266">,</span><span class="worldtile unselectable" id="-263245|-220266">,</span><br><span class="worldtile unselectable" id="-263275|-220267">M</span><span class="worldtile unselectable" id="-263274|-220267">M</span><span class="worldtile unselectable" id="-263273|-220267">M</span><span class="worldtile unselectable" id="-263272|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263271|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263270|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263269|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263268|-220267">,</span><span class="worldtile unselectable" id="-263267|-220267">,</span><span class="worldtile unselectable" id="-263266|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263265|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263264|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263263|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263262|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263261|-220267">,</span><span class="worldtile unselectable" id="-263260|-220267">,</span><span class="worldtile unselectable" id="-263259|-220267">,</span><span class="worldtile unselectable" id="-263258|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263257|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263256|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263255|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263254|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263253|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263252|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263251|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263250|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263249|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263248|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263247|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263246|-220267">&nbsp;</span><span class="worldtile unselectable" id="-263245|-220267">,</span><br></div><!--
+
+            ---><div id="hotbar-box" style="margin:0 auto 1px;text-align:right;"><!--
+                ---><span id="hands-event" class="hotbar-btn unselectable" onclick="HANDS.reenter()" style="display: none;">enter event</span><!--
+                ---><span id="hands-break" class="hotbar-btn unselectable" onclick="HANDS.break()" style="display: none;">dismantle</span><!--
+                ---><!--<span id="hands-door" class="hotbar-btn unselectable" onclick="HANDS.opendoor(this)">open door</span>--><!--
+                ---><span id="hands-tree" class="hotbar-btn unselectable" onclick="HANDS.gettree(this)" style="display: none;">collect wood</span><!--
+                ---><span id="hands-drop" class="hotbar-btn unselectable" onclick="HANDS.drop(this)">drop items</span><!--
+                ---><div style="display:inline-block;vertical-align:top;"><span id="hands-steplimit-btn" class="hotbar-btn unselectable" onclick="STEPLIMIT.toggle();">step limit</span><!--
+                ---><input type="text" id="hands-steplimit-count" placeholder="0" onchange="STEPLIMIT.setCurrent();" maxlength="6"></div><!--
+                ---><span id="hands-dstep" class="hotbar-btn unselectable" onclick="DSTEP.click()">double step</span><!--
+            ---></div><!--
+            ---><div id="bottom-box"><!--
+                ---><div id="supplies-equipactions" class="bottom-box-left-menu scrollbar" style="">
+                        <h2 id="supplies-equipped-title" class="bottom-box-left-menu-title" style="font-weight:normal;font-size: 16px;margin: 0 0 5px 3px;padding:0px">equipped: <b>small boat</b></h2>
+                        <p id="equip-currentstatus" style="font-size: 14px; margin: 0px 0px 6px 3px; display: none; font-style: italic;"></p>
+                        <div id="supplies-equipped-buttons"><input type="button" class="craft-btns focus" value="unequip" style="padding: 2px 5px;font-size:14px;margin: 0 3px 6px;"></div>
+                        <p id="equip-desc" class="bottom-box-left-menu-desc">will allow safe travel over acidic waters. do not unequip unless you are in a safe location.</p>
+                    </div><!--
+                ---><div id="building-equipactions" class="bottom-box-left-menu scrollbar" style="display:none"><!--
+                    ---><h2 id="building-equipped-title" class="bottom-box-left-menu-title" style="font-weight:normal;font-size: 16px;margin: 0 0 5px 3px;padding:0px"></h2><!--
+                    ---><p id="building-break-timer" class="bottom-box-left-menu-timer"></p><!--
+                        
+                    ---><div id="building-magnifier"><!--
+                        ---><div id="bm-nw" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-n" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-ne" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-w" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-auto" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);" style="font-size: 10px;padding: 7px 0;height: 12px;">auto</div><!--
+                        ---><div id="bm-e" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-sw" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-s" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                        ---><div id="bm-se" class="building-magnifier-tile unselectable" onclick="BUILD.place(this);"></div><!--
+                    ---></div><!--
+                    ---><input id="building-close" type="button" class="craft-btns focus" value="close" style="padding: 2px 5px;font-size:14px;margin: 0 3px 6px;" onclick="BUILD.close();"><!--
+                    ---><p id="building-equipped-desc" class="bottom-box-left-menu-desc"></p><!--
+                ---></div><!--
+
+                ---><div id="mobile-boxselect"><!--
+                    ---><input type="button" class="mobile-btn" id="mobile-statsBtn" value="you" onclick="MOBILE.which('you'); this.value = 'you';"><!--
+                    ---><input type="button" class="mobile-btn" id="mobile-eventBtn" value="events (!)" onclick="MOBILE.which('event'); this.value = 'events';"><!--
+                    ---><input type="button" class="mobile-btn" id="mobile-suppBtn" value="supplies" onclick="MOBILE.which('supp'); this.value = 'supplies';"><!--
+                    ---><input type="button" class="mobile-btn" id="mobile-craftBtn" value="crafting" onclick="MOBILE.which('craft'); this.value = 'crafting';"><!--
+                ---></div><!--
+            ---></div>
+            </div><!--
+
+        ---><div class="side-screencontainer">
+                <div id="suppliesDiv" class="side-section-div">
+                    <h2 class="side-section-title">supplies</h2><!--
+                        
+                ---><span style="font-size:12px;position: absolute;top: 8px;left:100px;z-index:2" class="unselectable">sort:</span><!--
+                ---><select onchange="SUPPLIES.sort(parseInt(this.value))" class="supplies-dropdown" style="top: 8px;left:138px;">
+                        <option value="1" selected="selected">count</option>
+                        <option value="2">name</option>
+                    </select><!--
+
+                ---><div id="supplies-scroll" class="side-section-scroll scrollbar" style="height: calc(100% - 30px);">
+                        <p class="stat-bar-title" style="margin-top:10px;">weight</p>
+                        <div id="stats-carrybar" class="stat-bar"><div id="stats-carrybar-filler" class="stat-bar-filler" style="width: 92.8519%;"></div></div>
+                        <p id="stats-carry" class="stat-subbar-info">2507/2700</p>
+
+                        <div id="supplies-item-grid"><p class="supply-category">miscellaneous:</p><div class="supplies-box-icon"><div class="supplies-icon-symbol">/</div><div class="supplies-icon-count">201x</div><div id="wood_stick" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">~</div><div class="supplies-icon-count">118x</div><div id="rope" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">ß</div><div class="supplies-icon-count">100x</div><div id="plastic" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">c</div><div class="supplies-icon-count">93x</div><div id="cloth" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">ð</div><div class="supplies-icon-count">74x</div><div id="scrap_metal" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">s</div><div class="supplies-icon-count">53x</div><div id="wire" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">§</div><div class="supplies-icon-count">42x</div><div id="copper_coil" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">¤</div><div class="supplies-icon-count">28x</div><div id="steel_shard" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">▓</div><div class="supplies-icon-count">23x</div><div id="circuit_board" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol"><b>-</b></div><div class="supplies-icon-count">16x</div><div id="shotgun_shell" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">&lt;c</div><div class="supplies-icon-count">11x</div><div id="copper_ore" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">=-</div><div class="supplies-icon-count">11x</div><div id="syringe" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">⬬</div><div class="supplies-icon-count">10x</div><div id="medical_pill" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">K-v</div><div class="supplies-icon-count">7x</div><div id="maintenance_key" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">·</div><div class="supplies-icon-count">4x</div><div id="bullet" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">o</div><div class="supplies-icon-count">1x</div><div id="battery" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">tools:</p><div class="supplies-box-icon"><div class="supplies-icon-symbol">%</div><div class="supplies-icon-count">5x</div><div id="camo" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">r=</div><div class="supplies-icon-count">4x</div><div id="blowtorch" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">––D</div><div class="supplies-icon-count">3x</div><div id="shovel" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">¯\_</div><div class="supplies-icon-count">2x</div><div id="metal_detector" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">︺</div><div class="supplies-icon-count">2x</div><div id="boat" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">––A</div><div class="supplies-icon-count">1x</div><div id="axe" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">X</div><div class="supplies-icon-count">1x</div><div id="bolt_cutters" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">{</div><div class="supplies-icon-count">1x</div><div id="crowbar" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">(S)</div><div class="supplies-icon-count">1x</div><div id="player_scanner_highrange" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">≈</div><div class="supplies-icon-count">1x</div><div id="heat_masker" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">––]</div><div class="supplies-icon-count">1x</div><div id="sledgehammer" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">building materials:</p><div class="supplies-box-icon"><div class="supplies-icon-symbol">┬</div><div class="supplies-icon-count">7x</div><div id="reality_anchor" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">+</div><div class="supplies-icon-count">6x</div><div id="wood_block" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">¶</div><div class="supplies-icon-count">1x</div><div id="sign_block" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">weapons:</p><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">~==</div><div class="supplies-icon-count">3x</div><div id="shotgun" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">Г</div><div class="supplies-icon-count">2x</div><div id="pistol" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">{,</div><div class="supplies-icon-count">1x</div><div id="soda_bottle" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">Û</div><div class="supplies-icon-count">1x</div><div id="fire_extinguisher" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">!</div><div class="supplies-icon-count">1x</div><div id="machete" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">4</div><div class="supplies-icon-count">1x</div><div id="rusty_knife" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">blueprints:</p><div class="supplies-box-icon"><div class="supplies-icon-symbol">[]</div><div class="supplies-icon-count">5x</div><div id="bp_metal_detector" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">[]</div><div class="supplies-icon-count">3x</div><div id="bp_reality_anchor" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">rare items:</p><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">[e]</div><div class="supplies-icon-count">14x</div><div id="keycard_e" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">[a]</div><div class="supplies-icon-count">12x</div><div id="keycard_a" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">O</div><div class="supplies-icon-count">12x</div><div id="alien_fragment" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol" style="font-size: 18px;">[c]</div><div class="supplies-icon-count">2x</div><div id="keycard_c" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon"><div class="supplies-icon-symbol">@</div><div class="supplies-icon-count">1x</div><div id="charged_core" onclick="SUPPLIES.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div style="margin:10px 0 0;display:block;"></div></div>
+                    </div><!--
+                ---><div id="supplies-infomenu" class="scrollbar" style="display:none">
+                        <h2 id="supplies-infotitle"></h2>
+                    
+                        <input type="button" id="supplies-equip" class="craft-btns" value="equip" onclick="EQUIP.open();" style="display:none"><!--
+                    ---><input type="button" id="supplies-learn" class="craft-btns" value="learn" onclick="SUPPLIES.learn();" style="display:none"><!--
+                    ---><input type="button" id="supplies-build" class="craft-btns" value="equip" onclick="BUILD.open();" style="display:none"><!--
+                    ---><input type="button" id="supplies-breaker" class="craft-btns" value="equip" onclick="BUILD.open_break();" style="display:none"><!--
+                    ---><input type="button" id="supplies-closemenu" class="craft-btns" value="close" onclick="SUPPLIES.closeMenu();" style="margin-top:10px;">
+
+                        <div id="supplies-infodesc"></div>
+                    </div>
+                </div>
+                <div id="craftDiv" class="side-section-div" style="margin-bottom: 0;">
+                    <h2 class="side-section-title">crafting</h2>
+                    <div id="craft-scroll" class="side-section-scroll scrollbar" style="padding: 30px 2px 0;"><p class="supply-category">miscellaneous:</p><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">&lt;&gt;</div><div id="craft-control_panel" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">§</div><div id="craft-copper_coil" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">s</div><div id="craft-wire" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">tools:</p><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">%</div><div id="craft-camo" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol" style="font-size: 18px;">––A</div><div id="craft-axe" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">X</div><div id="craft-bolt_cutters" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">{</div><div id="craft-crowbar" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol" style="font-size: 18px;">(S)</div><div id="craft-player_scanner_highrange" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">≈</div><div id="craft-heat_masker" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol" style="font-size: 18px;">(t)</div><div id="craft-low_teleporter" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol" style="font-size: 18px;">(s)</div><div id="craft-player_scanner" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol" style="font-size: 18px;">¯\_</div><div id="craft-metal_detector" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol">r=</div><div id="craft-blowtorch" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol" style="font-size: 18px;">––D</div><div id="craft-shovel" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol" style="font-size: 18px;">––]</div><div id="craft-sledgehammer" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">︺</div><div id="craft-boat" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">building materials:</p><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">▭</div><div id="craft-large_chest" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">Θ</div><div id="craft-ocean_platform" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol">┬</div><div id="craft-reality_anchor" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol"><b>#</b></div><div id="craft-steel_block" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">#</div><div id="craft-scrap_block" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol"><b>D</b></div><div id="craft-scrap_door" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">◻</div><div id="craft-small_chest" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol">$</div><div id="craft-steel_door" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">+</div><div id="craft-wood_block" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">D</div><div id="craft-wood_door" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">¶</div><div id="craft-sign_block" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">weapons:</p><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol" style="font-size: 18px;">-==</div><div id="craft-baseball_bat" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">!</div><div id="craft-machete" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div class="supplies-box-icon" style=""><div class="supplies-icon-symbol">4</div><div id="craft-rusty_knife" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><p class="supply-category">rare items:</p><div class="supplies-box-icon" style="opacity:0.5"><div class="supplies-icon-symbol">@</div><div id="craft-charged_core" onclick="CRAFTING.open(this.id)" class="supplies-icon-hover no-hover"></div></div><div style="margin:10px 0 0;display:block;"></div></div>
+                    <div id="craft-menu" class="craft-menu scrollbar" style="display:none;">
+                        <h2 id="craft-title"></h2>
+                        <p id="craft-desc"></p>
+
+                        <div id="craft-divlist"></div>
+
+                        <div id="craft-time"></div>
+
+                        <input id="craft-btn" type="button" class="craft-btns" onclick="CRAFTING.craft();" value="craft" style="margin-left:0"><!--
+                    ---><input type="button" class="craft-btns" onclick="CRAFTING.close();" value="close">
+                    </div>
+                    <div id="craft-ing-menu" class="craft-menu" style="display:none">
+                        
+                        <p id="crafting-item"></p>
+
+                        <input type="button" id="queue-cancelall-btn" onclick="CRAFTING.cancelall();" value="cancel all">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input name="autologin" type="hidden" id="autologin" value="cohnon">
+        <input name="autocount" type="hidden" id="autocount" value="15">
+        <input name="auto_dailyPeak" type="hidden" id="auto_dailyPeak" value="19">
+        <input name="auto_alltimePeak" type="hidden" id="auto_alltimePeak" value="67">
+    </form>
+
+    <!-- 
+        
+        Development on The Travelers began September 6th, 2019. The first edition live to play came online at https://thetravelers.online on September 18th, 2019.
+
+    -->
+
+    <!-- 
+
+        THETRAVELERS.ONLINE
+
+        This project was inspired by 2b2t, A Dark Room, Candybox, and Notpron. The experiences I've had in these games have all left a mark on me, 
+        and inspired me in diverse ways. The Travelers is the amalgamation of these inspirations, and it's a project I'm extremely proud of 
+        and an idea that I think will be better than many of my other game ideas for years to come. I'm hopeful that this will find some small 
+        success with the (admittedly niche) slow-burn apocalyptic puzzle-solving community, because I'm super confident people will enjoy this if
+        they try it. Thank you for taking the time to read this little message, and for already enjoying the game enough to want to take a
+        peek at the code.
+
+        That said, no game hints will be hidden in the JS for this site. Unlike Notpron, all information regarding the puzzle will be found
+        in-game as you play it. Due to my patented slow-MMO system, I'm able to process everyone finding each other and various events serverside,
+        so while you technically will be able to do some basic world-generation, and even find some basic places like houses or cities, you 
+        will not be able to actually cheat the game by looking through the code. Feel free to try though!
+
+        -torogadude, September 18th 2019  
+
+    -->   
+    <script src="src/globs.js"></script>
+    <!-- <script src="src/window.js"></script>
+    <script src="src/ui.js"></script>
+    <script src="src/moduleManager.js"></script>
+    <script src="src/sprintClient.js"></script>
+    <script src="src/main.js"></script> -->
+    <script type="module" src="downloadSprint.js"></script>
+</body></html>
