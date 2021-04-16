@@ -21,11 +21,18 @@ class SprintClient
     
     this.ui.hook(this);
     this.extensionManager.init(this);
-    this.extensionManager.add({category: "bots", icon:"t",name:"test", id:"test"});
 
-    this.debug("Initialized Sprint Client");
+    this.test();
+
+
+    this.debug("Initialized Client");
     this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");
     this.alert("Although all modules are looked through for malicious content before being made public, you should always be careful when downloading something onto your computer. You can check out all the source code for this client, as well as the modules here -> www.google.com");
+  }
+
+  async test()
+  {
+    this.extensionManager.restoreLocal();
   }
 
 
@@ -41,7 +48,7 @@ class SprintClient
    */
   log(message)
   {
-    console.log("%c" + message, "font-size: 15px;");
+    console.log("%c" + message, "font-size: 12px;");
   }
 
 
@@ -51,7 +58,7 @@ class SprintClient
    */
   alert(message)
   {
-    console.log("%c" + message, "font-weight: bold; background-color: #f22; color: white; padding: 2px;");
+    console.log("%c" + message, "font-size: 13px;font-weight: bold; background-color: #f22; color: white; padding: 2px;");
   }
 
 
@@ -63,7 +70,7 @@ class SprintClient
   {
     if (config.env == "dev")
     {
-      console.log("SPRINT_CLIENT_DEBUG::" + message);
+      console.log("%cSPRINT_CLIENT_DEBUG\n" + message, "font-size:12px;");
     }
   }
 

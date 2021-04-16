@@ -2,7 +2,6 @@
  * @file moduleManager.js
  * @description Manages the storage, loading, and uploading of modules
  */
-
 const ExtensionManager = {
   
   /**
@@ -24,7 +23,7 @@ const ExtensionManager = {
    * @param {string} extension_filepath A directory holding an extension
    */
   load: async (extension_filepath) => {
-    ExtensionManager.loadFile(`${extension_filepath}/main.js`);
+    return ExtensionManager.loadFile(`${extension_filepath}/main.js`);
   },
 
 
@@ -46,14 +45,14 @@ const ExtensionManager = {
     }
     else
     {
-      extension_filetype = extension_filetype[1];
+      extension_filetype = extension_parts[1];
     }
 
     // Prevent duplicate downloads
     if (ExtensionManager._extensions.has(extension_name)) return;
 
     // Download
-    const module_object = await import(`${extension_filepath}.${extension_filetype}`);
+    const module_object = await import(`../extensions/${extension_name}.${extension_filetype}`);
 
     ExtensionManager.add(module_object.default);
   },
@@ -65,7 +64,7 @@ const ExtensionManager = {
    */
   add: (extension) => {
     if (ExtensionManager.get(extension.name) != null) return
-
+    
     ExtensionManager._extensions.set(extension.name, extension);
 
     ExtensionManager._client.ui.updateExtensions(ExtensionManager._extensions);
@@ -89,13 +88,14 @@ const ExtensionManager = {
   remove: (extension_name) => {
     const extension = ExtensionManager.get(extension_name);
     if (extension == null) return;
-
+    
     if (extension.active)
     {
       extension.stop();
     }
-
+    
     ExtensionManager._extensions.delete(extension_name);
+    ExtensionManager._client.ui.updateExtensions(ExtensionManager._extensions);
   },
 
 
@@ -107,9 +107,10 @@ const ExtensionManager = {
   toggle: (extension_name, value) => {
     const extension = ExtensionManager._extensions.get(extension_name);
 
-    if (!extension_name) return;
+    if (!extension) return;
 
     extension.toggle(value);
+    ExtensionManager._client.ui.updateExtensions(ExtensionManager._extensions);
   },
 
 

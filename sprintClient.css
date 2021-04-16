@@ -28,7 +28,9 @@
     color: inherit;
     text-decoration: underline;
 }
-
+.center-vert {
+    margin-top: 5px;
+}
 .sprint-info {
     min-height: 50%;
     width: 100%;
@@ -49,7 +51,9 @@
     font-size: 14px;
     margin: 0 auto 10px;
 }
-
+.supplies-box-icon.sprint-faded {
+    opacity: 0.5;
+} 
 .sprint-window {
     position: absolute;
     background-color: blue;

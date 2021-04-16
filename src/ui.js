@@ -15,6 +15,9 @@ const UI = {
   client: null,
   tabMenus: {},
 
+  statsInfoMenu: null,
+  consoleInfoMenu: null,
+
   
   // Hooks into the game"s UI and stuffs a bunch of my own HTML
   hook: (client) => {
@@ -23,13 +26,13 @@ const UI = {
     UI.client = client;
     const consoleHTML = document.getElementById("consoleDiv");
     const eventLogHTML = document.getElementById("console-scroll");
-    const consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
+    UI.consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
     consoleHTML.removeChild(consoleHTML.childNodes[1]); // removes the event title in the console. it gets replaced with a clickable tab later
-    UI.tabMenus["console"] = new TabMenu(consoleHTML, consoleInfoMenu);
+    UI.tabMenus["console"] = new TabMenu(consoleHTML, UI.consoleInfoMenu);
     UI.tabMenus["console"].addTab("events", eventLogHTML);
-
-
-      /////////////////
+    
+    
+    /////////////////
     // Create Tabs //
     UI.tabMenus["console"].addTab("extensions");
     // UI.tabMenus["console"].getTab("extensions").addItem("mods", "download", "+", () => { consoleInfoMenu.open("mods coming soon", "mods change how the game is played. modded items cannot be mixed with core game items. it is best to treat mods as completely separate games that use the travelers world map.") });
@@ -44,7 +47,7 @@ const UI = {
     // UI.tabMenus["console"].getTab("extensions").addItem("bots", "travel", "&");
 
     // This has to be bound after all the tabs are created so it is put at the bottom.
-    consoleInfoMenu.bind();
+    UI.consoleInfoMenu.bind();
 
     // lets me initialize tab in debug mode
     if (config.env == "dev")
@@ -58,25 +61,43 @@ const UI = {
     const statsHTML = document.getElementById("statsDiv");
     const username = statsHTML.childNodes[1].innerHTML;
     const accountStatsHTML = document.getElementById("stats-scroll");
-    const statsInfoMenu = new InfoMenu(statsHTML); // information menu when you click an item in the stats
+    UI.statsInfoMenu = new InfoMenu(statsHTML); // information menu when you click an item in the stats
     statsHTML.removeChild(statsHTML.childNodes[1]);
-    UI.tabMenus["stats"] = new TabMenu(statsHTML, statsInfoMenu);
+    UI.tabMenus["stats"] = new TabMenu(statsHTML, UI.statsInfoMenu);
     UI.tabMenus["stats"].addTab("SPRINT");
     UI.tabMenus["stats"].getTab("SPRINT").addPara("version", config.version);
     UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "sprint allows you to easily download extensions from a list of player created content. it sets up a framework to easily create your own extensions for other players to use.");
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("help", "extensions", "ext", () => { statsInfoMenu.open("extensions", "extensions are programs that you run on this client. you can download extensions or make your own in the \"extensions\" tab below.")});
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "0.0.1", "001", () => { statsInfoMenu.open("ver 0.0.1", "The foundation for creating and downloading extensions was made. Not very usefule. 2/5"); });
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { statsInfoMenu.open("CoherentNonsense", "developer") });
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("help", "extensions", "ext", () => { UI.statsInfoMenu.open("extensions", "extensions are programs that you run on this client. you can download extensions or make your own in the \"extensions\" tab below.")});
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "0.0.1", "001", () => { UI.statsInfoMenu.open("ver 0.0.1", "The foundation for creating and downloading extensions was made. Not very usefule. 2/5"); });
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { UI.statsInfoMenu.open("CoherentNonsense", "developer") });
     UI.tabMenus["stats"].addTab(username, accountStatsHTML);
-    statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
+    UI.statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
     UI.tabMenus["stats"].selectTab(1); // the default stat tab is (1)
   },
 
   updateExtensions: (extensions) => {
-    extensions.forEach((extension) => {
-      console.log(UI)
-      UI.tabMenus["console"].getTab("extensions").addItem(extension.category, extension.name, extension.icon);
-    });
+    UI.tabMenus["console"].getTab("extensions").sections = {};
+    UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", () => { alert("Here is where you get more")});
+    UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "");
+    if (extensions.size === 0)
+    {
+      UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "empty...");
+    }
+    else
+    {
+      extensions.forEach((extension) => {
+        UI.tabMenus["console"].getTab("extensions").addItem(
+          extension.category,
+          extension.name,
+          extension.icon,
+          () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
+            { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.name); } },
+            { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.name); } }
+          ]) },
+          !extension.active
+        );
+      });      
+    }
 
     UI.tabMenus["console"].selectTab(1);
   },
@@ -180,7 +201,7 @@ class Tab
   }
 
   // Adds an item (like your inventory in-game)
-  addItem(category, name, icon, onclick)
+  addItem(category, name, icon, onclick, faded)
   {
     if (!this.sections[category])
     {
@@ -191,6 +212,7 @@ class Tab
       name,
       icon,
       onclick,
+      faded
     });
   }
 
@@ -239,10 +261,10 @@ class Tab
             itemHTML.innerHTML = categoryContent[i].text;
             break;
           case 1: {
-            itemHTML.className = "supplies-box-icon";
+            itemHTML.className = categoryContent[i].faded ? "supplies-box-icon sprint-faded" : "supplies-box-icon";
             itemHTML.onclick = categoryContent[i].onclick;
             const itemIconHTML = document.createElement("div");
-            itemIconHTML.className = "supplies-icon-symbol";
+            itemIconHTML.className = "supplies-icon-symbol center-vert";
             itemIconHTML.innerHTML = categoryContent[i].icon;
 
             itemHTML.append(itemIconHTML);
@@ -297,6 +319,20 @@ class InfoMenu
 
     this.infoHTML.appendChild(titleHTML);
     this.infoHTML.appendChild(closeButton);
+
+    for (let i = 0; i < buttons.length; ++i)
+    {
+      const actionButton = document.createElement("input");
+      actionButton.type = "button";
+      actionButton.className = "craft-btns";
+      actionButton.value = buttons[i].name;
+      actionButton.onclick = () => {
+        buttons[i].onclick();
+        this.close();
+      };
+      this.infoHTML.appendChild(actionButton);
+    }
+
     this.infoHTML.appendChild(aboutHTML);
   }
 

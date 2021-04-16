@@ -1,10 +1,12 @@
 class Extension
 {
-  constructor(name)
+  constructor(fields)
   {
-    this.name = name;
-    this.category = "";
+    this.name = fields.name || "?";
+    this.category = fields.category || "extension";
     this.active = false;
+    this.icon = fields.icon || "?";
+    this.about = fields.about || "";
 
     // Callbacks
     this._start;
@@ -14,14 +16,15 @@ class Extension
 
   toggle(value)
   {
-    if (this.active || value)
+    if (typeof value === "boolean")
     {
-      this.stop();
+      value ? this._start() : this._stop();
     }
     else
     {
-      this.start();
+      this.active ? this._stop() : this._start();
     }
+
     this.active = !this.active;
   }
 
@@ -33,11 +36,6 @@ class Extension
   on_stop(callback)
   {
     this._stop = callback;
-  }
-
-  on_update(callback)
-  {
-    this._update = callback;
   }
 }
 

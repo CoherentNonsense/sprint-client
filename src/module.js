@@ -7,6 +7,10 @@ class Module extends Extension
     super(name, "mod");
   }
 
+  on_update(callback)
+  {
+    this._update = callback;
+  }
 }
 
 export default Module;
