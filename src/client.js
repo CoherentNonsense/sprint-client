@@ -20,16 +20,11 @@ class SprintClient
     this.extensionManager = ExtensionManager;
     this.popup = Popup;
 
-    
-    this.ui.hook(this);
-    this.extensionManager.init(this);
 
-    this.test();
+    this.engineUpdate = ENGINE.applyData;
 
 
-    this.debug("Initialized Client");
-    this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");
-    this.alert("Although all modules are looked through for malicious content before being made public, you should always be careful when downloading something onto your computer. You can check out all the source code for this client, as well as the modules here -> www.google.com");
+    this.init();
   }
 
   async test()
@@ -40,9 +35,31 @@ class SprintClient
   }
 
 
-  hook()
+  /**
+   * Connects the game events to the extensions
+   */
+  init()
   {
-    
+    this.ui.hook(this);
+    this.extensionManager.init(this);
+
+    ENGINE.applyData = (json, midCycleCall) => {
+      this.engineUpdate(json, midCycleCall);
+
+      const data = {
+        stumps: WORLD.otherStumps,
+        openedDoors: json.openedDoors,
+        objects: WORLD.otherObjs
+      };
+
+      this.extensionManager.update(data);
+    };
+
+    this.test();
+
+    this.debug("Initialized Client");
+    this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");
+    this.alert("Although all modules are looked through for malicious content before being made public, you should always be careful when downloading something onto your computer. You can check out all the source code for this client, as well as the modules here -> www.google.com");
   }
 
 

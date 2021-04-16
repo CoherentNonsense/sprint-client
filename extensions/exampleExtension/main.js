@@ -37,7 +37,7 @@ let allowQuoteAlert = false
 /**
  * Everytime this extension is turned on, it will create a popup with a random quote
  */
-extension.on_start((client) => {
+extension.onStart((client) => {
   const quote = random_quotes[Math.floor(Math.random() * random_quotes.length)];
 
   // A simple example of the popup builder
@@ -53,8 +53,16 @@ extension.on_start((client) => {
 /**
  * Everytime this extension is turned off, if will print a popup into the console.
  */
-extension.on_stop((client) => {
+extension.onStop((client) => {
   console.log(random_quotes[Math.floor(Math.random() * random_quotes.length)]);
+});
+
+
+/**
+ * Every update this extension is turned on, it will print a random quote into the console
+ */
+extension.onUpdate((client, data) => {
+  console.log(data);
 });
 
 export default extension;

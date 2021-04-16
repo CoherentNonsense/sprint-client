@@ -15,6 +15,7 @@
         "TIME": true,
         "WORLD": true,
         "SOCKET": true,
-        "POPUP": true
+        "POPUP": true,
+        "ENGINE": true
     }
 }

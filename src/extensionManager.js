@@ -114,9 +114,12 @@ const ExtensionManager = {
   },
 
 
-  update: (client, data) => {
+  update: (data) => {
     ExtensionManager._extensions.forEach((extension) => {
-      extension.update(client, data);
+      if (extension.active)
+      {
+        extension._update(ExtensionManager._client, data);
+      }
     });
   },
 

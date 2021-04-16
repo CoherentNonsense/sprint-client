@@ -10,7 +10,7 @@ class Extension
     this.active = false;
     this.icon = fields.icon || "?";
     this.about = fields.about || "";
-    this.in_production = false;
+    this.inProduction = false;
 
     // Callbacks
     this._start = () => {};
@@ -35,17 +35,17 @@ class Extension
     this.active = !this.active;
   }
 
-  on_start(callback)
+  onStart(callback)
   {
     this._start = callback;
   }
 
-  on_stop(callback)
+  onStop(callback)
   {
     this._stop = callback;
   }
 
-  on_update(callback)
+  onUpdate(callback)
   {
     this._update = callback;
   }
