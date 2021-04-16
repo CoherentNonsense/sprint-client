@@ -1,5 +1,17 @@
+/**
+ * This is an example of how you would make an extension
+ * This extension will print out any objects that are around the player every game tic
+ * 
+ * You can use import and export to split up your extension to as many files as you want
+ * 
+ */
+
+
+// Import the Extension class
 import Extension from "../../src/extension.js";
-import random_quotes from "./quotes.js";
+
+// You can create separate files and import them here.
+import { randomWelcomeMessage, randomFairwellMessages } from "./messages.js";
 
 
 /**
@@ -7,11 +19,11 @@ import random_quotes from "./quotes.js";
  * Set all the values for the extension
  */
 const extension = new Extension({
-  name: "Example Extension", // The name that is shown to a player
+  name: "Object Logger", // The name that is shown to a player
   id: "exampleExtension", // A unique extension id. Must be the same as the directory name
-  icon: "c", // The icon that appears in the extensions tab [Optional]
+  icon: "᭡", // The icon that appears in the extensions tab [Optional]
   category: "examples", // The category this extension is in e.g. texture pack [Optional]
-  about: "Prints a famous quote everytime you turn this on and off.", // A short description [Optional]
+  about: "Prints surrounding objects into the console.", // A short description [Optional]
   author: "CoherentNonsense" // The author [Optional]
 });
 
@@ -20,7 +32,7 @@ const extension = new Extension({
  * Private Variables
  * Make a list of all the variables your extension might need.
  */
-let allowQuoteAlert = false
+let onlyShowBuilding = false;
 
 
 /**
@@ -38,7 +50,7 @@ let allowQuoteAlert = false
  * Everytime this extension is turned on, it will create a popup with a random quote
  */
 extension.onStart((client) => {
-  const quote = random_quotes[Math.floor(Math.random() * random_quotes.length)];
+  const quote = randomWelcomeMessage[Math.floor(Math.random() * randomWelcomeMessage.length)];
   console.log(quote);
   // A simple example of the popup builder
   // client.popup.build("A Random Quote Appears", (body => {
@@ -54,7 +66,7 @@ extension.onStart((client) => {
  * Everytime this extension is turned off, if will print a popup into the console.
  */
 extension.onStop((client) => {
-  console.log(random_quotes[Math.floor(Math.random() * random_quotes.length)]);
+  console.log(randomFairwellMessages[Math.floor(Math.random() * randomFairwellMessages.length)]);
 });
 
 
