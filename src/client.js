@@ -48,7 +48,7 @@ class SprintClient
 
       const data = {
         stumps: WORLD.otherStumps,
-        openedDoors: json.openedDoors,
+        openedDoors: json.doors || [],
         objects: WORLD.otherObjs
       };
 
