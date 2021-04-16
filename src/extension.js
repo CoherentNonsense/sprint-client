@@ -11,11 +11,14 @@ class Extension
     this.icon = fields.icon || "?";
     this.about = fields.about || "";
     this.inProduction = false;
+    this.settings = document.createElement("div");
+    this.settings.innerHTML = "Test";
 
     // Callbacks
     this._start = () => {};
     this._stop = () => {};
     this._update = () => {};
+    this._settings = null;
 
     // Data
     this.data = {};
@@ -48,6 +51,11 @@ class Extension
   onUpdate(callback)
   {
     this._update = callback;
+  }
+
+  onSettings(callback)
+  {
+    this._settings = callback;
   }
 }
 

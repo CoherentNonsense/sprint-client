@@ -3,22 +3,58 @@
  */
 const Popup = (function() {
 
+
+  // TODO: make more dynamic for input types
+  function createElement(tag, className, text)
+  {
+    const element = document.createElement(tag);
+    element.className = className;
+    !text ? null : element.innerHTML = text;
+
+    return element;
+  }
+
   class Body
   {
     constructor()
     {
-      this.contents = "<div class=\"unselectable\">";
+      this.contents = createElement("div", "unselectable");
       this.buttons = [];
+      this.idCounter = 0;
     }
 
     break()
     {
-      this.contents += "<hr>";  
+      this.contents.appendChild(createElement("hr"));  
     }
 
     addParagraph(text)
     {
-      this.contents += `<p>${text}</p>`;
+      const p = createElement("p", "unselectable", text);
+      this.contents.appendChild(p);
+    }
+
+    addCheckbox(title, set, initialValue)
+    {
+      const id = this._generateId();
+
+      const label = createElement("label", "sprint-popup-label", title);
+      label.htmlFor = id;
+
+      const check = createElement("input");
+      check.id = id;
+      check.type = "checkbox";
+      check.onclick = (e) => { set(e.currentTarget.checked) };
+      
+      check.checked = !!initialValue;
+
+      this.contents.appendChild(check);
+      this.contents.appendChild(label);
+    }
+
+    _generateId()
+    {
+      return `sprint-popup-${this.idCounter++}`;
     }
   }
 
@@ -26,7 +62,10 @@ const Popup = (function() {
 
     build(title, create)
     {
+      const body = new Body();
+      create(body);
 
+      POPUP.new(createElement("span", "unselectable", title), body.contents);
     },
 
     /**
@@ -37,11 +76,12 @@ const Popup = (function() {
      */
     custom(title, body, buttons)
     {
-      POPUP.new(
-        `<span class='unselectable'>${title}</span>`,
-        `<span class="unselectable'>${body}</span>`,
-        buttons
-      );
+      const titleHTML = createElement("span", "unselectable", title);
+
+      const bodyHTML = createElement("div", "unselectable", body);
+
+      //POPUP.new(titleHTML, bodyHTML, buttons);
+      console.log(titleHTML, bodyHTML);
     }
 
   }

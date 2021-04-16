@@ -37,11 +37,12 @@ let onlyShowBuilding = false;
 
 /**
  * Method calls
- * Every extension has three methods that the client will call 'on_start', 'on_stop', and 'on_update'
+ * Extensions have optional methods you can override that the client will call
  * 
- * on_start: Called everytime this extension is turned on
- * on_stop: Called everytime this extension is turned off
- * on_update: Called everytime the server updates the client
+ * onStart: Called everytime this extension is turned on
+ * onStop: Called everytime this extension is turned off
+ * onUpdate: Called everytime the server updates the client
+ * onSettings: Called when this extension's settings are clicked. Useful for making an info page as well
  * 
  * Each methods will have access to the client object
  */
@@ -52,13 +53,6 @@ let onlyShowBuilding = false;
 extension.onStart((client) => {
   const quote = randomWelcomeMessage[Math.floor(Math.random() * randomWelcomeMessage.length)];
   console.log(quote);
-  // A simple example of the popup builder
-  // client.popup.build("A Random Quote Appears", (body => {
-  //   body.addParagraph(quote);
-  //   body.break();
-  //   body.addCheckbox("Checkbox", allowQuoteAlert);
-  //   body.addButton("alert", () => { if (allowQuoteAlert) alert(quote) });
-  // }));
 });
 
 
@@ -74,7 +68,30 @@ extension.onStop((client) => {
  * Every update this extension is turned on, it will print a random quote into the console
  */
 extension.onUpdate((client, data) => {
-  console.log(data);
+  if (onlyShowBuilding)
+  {
+    console.log(data.objects);
+  }
+  else
+  {
+    console.log(data);
+  }
+});
+
+
+/**
+ * A player can choose how much info they get on update
+ * The standard way of displaying your settings is by using a popup
+ */
+extension.onSettings((client) => {
+  client.popup.build("Object Logger Settings", (build) => {
+
+    build.addParagraph("Logging Info");
+    build.break();
+    build.addParagraph("Turn on if you only want to log player built objects.");
+    build.addCheckbox("Log player objects", (value) => { onlyShowBuilding = value }, onlyShowBuilding);
+
+  });
 });
 
 export default extension;

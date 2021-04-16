@@ -89,8 +89,9 @@ const UI = {
           extension.name,
           extension.icon,
           () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
-            { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.id); } },
-            { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.id); } }
+            { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.id); } },
+            ...(extension._settings ? [{ name: "settings", onclick: () => { extension._settings(UI.client) } }] : []),
+            { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.id); } }
           ]) },
           !extension.active
         );

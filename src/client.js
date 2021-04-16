@@ -12,17 +12,12 @@ class SprintClient
 
   constructor()
   {
-
     /**
      * Client Submodules
      */
     this.ui = UI;
     this.extensionManager = ExtensionManager;
     this.popup = Popup;
-
-
-    this.engineUpdate = ENGINE.applyData;
-
 
     this.init();
   }
@@ -32,6 +27,7 @@ class SprintClient
     await this.extensionManager.load("exampleExtension");
 
     this.extensionManager.saveLocal();
+
   }
 
 
@@ -43,6 +39,9 @@ class SprintClient
     this.ui.hook(this);
     this.extensionManager.init(this);
 
+
+    // Attaches extensions with the server update
+    this.engineUpdate = ENGINE.applyData;
     ENGINE.applyData = (json, midCycleCall) => {
       this.engineUpdate(json, midCycleCall);
 
@@ -54,6 +53,13 @@ class SprintClient
 
       this.extensionManager.update(data);
     };
+
+    
+    // Updates POPUP to allow Element objects
+    const oldCode = ["this.evTitle.innerHTML = titleText;", "this.evDesc.innerHTML = descText.split(\"\\n\").join(\"<br />\");"]
+    const newCode = "if(typeof titleText === \"string\"){" + oldCode[0] + oldCode[1] + "}else{this.evTitle.appendChild(titleText);this.evDesc.appendChild(descText);}";
+    POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[0], "// Updated By Sprint Client") + ")");
+    POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[1], newCode) + ")");
 
     this.test();
 
