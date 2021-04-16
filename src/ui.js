@@ -90,7 +90,7 @@ const UI = {
           extension.icon,
           () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
             { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.id); } },
-            { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.name); } }
+            { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.id); } }
           ]) },
           !extension.active
         );
@@ -296,7 +296,7 @@ class InfoMenu
   }
 
   // Creates the HTML and renders the info
-  open(title, about, buttons)
+  open(title, about, buttons = [])
   {
     this.close();
     this.infoHTML.style.display = "block";

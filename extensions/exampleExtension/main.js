@@ -39,14 +39,14 @@ let allowQuoteAlert = false
  */
 extension.onStart((client) => {
   const quote = random_quotes[Math.floor(Math.random() * random_quotes.length)];
-
+  console.log(quote);
   // A simple example of the popup builder
-  client.popup.build("A Random Quote Appears", (body => {
-    body.addParagraph(quote);
-    body.break();
-    body.addCheckbox("Checkbox", allowQuoteAlert);
-    body.addButton("alert", () => { if (allowQuoteAlert) alert(quote) });
-  }));
+  // client.popup.build("A Random Quote Appears", (body => {
+  //   body.addParagraph(quote);
+  //   body.break();
+  //   body.addCheckbox("Checkbox", allowQuoteAlert);
+  //   body.addButton("alert", () => { if (allowQuoteAlert) alert(quote) });
+  // }));
 });
 
 

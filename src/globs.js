@@ -13,3 +13,7 @@ const TIME = {
   hour: 17,
   minute: 32,
 };
+
+const ENGINE = {
+  applyData: () => {}
+};
