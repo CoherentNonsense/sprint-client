@@ -9,9 +9,8 @@ Sprint is still early in development and might break your game and/or steal your
 
 ### How to Install
 
-1. Click this [link](downloadSprint.js).
-2. Copy the files in the program.
-3. Paste it into the console once you are logged in the game.
+1. Copy the contents of this [file](install.js).
+2. Paste it into the console once you are logged in the game.
 
 ### What is Sprint
 
