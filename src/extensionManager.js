@@ -91,7 +91,7 @@ const ExtensionManager = {
     
     if (extension.active)
     {
-      extension.stop();
+      extension._stop();
     }
     
     ExtensionManager._extensions.delete(extension_id);
