@@ -1,6 +1,7 @@
 import config from "./config.js";
 import UI from "./ui.js";
 import ExtensionManager from "./extensionManager.js";
+import Popup from "./popup.js";
 
 /**
  * @file sprintClient.js
@@ -13,10 +14,11 @@ class SprintClient
   {
 
     /**
-     * Client Modules (not Travelers' modules!)
+     * Client Submodules
      */
     this.ui = UI;
     this.extensionManager = ExtensionManager;
+    this.popup = Popup;
 
     
     this.ui.hook(this);
@@ -32,7 +34,9 @@ class SprintClient
 
   async test()
   {
-    this.extensionManager.restoreLocal();
+    await this.extensionManager.load("exampleExtension");
+
+    this.extensionManager.saveLocal();
   }
 
 

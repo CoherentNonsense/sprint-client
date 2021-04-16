@@ -2,16 +2,23 @@ class Extension
 {
   constructor(fields)
   {
+
+    // Extension data
+    this.id = fields.id || ".";
     this.name = fields.name || "?";
     this.category = fields.category || "extension";
     this.active = false;
     this.icon = fields.icon || "?";
     this.about = fields.about || "";
+    this.in_production = false;
 
     // Callbacks
-    this._start;
-    this._stop;
-    this._update;
+    this._start = () => {};
+    this._stop = () => {};
+    this._update = () => {};
+
+    // Data
+    this.data = {};
   }
 
   toggle(value)
@@ -36,6 +43,11 @@ class Extension
   on_stop(callback)
   {
     this._stop = callback;
+  }
+
+  on_update(callback)
+  {
+    this._update = callback;
   }
 }
 

@@ -35,7 +35,7 @@ const ExtensionManager = {
     // Parse extension file path
     const extension_parts = extension_filepath.split(".");
 
-    let extension_name = extension_parts[0];
+    let extension_id = extension_parts[0];
     let extension_filetype;
 
     // If the extension file path does not have an extension, default as js
@@ -49,10 +49,10 @@ const ExtensionManager = {
     }
 
     // Prevent duplicate downloads
-    if (ExtensionManager._extensions.has(extension_name)) return;
+    if (ExtensionManager._extensions.has(extension_id)) return;
 
     // Download
-    const module_object = await import(`../extensions/${extension_name}.${extension_filetype}`);
+    const module_object = await import(`../extensions/${extension_id}.${extension_filetype}`);
 
     ExtensionManager.add(module_object.default);
   },
@@ -63,9 +63,9 @@ const ExtensionManager = {
    * @param {Extension} extension The extension to be added
    */
   add: (extension) => {
-    if (ExtensionManager.get(extension.name) != null) return
+    if (ExtensionManager.get(extension.id) != null) return
     
-    ExtensionManager._extensions.set(extension.name, extension);
+    ExtensionManager._extensions.set(extension.id, extension);
 
     ExtensionManager._client.ui.updateExtensions(ExtensionManager._extensions);
   },
@@ -73,20 +73,20 @@ const ExtensionManager = {
 
   /**
    * Gets an extension by it's name
-   * @param {string} extension_name The extension to retrieve
+   * @param {string} extension_id The extension to retrieve
    * @returns {Extension} The extension with the corresponding name or null if not found
    */
-  get: (extension_name) => {
-    return ExtensionManager._extensions.get(extension_name);
+  get: (extension_id) => {
+    return ExtensionManager._extensions.get(extension_id);
   },
 
 
   /**
    * Removes an extension by it's name
-   * @param {string} extension_name The extension to remove
+   * @param {string} extension_id The extension to remove
    */
-  remove: (extension_name) => {
-    const extension = ExtensionManager.get(extension_name);
+  remove: (extension_id) => {
+    const extension = ExtensionManager.get(extension_id);
     if (extension == null) return;
     
     if (extension.active)
@@ -94,18 +94,18 @@ const ExtensionManager = {
       extension.stop();
     }
     
-    ExtensionManager._extensions.delete(extension_name);
+    ExtensionManager._extensions.delete(extension_id);
     ExtensionManager._client.ui.updateExtensions(ExtensionManager._extensions);
   },
 
 
   /**
    * Toggles an extension's state to either on or off
-   * @param {string} extension_name The extension to toggle
+   * @param {string} extension_id The extension to toggle
    * @param {bool} [value] An optional value to choose a state
    */
-  toggle: (extension_name, value) => {
-    const extension = ExtensionManager._extensions.get(extension_name);
+  toggle: (extension_id, value) => {
+    const extension = ExtensionManager._extensions.get(extension_id);
 
     if (!extension) return;
 
@@ -121,21 +121,21 @@ const ExtensionManager = {
   },
 
   saveLocal: () => {
-    const extension_names = [];
-    ExtensionManager._extensions.forEach((_, extension_name) => {
-      extension_names.push(extension_name);
+    const extension_ids = [];
+    ExtensionManager._extensions.forEach((_, extension_id) => {
+      extension_ids.push(extension_id);
     });
 
-    localStorage.setItem("scextensions_extensions", JSON.stringify(extension_names));
+    localStorage.setItem("scextensions_extensions", JSON.stringify(extension_ids));
   },
 
   restoreLocal: () => {
     ExtensionManager._extensions.clear();
 
-    const extension_names = JSON.parse(localStorage.getItem("scextensions_extensions"));
+    const extension_ids = JSON.parse(localStorage.getItem("scextensions_extensions"));
 
-    extension_names.forEach(async (extension_name) => {
-      await ExtensionManager.load(extension_name);
+    extension_ids.forEach(async (extension_id) => {
+      await ExtensionManager.load(extension_id);
     });
   }
 

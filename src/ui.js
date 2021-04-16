@@ -78,20 +78,18 @@ const UI = {
   updateExtensions: (extensions) => {
     UI.tabMenus["console"].getTab("extensions").sections = {};
     UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", () => { alert("Here is where you get more")});
-    UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "");
-    if (extensions.size === 0)
+
+    // Builds the extensions
+    if (extensions.size !== 0)
     {
-      UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "empty...");
-    }
-    else
-    {
+      UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "");
       extensions.forEach((extension) => {
         UI.tabMenus["console"].getTab("extensions").addItem(
           extension.category,
           extension.name,
           extension.icon,
           () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
-            { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.name); } },
+            { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.id); } },
             { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.name); } }
           ]) },
           !extension.active
@@ -99,8 +97,9 @@ const UI = {
       });      
     }
 
+    // Rerenders the tab
     UI.tabMenus["console"].selectTab(1);
-  },
+  }
 
 }
 
