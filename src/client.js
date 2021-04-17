@@ -2,6 +2,8 @@ import config from "./config.js";
 import UI from "./ui.js";
 import ExtensionManager from "./extensionManager.js";
 import Popup from "./popup.js";
+import World from "./world.js";
+import Traveler from "./traveler.js";
 
 /**
  * @file sprintClient.js
@@ -15,18 +17,20 @@ class SprintClient
     /**
      * Client Submodules
      */
-    this.ui = UI;
-    this.extensionManager = ExtensionManager;
+    this.ui = UI(this);
     this.popup = Popup;
+    this.extensionManager = ExtensionManager(this);
+    this.world = World(this);
+    this.traveler = Traveler(this);
+
+    this.traveler.position = { x: YOU.x, y: YOU.y };
 
     this.init();
   }
 
   async test()
   {
-    await this.extensionManager.load("exampleExtension");
-
-    this.extensionManager.saveLocal();
+    this.extensionManager.restoreLocal();
 
   }
 
@@ -36,8 +40,7 @@ class SprintClient
    */
   init()
   {
-    this.ui.hook(this);
-    this.extensionManager.init(this);
+    this.ui.hook();
 
 
     // Attaches extensions with the server update
@@ -45,13 +48,18 @@ class SprintClient
     ENGINE.applyData = (json, midCycleCall) => {
       this.engineUpdate(json, midCycleCall);
 
+      // Update Client
+      this.traveler.x = YOU.x;
+      this.traveler.y = YOU.y;
+
+      // Send server data to extensions
       const data = {
         stumps: WORLD.otherStumps,
         openedDoors: json.doors || [],
         objects: WORLD.otherObjs
       };
 
-      this.extensionManager.update(data);
+      this.extensionManager.update(this, data);
     };
 
     

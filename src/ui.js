@@ -8,11 +8,13 @@ import config from "./config.js";
  *
  * this stuff is really gross. I'll try modularize it later. not a fan of DOM stuff.
  */
-const makeUI = (function() {
+const UI = function(client) {
+
+  const _client = client;
+
 
 const UI = {
 
-  client: null,
   tabMenus: {},
 
   statsInfoMenu: null,
@@ -20,10 +22,9 @@ const UI = {
 
   
   // Hooks into the game"s UI and stuffs a bunch of my own HTML
-  hook: (client) => {
+  hook: () => {
     // this code is looking kinda chunky
     // Console menu
-    UI.client = client;
     const consoleHTML = document.getElementById("consoleDiv");
     const eventLogHTML = document.getElementById("console-scroll");
     UI.consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
@@ -89,9 +90,9 @@ const UI = {
           extension.name,
           extension.icon,
           () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
-            { name: extension.active ? "turn off" : "turn on", onclick: () => { UI.client.extensionManager.toggle(extension.id); } },
-            ...(extension._settings ? [{ name: "settings", onclick: () => { extension._settings(UI.client) } }] : []),
-            { name: "remove", onclick: () => { UI.client.extensionManager.remove(extension.id); } }
+            { name: extension.active ? "turn off" : "turn on", onclick: () => { _client.extensionManager.toggle(extension.id); } },
+            ...(extension._settings ? [{ name: "settings", onclick: () => { extension._settings(_client) } }] : []),
+            { name: "remove", onclick: () => { _client.extensionManager.remove(extension.id); } }
           ]) },
           !extension.active
         );
@@ -346,6 +347,6 @@ class InfoMenu
 
 return UI;
 
-});
+};
 
-export default makeUI();
+export default UI;

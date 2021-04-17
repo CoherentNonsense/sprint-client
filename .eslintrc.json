@@ -16,6 +16,8 @@
         "WORLD": true,
         "SOCKET": true,
         "POPUP": true,
-        "ENGINE": true
+        "ENGINE": true,
+        "XP": true,
+        "DSTEP": true
     }
 }

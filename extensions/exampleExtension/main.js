@@ -19,8 +19,8 @@ import { randomWelcomeMessage, randomFairwellMessages } from "./messages.js";
  * Set all the values for the extension
  */
 const extension = new Extension({
-  name: "Object Logger", // The name that is shown to a player
   id: "exampleExtension", // A unique extension id. Must be the same as the directory name
+  name: "Object Logger", // The name that is shown to a player
   icon: "᭡", // The icon that appears in the extensions tab [Optional]
   category: "examples", // The category this extension is in e.g. texture pack [Optional]
   about: "Prints surrounding objects into the console.", // A short description [Optional]
