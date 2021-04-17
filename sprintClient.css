@@ -28,7 +28,8 @@
     text-decoration: underline;
 }
 .center-vert {
-    margin-top: 5px;
+    padding-top: 2px;
+    
 }
 .sprint-info {
     min-height: 50%;

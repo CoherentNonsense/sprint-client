@@ -24,15 +24,15 @@ class Extension
     this.data = {};
   }
 
-  toggle(value)
+  toggle(client, value)
   {
     if (typeof value === "boolean")
     {
-      value ? this._start() : this._stop();
+      value ? this._start(client) : this._stop(client);
     }
     else
     {
-      this.active ? this._stop() : this._start();
+      this.active ? this._stop(client) : this._start(client);
     }
 
     this.active = !this.active;

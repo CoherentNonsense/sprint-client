@@ -32,6 +32,8 @@ class SprintClient
   {
     await this.extensionManager.load("exampleExtension");
     await this.extensionManager.load("autoSprint");
+    await this.extensionManager.load("resourceGatherer");
+    await this.extensionManager.load("spriteRenderer");
 
     this.extensionManager.saveLocal();
 

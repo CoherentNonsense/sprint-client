@@ -108,7 +108,7 @@ const ExtensionManager = function(client) {
 
     if (!extension) return;
 
-    extension.toggle(value);
+    extension.toggle(_client, value);
     _client.ui.updateExtensions(_extensions);
   }
 

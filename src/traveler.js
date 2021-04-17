@@ -11,7 +11,7 @@ const Traveler = function(client) {
 
   function sprint()
   {
-    if (_client.traveler.canSprint() && _client.world.currentTile().isSprintableTerrain())
+    if (_client.traveler.canSprint() && !DSTEP.btnIsActive() && _client.world.currentTile().isSprintableTerrain())
     {
       DSTEP.click();
     }
