@@ -30,7 +30,10 @@ class SprintClient
 
   async test()
   {
-    this.extensionManager.restoreLocal();
+    await this.extensionManager.load("exampleExtension");
+    await this.extensionManager.load("autoSprint");
+
+    this.extensionManager.saveLocal();
 
   }
 
