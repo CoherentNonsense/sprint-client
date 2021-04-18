@@ -1,5 +1,3 @@
-import Extension from "../../src/extension.js";
-
 const extension = new Extension({
   id: "resourceGatherer",
   name: "Resource Gatherer",

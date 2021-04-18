@@ -11,9 +11,7 @@ Sprint, gives you easy access to a large assortment of mods, bots, texture packs
 
 **Makes creating extensions super easy**
 ```js
-// Make an auto sprint bot with only 4 lines of code
-import Extension from "../../extension.js"
-
+// Make an auto sprint bot with only 3 lines of code!
 const extension = new Extension({ id: "autoSprint", name: "Auto Sprint" });
 
 extension.onUpdate((client) => { client.travler.sprint() });

@@ -7,9 +7,6 @@
  */
 
 
-// Import the Extension class
-import Extension from "../../src/extension.js";
-
 // You can create separate files and import them here.
 import { randomWelcomeMessage, randomFairwellMessages } from "./messages.js";
 

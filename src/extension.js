@@ -1,3 +1,11 @@
+/**
+ * @file extension.js
+ * @author CoherentNonsense
+ * The main class to hold all extension data
+ * 
+ * This is the only global object to allow other extensions to use it
+ */
+// eslint-disable-next-line no-unused-vars
 class Extension
 {
   constructor(fields)
@@ -58,5 +66,3 @@ class Extension
     this._settings = callback;
   }
 }
-
-export default Extension;

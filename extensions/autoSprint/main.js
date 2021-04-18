@@ -1,5 +1,3 @@
-import Extension from "../../src/extension.js";
-
 const extension = new Extension({
   id: "autoSprint",
   name: "Auto Sprint",

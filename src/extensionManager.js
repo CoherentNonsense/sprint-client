@@ -8,10 +8,17 @@ const ExtensionManager = function(client) {
 
   const _client = client;
 
+
   /**
    * The extension files currently downloaded
    */
   const _extensions = new Map();
+
+
+  /**
+   * When safe mode is turned on, only extensions from the official repo can be installed
+   */
+  let _safe_mode;
 
 
   /**
@@ -20,6 +27,8 @@ const ExtensionManager = function(client) {
    */
   async function load(extension_filepath)
   {
+    if (!extension_filepath || typeof extension_filepath != "string") return;
+
     return loadFile(`${extension_filepath}/main.js`);
   }
 
@@ -30,29 +39,52 @@ const ExtensionManager = function(client) {
    */
   async function loadFile(extension_filepath)
   {
-    // Parse extension file path
-    const extension_parts = extension_filepath.split(".");
+    // Only load main.js files
+    if (!extension_filepath.endsWith("/main.js")) return;
 
-    let extension_id = extension_parts[0];
-    let extension_filetype;
 
-    // If the extension file path does not have an extension, default as js
-    if (extension_parts.length == 1)
-    {
-      extension_filetype = "js";
-    }
-    else
-    {
-      extension_filetype = extension_parts[1];
-    }
+    const filepath_parts = extension_filepath.split("/");
+    filepath_parts.pop(); // Remove main.js
+    let extension_id = filepath_parts.pop(); // Get the extension id
+
 
     // Prevent duplicate downloads
     if (_extensions.has(extension_id)) return;
+    
+
+    // External extensions
+    // A URL is larger than the 2 part relative path
+    if (filepath_parts.length > 0)
+    {
+      // Ignore if safe mode is on
+      if (!extension_filepath.startsWith("https://") || _safe_mode) return;
+
+      // Download
+      try
+      {
+        const external_module_object = await import(extension_filepath);
+        external_module_object.default.url = extension_filepath;
+
+        add(external_module_object.default);
+      }
+      catch(e)
+      {
+        alert("Invalid URL");
+      }
+
+      return;
+    }
+
 
     // Download
-    const module_object = await import(`../extensions/${extension_id}.${extension_filetype}`);
-
-    add(module_object.default);
+    try
+    {
+      const module_object = await import(`../extensions/${extension_id}/main.js`);
+      module_object.default.url = extension_id;
+      add(module_object.default);
+    }
+    // eslint-disable-next-line no-empty
+    catch(e){} // Maybe some user feedback when official extensions fail but that shouldn't happen
   }
 
 
@@ -125,35 +157,70 @@ const ExtensionManager = function(client) {
     });
   }
 
+  function isSafeMode()
+  {
+    return _safe_mode;
+  }
+
+  function toggleSafeMode()
+  {
+    _safe_mode = !_safe_mode;
+
+    saveLocal();
+  }
+
   function saveLocal()
   {
-    const extension_ids = [];
-    _extensions.forEach((_, extension_id) => {
-      extension_ids.push(extension_id);
+    const extension_urls = [];
+    _extensions.forEach((extension) => {
+      extension_urls.push(extension.url);
     });
 
-    localStorage.setItem("scextensions_extensions", JSON.stringify(extension_ids));
+    localStorage.setItem("scextensions", JSON.stringify(extension_urls));
+
+    localStorage.setItem("scsafemode", JSON.stringify(_safe_mode));
   }
 
   function restoreLocal()
   {
     _extensions.clear();
 
-    let extension_ids = JSON.parse(localStorage.getItem("scextensions_extensions"));
+    let extension_urls = JSON.parse(localStorage.getItem("scextensions"));
+    let safe_mode = JSON.parse(localStorage.getItem("scsafemode"));
 
-    if (!extension_ids)
+    if (!extension_urls)
     {
-      extension_ids = [];
+      extension_urls = [];
     }
-    
-    extension_ids.forEach(async (extension_id) => {
-      await load(extension_id);
+
+    if (typeof safe_mode !== "boolean")
+    {
+      safe_mode = true;
+    }
+
+    _safe_mode = safe_mode;
+
+
+    extension_urls.forEach(async (extension_url) => {
+      await load(extension_url);
     });
   }
 
   function renderStore()
   {
     _client.popup.build("Extension List", (build) => {
+      // Show external extensions if safe mode is turned off
+      if (!_safe_mode)
+      {
+        build.addTitle("Download External Extensions");
+        build.addParagraph("(Only download extensions you can trust)");
+        build.addButton("External Extension", "URL", () => { load(prompt("Enter the URL to the extension")) })
+        build.break();
+      }
+
+      build.addTitle("Download Extensions");
+
+      // Show non installed extensions
       const noninstalledExtensions = availableExtensions.filter((extensionId) => !_extensions.has(extensionId));
 
       if (noninstalledExtensions.length === 0)
@@ -170,11 +237,12 @@ const ExtensionManager = function(client) {
 
   return {
     load,
-    loadFile,
     add,
     remove,
     get,
     toggle,
+    toggleSafeMode,
+    isSafeMode,
     update,
     saveLocal,
     restoreLocal,

@@ -17,6 +17,10 @@
     margin: 0;
     margin-right: 10px;
 }
+.sprint-break {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
 .tab-menu {
     display: flex;
     position: absolute;

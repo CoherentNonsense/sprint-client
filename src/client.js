@@ -25,17 +25,10 @@ class SprintClient
 
     // Data from the server
     this.data = {};
+    this.doors = new Map();
 
     this.init();
   }
-
-  async test()
-  {
-    await this.extensionManager.load("exampleExtension");
-
-    this.extensionManager.saveLocal();
-  }
-
 
   /**
    * Connects the game events to the extensions
@@ -55,10 +48,25 @@ class SprintClient
       this.traveler.position.y = YOU.y;
 
       // Send server data to extensions
+      this.doors.clear();
+      if (json.doors)
+      {
+        json.doors.forEach((door) => {
+          this.doors.set(door, true);
+        });
+      }
+
+      const objects = WORLD.otherObjs.map((object) => {
+        if (this.doors.has(object.x + "|" + object.y))
+        {
+          object.opened = true;
+        }
+      });
+
       this.data = {
         stumps: WORLD.otherStumps,
-        openedDoors: json.doors || [],
-        objects: WORLD.otherObjs
+        objects,
+        players: WORLD.otherPlayers
       };
 
       this.extensionManager.update(this, this.data);
@@ -70,8 +78,6 @@ class SprintClient
     const newCode = "if(typeof titleText === \"string\"){" + oldCode[0] + oldCode[1] + "}else{this.evTitle.appendChild(titleText);this.evDesc.appendChild(descText);}";
     POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[0], "// Updated By Sprint Client") + ")");
     POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[1], newCode) + ")");
-
-    this.test();
 
     this.extensionManager.restoreLocal();
 

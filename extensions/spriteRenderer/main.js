@@ -1,4 +1,3 @@
-import Extension from "../../src/extension.js";
 import Renderer from "./renderer.js";
 
 const extension = new Extension({

@@ -25,7 +25,12 @@ const Popup = (function() {
 
     break()
     {
-      this.contents.appendChild(createElement("hr"));  
+      this.contents.appendChild(createElement("hr", "sprint-break"));  
+    }
+
+    addTitle(text)
+    {
+      this.contents.appendChild(createElement("h3", "sprint-title", text));
     }
 
     addParagraph(text)
@@ -91,14 +96,13 @@ const Popup = (function() {
      * @param {string} html HTML or string to insert into the popup
      * @param {Object} buttons
      */
-    custom(title, body, buttons)
+    custom(title, html, buttons)
     {
       const titleHTML = createElement("span", "unselectable", title);
 
-      const bodyHTML = createElement("div", "unselectable", body);
+      const bodyHTML = createElement("div", "unselectable", html);
 
-      //POPUP.new(titleHTML, bodyHTML, buttons);
-      console.log(titleHTML, bodyHTML);
+      POPUP.new(titleHTML, bodyHTML, buttons);
     }
 
   }

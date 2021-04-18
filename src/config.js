@@ -1,4 +1,4 @@
 export default {
-  version: "0.0.1",
-  env: "dev"
+  version: "1.1.0",
+  env: "prod"
 };

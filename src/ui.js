@@ -66,14 +66,36 @@ const UI = {
     statsHTML.removeChild(statsHTML.childNodes[1]);
     UI.tabMenus["stats"] = new TabMenu(statsHTML, UI.statsInfoMenu);
     UI.tabMenus["stats"].addTab("SPRINT");
+    // Wait for local storage to be loaded so we can determine if the icon is faded or not
+    const intervalId = setInterval(() => {
+      if (typeof _client.extensionManager.isSafeMode() === "boolean")
+      {
+        UI.updateStats();
+        UI.tabMenus["stats"].addTab(username, accountStatsHTML);
+        UI.statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
+        UI.tabMenus["stats"].selectTab(1); // the default stat tab is (1)
+        clearInterval(intervalId);
+      }
+    }, 500);
+
+  },
+
+  updateStats: () => {
+    UI.tabMenus["stats"].getTab("SPRINT").sections = {};
     UI.tabMenus["stats"].getTab("SPRINT").addPara("version", config.version);
     UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "sprint allows you to easily download extensions from a list of player created content. it sets up a framework to easily create your own extensions for other players to use.");
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "1.0.0", "100", () => { UI.statsInfoMenu.open("ver 1.0.0", "The beginnings of extension development was made as well as an auto-sprinter and barebones sprite renderer to test it."); });
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "0.1.0", "010", () => { UI.statsInfoMenu.open("ver 0.1.0", "The foundation for creating and downloading extensions was made. No extensions so pretty useless. 2/5"); });
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("settings", "Safe Mode", "sm", () => {
+      UI.statsInfoMenu.open(
+        "Safe Mode",
+        "Safe mode prevents installing untrusted extensions. An option to download external extensions will appear in the extension store.",
+        [{
+          name: _client.extensionManager.isSafeMode() ? "turn off" : "turn on",
+          onclick: () => { _client.extensionManager.toggleSafeMode(); UI.updateStats(); }
+        }],
+      );
+    }, !_client.extensionManager.isSafeMode());
     UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { UI.statsInfoMenu.open("CoherentNonsense", "developer") });
-    UI.tabMenus["stats"].addTab(username, accountStatsHTML);
-    UI.statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
-    UI.tabMenus["stats"].selectTab(1); // the default stat tab is (1)
+    UI.tabMenus["stats"].selectTab(0);
   },
 
   updateExtensions: (extensions) => {
@@ -81,7 +103,7 @@ const UI = {
     UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", _client.extensionManager.renderStore);
 
     // Builds the extensions
-    if (extensions.size !== 0)
+    if (!!extensions && extensions.size !== 0)
     {
       UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "");
       extensions.forEach((extension) => {
