@@ -139,8 +139,13 @@ const ExtensionManager = function(client) {
   {
     _extensions.clear();
 
-    const extension_ids = JSON.parse(localStorage.getItem("scextensions_extensions"));
+    let extension_ids = JSON.parse(localStorage.getItem("scextensions_extensions"));
 
+    if (!extension_ids)
+    {
+      extension_ids = [];
+    }
+    
     extension_ids.forEach(async (extension_id) => {
       await load(extension_id);
     });
