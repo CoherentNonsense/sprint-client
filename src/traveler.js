@@ -2,7 +2,7 @@ const Traveler = function(client) {
 
   const _client = client;
 
-  const position = { x: YOU.x, y: YOU.y }
+  const position = { x: 0, y: 0 }
 
   function canSprint()
   {

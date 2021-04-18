@@ -23,7 +23,8 @@ class SprintClient
     this.world = World(this);
     this.traveler = Traveler(this);
 
-    this.traveler.position = { x: YOU.x, y: YOU.y };
+    // Data from the server
+    this.data = {};
 
     this.init();
   }
@@ -54,17 +55,17 @@ class SprintClient
       this.engineUpdate(json, midCycleCall);
 
       // Update Client
-      this.traveler.x = YOU.x;
-      this.traveler.y = YOU.y;
+      this.traveler.position.x = YOU.x;
+      this.traveler.position.y = YOU.y;
 
       // Send server data to extensions
-      const data = {
+      this.data = {
         stumps: WORLD.otherStumps,
         openedDoors: json.doors || [],
         objects: WORLD.otherObjs
       };
 
-      this.extensionManager.update(this, data);
+      this.extensionManager.update(this, this.data);
     };
 
     
