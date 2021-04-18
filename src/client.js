@@ -32,12 +32,8 @@ class SprintClient
   async test()
   {
     await this.extensionManager.load("exampleExtension");
-    await this.extensionManager.load("autoSprint");
-    await this.extensionManager.load("resourceGatherer");
-    await this.extensionManager.load("spriteRenderer");
 
     this.extensionManager.saveLocal();
-
   }
 
 
@@ -76,6 +72,8 @@ class SprintClient
     POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[1], newCode) + ")");
 
     this.test();
+
+    this.extensionManager.restoreLocal();
 
     this.debug("Initialized Client");
     this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");

@@ -5,6 +5,18 @@
 .tab-text {
     padding: 0 6px;
 }
+.sprint-popup-label {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    height: min-content;
+    margin: 10px 0;
+}
+.sprint-popup-label > input {
+    margin: 0;
+    margin-right: 10px;
+}
 .tab-menu {
     display: flex;
     position: absolute;

@@ -48,7 +48,24 @@ const Popup = (function() {
       
       check.checked = !!initialValue;
 
-      this.contents.appendChild(check);
+      label.insertBefore(check, null);
+      this.contents.appendChild(label);
+    }
+
+    addButton(title, buttonValue, onclick)
+    {
+      const id = this._generateId();
+
+      const label = createElement("label", "sprint-popup-label", title);
+      label.htmlFor = id;
+
+      const button = createElement("input");
+      button.id = id;
+      button.type = "button";
+      button.value = buttonValue;
+      button.onclick = onclick;
+
+      label.insertBefore(button, null);
       this.contents.appendChild(label);
     }
 

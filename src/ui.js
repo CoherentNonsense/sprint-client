@@ -68,8 +68,8 @@ const UI = {
     UI.tabMenus["stats"].addTab("SPRINT");
     UI.tabMenus["stats"].getTab("SPRINT").addPara("version", config.version);
     UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "sprint allows you to easily download extensions from a list of player created content. it sets up a framework to easily create your own extensions for other players to use.");
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("help", "extensions", "ext", () => { UI.statsInfoMenu.open("extensions", "extensions are programs that you run on this client. you can download extensions or make your own in the \"extensions\" tab below.")});
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "0.0.1", "001", () => { UI.statsInfoMenu.open("ver 0.0.1", "The foundation for creating and downloading extensions was made. Not very usefule. 2/5"); });
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "1.0.0", "100", () => { UI.statsInfoMenu.open("ver 1.0.0", "The beginnings of extension development was made as well as an auto-sprinter and barebones sprite renderer to test it."); });
+    UI.tabMenus["stats"].getTab("SPRINT").addItem("change log", "0.1.0", "010", () => { UI.statsInfoMenu.open("ver 0.1.0", "The foundation for creating and downloading extensions was made. No extensions so pretty useless. 2/5"); });
     UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { UI.statsInfoMenu.open("CoherentNonsense", "developer") });
     UI.tabMenus["stats"].addTab(username, accountStatsHTML);
     UI.statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
@@ -78,7 +78,7 @@ const UI = {
 
   updateExtensions: (extensions) => {
     UI.tabMenus["console"].getTab("extensions").sections = {};
-    UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", () => { alert("Here is where you get more")});
+    UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", _client.extensionManager.renderStore);
 
     // Builds the extensions
     if (extensions.size !== 0)
@@ -102,7 +102,6 @@ const UI = {
     // Rerenders the tab
     UI.tabMenus["console"].selectTab(1);
   }
-
 }
 
 // A container that holds multiple tabs that you can click between

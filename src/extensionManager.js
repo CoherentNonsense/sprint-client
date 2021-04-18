@@ -1,3 +1,5 @@
+import availableExtensions from "../availableExtensions.js";
+
 /**
  * @file moduleManager.js
  * @description Manages the storage, loading, and uploading of modules
@@ -63,7 +65,7 @@ const ExtensionManager = function(client) {
     if (!extension || get(extension.id) != null) return
     
     _extensions.set(extension.id, extension);
-
+    saveLocal();
     _client.ui.updateExtensions(_extensions);
   }
 
@@ -93,6 +95,7 @@ const ExtensionManager = function(client) {
     }
     
     _extensions.delete(extension_id);
+    saveLocal();
     _client.ui.updateExtensions(_extensions);
   }
 
@@ -143,6 +146,23 @@ const ExtensionManager = function(client) {
     });
   }
 
+  function renderStore()
+  {
+    _client.popup.build("Extension List", (build) => {
+      const noninstalledExtensions = availableExtensions.filter((extensionId) => !_extensions.has(extensionId));
+
+      if (noninstalledExtensions.length === 0)
+      {
+        build.addParagraph("All extensions have been installed.");
+        return;
+      }
+
+      noninstalledExtensions.forEach((extensionId) => {
+        build.addButton(extensionId, "Add", async () => { await load(extensionId); renderStore(); });
+      });
+    });
+  }
+
   return {
     load,
     loadFile,
@@ -152,7 +172,8 @@ const ExtensionManager = function(client) {
     toggle,
     update,
     saveLocal,
-    restoreLocal
+    restoreLocal,
+    renderStore
   }
 }
 

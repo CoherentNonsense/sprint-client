@@ -5,7 +5,7 @@ const extension = new Extension({
   name: "Resource Gatherer",
   icon: "⛏",
   category: "bot",
-  about: "Gathers resources based on supplied list",
+  about: "NOTE: Doesn't do anything yet. Gathers resources based on supplied list",
   author: "CoherentNonsense"
 });
 

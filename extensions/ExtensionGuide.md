@@ -1,8 +1,8 @@
-## How to Make an Extension
+# How to Make an Extension
 
 Check out the [example extension](./exampleExtension/main.js) to start right away or read the [documentation](#documentation) for more info
 
-### Quickstart
+# Quick Start
 
 These steps will guide you on making a copy of this repository by forking it, create an extension, and make a pull request to add your extension into Sprint
 
@@ -75,15 +75,15 @@ These steps will guide you on making a copy of this repository by forking it, cr
 
 13. There should now be a 'Compare & pull request' button which you can use to make a pull request.
 
-### Documentation
+## Documentation
 
 Sprint makes it easy to interact with the travelers code by abstracting over it so that you can focus on your extensions.
 
-#### Extension
+### Extension
 
 The base class for an extension. Holds the meta data and event methods.
 
-##### Constructor
+#### Constructor
 When instantiating an extension, you can pass in a set of fields which is the metadata Sprint uses to distinguish it. If you want to use variables for your extension, but them anywhere in your file. I recommend you put them all under the constructor for tidiness.
 
 ```js
@@ -103,7 +103,7 @@ const extension = new Extension(fields);
 const allowSelfDestruct = false;
 ```
 
-##### onStart(callback)
+#### onStart(callback)
 When this extension is turned on, Sprint calls an extensions start method. You can set the start method with onStart(callback). The callback is passed the [client](#client).
 
 ```js
@@ -112,7 +112,7 @@ extension.onStart((client) => {
 });
 ```
 
-##### onStop(callback)
+#### onStop(callback)
 When this extension is turned off (maybe an extension turned out to be evil), then Sprint calls its stop method. You can set the stop method with onStop(callback). The callback is passed the [client](#client).
 
 ```js
@@ -121,7 +121,7 @@ extension.onStop((client) => {
 });
 ```
 
-##### onUpdate(callback)
+#### onUpdate(callback)
 When this extension is turned on, Sprint will call its update method every game tick and pass the data sent from the server. You can set the update method with onUpdate(callback). The callback is passed the [client](#client) and [serverData](#server-data).
 
 ```js
@@ -134,7 +134,7 @@ extension.onUpdate((client, serverData) => {
 });
 ```
 
-##### onSettings(callback)
+#### onSettings(callback)
 When a player clicks on this extension's settings option, the settings method is called. (A settings option will not appear if you don't use this method).
 You can do whatever you want when this happens, but the easiest way is to use a [popup](#popup). You can set this method with onSettings(callback). The callback is passed the [client](#client).
 
@@ -148,7 +148,7 @@ extension.onSettings((client) => {
 ```
 
 
-#### Client
+### Client
 The client is the main class for Sprint. The client has no functionality to extensions other than holding all the Sprint submodules. The modules useful for extension development are:
 
 * [traveler](#traveler)
@@ -156,15 +156,15 @@ The client is the main class for Sprint. The client has no functionality to exte
 * [inventory](#inventory)
 * [popup](#popup)
 
-#### Traveler
+### Traveler
 
-#### World
+### World
 
-##### Tile
+#### Tile
 
-#### Inventory
+### Inventory
 
-#### Popup
+### Popup
 
-#### Server Data
+### Server Data
 
