@@ -18,6 +18,7 @@ class SprintClient
      * Client Submodules
      */
     this.ui = UI(this);
+    this.ui.hook();
     this.popup = Popup;
     this.extensionManager = ExtensionManager(this);
     this.world = World(this);
