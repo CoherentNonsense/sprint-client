@@ -21,9 +21,6 @@ const ExtensionManager = function(client) {
   let _safe_mode;
 
   
-  // Creates UI
-  _client.ui.updateExtensions(_extensions);
-
 
   /**
    * Loads and runs the main.js file in an extension directory 
@@ -208,6 +205,8 @@ const ExtensionManager = function(client) {
     extension_urls.forEach(async (extension_url) => {
       await load(extension_url);
     });
+
+    _client.ui.updateExtensions(_extensions);
   }
 
   function renderStore()
