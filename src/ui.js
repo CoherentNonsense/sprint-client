@@ -27,7 +27,7 @@ const _UI = {
     // Console menu
     const consoleHTML = document.getElementById("consoleDiv");
     const eventLogHTML = document.getElementById("console-scroll");
-    __UI.consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
+    _UI.consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
     consoleHTML.removeChild(consoleHTML.childNodes[1]); // removes the event title in the console. it gets replaced with a clickable tab later
     _UI.tabMenus["console"] = new TabMenu(consoleHTML, _UI.consoleInfoMenu);
     _UI.tabMenus["console"].addTab("events", eventLogHTML);
