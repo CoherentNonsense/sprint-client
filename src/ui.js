@@ -2,8 +2,8 @@ import config from "./config.js";
 
 /**
  * @file ui.js
- * @description This class makes it much easier to manipulate the UI as well as sets up a bunch of stuff to integrate my HTML into the game
- *              This only encompasses UI that is connected to the game"s UI. If I make anything that can be completely separate,
+ * @description This class makes it much easier to manipulate the _UI as well as sets up a bunch of stuff to integrate my HTML into the game
+ *              This only encompasses _UI that is connected to the game"s _UI. If I make anything that can be completely separate,
  *              such as a texture editor, it will not be done here.
  *
  * this stuff is really gross. I'll try modularize it later. not a fan of DOM stuff.
@@ -21,39 +21,39 @@ const _UI = {
   consoleInfoMenu: null,
 
   
-  // Hooks into the game"s UI and stuffs a bunch of my own HTML
+  // Hooks into the game"s _UI and stuffs a bunch of my own HTML
   hook: () => {
     // this code is looking kinda chunky
     // Console menu
     const consoleHTML = document.getElementById("consoleDiv");
     const eventLogHTML = document.getElementById("console-scroll");
-    UI.consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
+    __UI.consoleInfoMenu = new InfoMenu(consoleHTML); // information menu when you click an item in the console
     consoleHTML.removeChild(consoleHTML.childNodes[1]); // removes the event title in the console. it gets replaced with a clickable tab later
-    UI.tabMenus["console"] = new TabMenu(consoleHTML, UI.consoleInfoMenu);
-    UI.tabMenus["console"].addTab("events", eventLogHTML);
+    _UI.tabMenus["console"] = new TabMenu(consoleHTML, _UI.consoleInfoMenu);
+    _UI.tabMenus["console"].addTab("events", eventLogHTML);
     
     
     /////////////////
     // Create Tabs //
-    UI.tabMenus["console"].addTab("extensions");
-    // UI.tabMenus["console"].getTab("extensions").addItem("mods", "download", "+", () => { consoleInfoMenu.open("mods coming soon", "mods change how the game is played. modded items cannot be mixed with core game items. it is best to treat mods as completely separate games that use the travelers world map.") });
-    // UI.tabMenus["console"].getTab("extensions").addItem("mods", "bluestone", "BS", () => { consoleInfoMenu.open("bluestone", "create kilometre wide circuits.")});
-    // UI.tabMenus["console"].getTab("extensions").addItem("mods", "factorlers", "ooo", () => { consoleInfoMenu.open("orios", "adds a whole bunch of new materials which can be mined, processed, and crafted with.")});
-    // UI.tabMenus["console"].getTab("extensions").addItem("texture packs", "download", "+", () => { consoleInfoMenu.open("texture packs", "create or download a texture pack. sprint supplies you with a texture pack editor which can create both text and sprite texture packs.")});
-    // UI.tabMenus["console"].getTab("extensions").addItem("texture packs", "happy", ":)");
-    // UI.tabMenus["console"].getTab("extensions").addItem("bots", "download", "+", () => { consoleInfoMenu.open("bots coming soon", "bots automate your playing experience. you can create one with javascript or download one from the community.")});
-    // UI.tabMenus["console"].getTab("extensions").addItem("bots", "xp", "xp");
-    // UI.tabMenus["console"].getTab("extensions").addItem("bots", "raider", "CHC");
-    // UI.tabMenus["console"].getTab("extensions").addItem("bots", "lumber", "--A");
-    // UI.tabMenus["console"].getTab("extensions").addItem("bots", "travel", "&");
+    _UI.tabMenus["console"].addTab("extensions");
+    // _UI.tabMenus["console"].getTab("extensions").addItem("mods", "download", "+", () => { consoleInfoMenu.open("mods coming soon", "mods change how the game is played. modded items cannot be mixed with core game items. it is best to treat mods as completely separate games that use the travelers world map.") });
+    // _UI.tabMenus["console"].getTab("extensions").addItem("mods", "bluestone", "BS", () => { consoleInfoMenu.open("bluestone", "create kilometre wide circuits.")});
+    // _UI.tabMenus["console"].getTab("extensions").addItem("mods", "factorlers", "ooo", () => { consoleInfoMenu.open("orios", "adds a whole bunch of new materials which can be mined, processed, and crafted with.")});
+    // _UI.tabMenus["console"].getTab("extensions").addItem("texture packs", "download", "+", () => { consoleInfoMenu.open("texture packs", "create or download a texture pack. sprint supplies you with a texture pack editor which can create both text and sprite texture packs.")});
+    // _UI.tabMenus["console"].getTab("extensions").addItem("texture packs", "happy", ":)");
+    // _UI.tabMenus["console"].getTab("extensions").addItem("bots", "download", "+", () => { consoleInfoMenu.open("bots coming soon", "bots automate your playing experience. you can create one with javascript or download one from the community.")});
+    // _UI.tabMenus["console"].getTab("extensions").addItem("bots", "xp", "xp");
+    // _UI.tabMenus["console"].getTab("extensions").addItem("bots", "raider", "CHC");
+    // _UI.tabMenus["console"].getTab("extensions").addItem("bots", "lumber", "--A");
+    // _UI.tabMenus["console"].getTab("extensions").addItem("bots", "travel", "&");
 
     // This has to be bound after all the tabs are created so it is put at the bottom.
-    UI.consoleInfoMenu.bind();
+    _UI.consoleInfoMenu.bind();
 
     // lets me initialize tab in debug mode
     if (config.env == "dev")
     {
-      UI.tabMenus["console"].selectTab(1);
+      _UI.tabMenus["console"].selectTab(1);
     }
 
 
@@ -62,18 +62,18 @@ const _UI = {
     const statsHTML = document.getElementById("statsDiv");
     const username = statsHTML.childNodes[1].innerHTML;
     const accountStatsHTML = document.getElementById("stats-scroll");
-    UI.statsInfoMenu = new InfoMenu(statsHTML); // information menu when you click an item in the stats
+    _UI.statsInfoMenu = new InfoMenu(statsHTML); // information menu when you click an item in the stats
     statsHTML.removeChild(statsHTML.childNodes[1]);
-    UI.tabMenus["stats"] = new TabMenu(statsHTML, UI.statsInfoMenu);
-    UI.tabMenus["stats"].addTab("SPRINT");
+    _UI.tabMenus["stats"] = new TabMenu(statsHTML, _UI.statsInfoMenu);
+    _UI.tabMenus["stats"].addTab("SPRINT");
     // Wait for local storage to be loaded so we can determine if the icon is faded or not
     const intervalId = setInterval(() => {
       if (typeof _client.extensionManager.isSafeMode() === "boolean")
       {
-        UI.updateStats();
-        UI.tabMenus["stats"].addTab(username, accountStatsHTML);
-        UI.statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
-        UI.tabMenus["stats"].selectTab(1); // the default stat tab is (1)
+        _UI.updateStats();
+        _UI.tabMenus["stats"].addTab(username, accountStatsHTML);
+        _UI.statsInfoMenu.bind(); // Has to be bound after tabs are made so it is at the bottom
+        _UI.tabMenus["stats"].selectTab(1); // the default stat tab is (1)
         clearInterval(intervalId);
       }
     }, 500);
@@ -81,37 +81,37 @@ const _UI = {
   },
 
   updateStats: () => {
-    UI.tabMenus["stats"].getTab("SPRINT").sections = {};
-    UI.tabMenus["stats"].getTab("SPRINT").addPara("version", config.version);
-    UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "sprint allows you to easily download extensions from a list of player created content. it sets up a framework to easily create your own extensions for other players to use.");
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("settings", "Safe Mode", "sm", () => {
-      UI.statsInfoMenu.open(
+    _UI.tabMenus["stats"].getTab("SPRINT").sections = {};
+    _UI.tabMenus["stats"].getTab("SPRINT").addPara("version", config.version);
+    _UI.tabMenus["stats"].getTab("SPRINT").addPara("about", "sprint allows you to easily download extensions from a list of player created content. it sets up a framework to easily create your own extensions for other players to use.");
+    _UI.tabMenus["stats"].getTab("SPRINT").addItem("settings", "Safe Mode", "sm", () => {
+      _UI.statsInfoMenu.open(
         "Safe Mode",
         "Safe mode prevents installing untrusted extensions. An option to download external extensions will appear in the extension store.",
         [{
           name: _client.extensionManager.isSafeMode() ? "turn off" : "turn on",
-          onclick: () => { _client.extensionManager.toggleSafeMode(); UI.updateStats(); }
+          onclick: () => { _client.extensionManager.toggleSafeMode(); _UI.updateStats(); }
         }],
       );
     }, !_client.extensionManager.isSafeMode());
-    UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { UI.statsInfoMenu.open("CoherentNonsense", "developer") });
-    UI.tabMenus["stats"].selectTab(0);
+    _UI.tabMenus["stats"].getTab("SPRINT").addItem("credits", "CoherentNonsense", "CN", () => { _UI.statsInfoMenu.open("CoherentNonsense", "developer") });
+    _UI.tabMenus["stats"].selectTab(0);
   },
 
   updateExtensions: (extensions) => {
-    UI.tabMenus["console"].getTab("extensions").sections = {};
-    UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", _client.extensionManager.renderStore);
+    _UI.tabMenus["console"].getTab("extensions").sections = {};
+    _UI.tabMenus["console"].getTab("extensions").addItem("Download Extensions", "Download", "+", _client.extensionManager.renderStore);
 
     // Builds the extensions
     if (!!extensions && extensions.size !== 0)
     {
-      UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "");
+      _UI.tabMenus["console"].getTab("extensions").addPara("Your Extensions", "");
       extensions.forEach((extension) => {
-        UI.tabMenus["console"].getTab("extensions").addItem(
+        _UI.tabMenus["console"].getTab("extensions").addItem(
           extension.category,
           extension.name,
           extension.icon,
-          () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
+          () => { _UI.consoleInfoMenu.open(extension.name, extension.about, [
             { name: extension.active ? "turn off" : "turn on", onclick: () => { _client.extensionManager.toggle(extension.id); } },
             ...(extension._settings ? [{ name: "settings", onclick: () => { extension._settings(_client) } }] : []),
             { name: "remove", onclick: () => { _client.extensionManager.remove(extension.id); } }
@@ -122,7 +122,7 @@ const _UI = {
     }
 
     // Rerenders the tab
-    UI.tabMenus["console"].selectTab(1);
+    _UI.tabMenus["console"].selectTab(1);
   }
 }
 
