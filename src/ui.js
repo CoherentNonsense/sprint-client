@@ -366,6 +366,8 @@ class InfoMenu
   }
 }
 
+UI.hook();
+
 return UI;
 
 };

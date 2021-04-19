@@ -35,8 +35,6 @@ class SprintClient
    */
   init()
   {
-    this.ui.hook();
-
 
     // Attaches extensions with the server update
     this.engineUpdate = ENGINE.applyData;

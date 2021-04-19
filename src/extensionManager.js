@@ -20,6 +20,10 @@ const ExtensionManager = function(client) {
    */
   let _safe_mode;
 
+  
+  // Creates UI
+  _client.ui.updateExtensions(_extensions);
+
 
   /**
    * Loads and runs the main.js file in an extension directory 
