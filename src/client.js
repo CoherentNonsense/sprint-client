@@ -19,7 +19,6 @@ class SprintClient
      */
     this.ui = UI(this);
     this.extensionManager = ExtensionManager(this);
-    this.ui.hook();
     this.popup = Popup;
     this.world = World(this);
     this.traveler = Traveler(this);
@@ -36,6 +35,8 @@ class SprintClient
    */
   init()
   {
+    this.ui.hook();
+
 
     // Attaches extensions with the server update
     this.engineUpdate = ENGINE.applyData;
