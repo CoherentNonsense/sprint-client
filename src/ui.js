@@ -13,7 +13,7 @@ const UI = function(client) {
   const _client = client;
 
 
-const UI = {
+const _UI = {
 
   tabMenus: {},
 
@@ -366,9 +366,9 @@ class InfoMenu
   }
 }
 
-UI.hook();
+_UI.hook();
 
-return UI;
+return _UI;
 
 };
 
