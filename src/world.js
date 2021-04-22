@@ -14,6 +14,15 @@ const World = function(client) {
     {
       if (this.char === WORLD.TILES.mountain || this.char === WORLD.TILES.water)
       {
+        // Check for ocean tiles
+        for (let i = 0; i < WORLD.otherObjs.length; i++)
+        {
+          if (WORLD.otherObjs[i].char == "Θ" && WORLD.otherObjs[i].x == YOU.x && WORLD.otherObjs[i].y == YOU.y)
+          {
+            return true;
+          }
+        }
+
         return false;
       }
 
@@ -24,7 +33,7 @@ const World = function(client) {
 
   function currentTile()
   {
-    return getTile(_client.traveler);
+    return getTile({ x: YOU.x, y: YOU.y });
   }
 
 

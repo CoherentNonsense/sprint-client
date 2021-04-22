@@ -43,11 +43,8 @@ class SprintClient
     ENGINE.applyData = (json, midCycleCall) => {
       this.engineUpdate(json, midCycleCall);
 
-      // Update Client
-      this.traveler.position.x = YOU.x;
-      this.traveler.position.y = YOU.y;
 
-      // Send server data to extensions
+      // Build server data
       this.doors.clear();
       if (json.doors)
       {
@@ -69,7 +66,13 @@ class SprintClient
         players: WORLD.otherPlayers
       };
 
+
+      // Updates extensions
       this.extensionManager.update(this, this.data);
+
+
+      // Update modules
+      this.traveler._update();
     };
 
     

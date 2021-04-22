@@ -21,6 +21,8 @@ class Extension
     this.inProduction = false;
     this.settings = document.createElement("div");
     this.settings.innerHTML = "Test";
+    this.allowSuicide = fields.allowSuicide || false;
+    this.allowResetSkillPoints = fields.allowResetSkillPoints || false;
 
     // Callbacks
     this._start = () => {};
