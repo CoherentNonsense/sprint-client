@@ -58,6 +58,8 @@ class SprintClient
         {
           object.opened = true;
         }
+
+        return object;
       });
 
       this.data = {

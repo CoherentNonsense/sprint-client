@@ -17,6 +17,9 @@
     margin: 0;
     margin-right: 10px;
 }
+.sprint-popup-hidden {
+    display: none;
+}
 .sprint-break {
     margin-top: 20px;
     margin-bottom: 30px;

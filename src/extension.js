@@ -19,10 +19,7 @@ class Extension
     this.icon = fields.icon || "?";
     this.about = fields.about || "";
     this.inProduction = false;
-    this.settings = document.createElement("div");
-    this.settings.innerHTML = "Test";
-    this.allowSuicide = fields.allowSuicide || false;
-    this.allowResetSkillPoints = fields.allowResetSkillPoints || false;
+    this.settings = fields.settings;
 
     // Callbacks
     this._start = () => {};

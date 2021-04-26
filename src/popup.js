@@ -19,8 +19,9 @@ const Popup = (function() {
     constructor()
     {
       this.contents = createElement("div", "unselectable");
-      this.buttons = [];
       this.idCounter = 0;
+
+      this.inExpandable = false;
     }
 
     break()
@@ -72,6 +73,21 @@ const Popup = (function() {
 
       label.insertBefore(button, null);
       this.contents.appendChild(label);
+    }
+
+    buildExpandable(title, create)
+    {
+      const header = createElement("div", "sprint-title", title);
+      const body = new Body();
+      create(body);
+
+      body.contents.classList.add("sprint-popup-hidden");
+      header.onclick = () => {
+        body.contents.classList.toggle("sprint-popup-hidden");
+      };
+
+      this.contents.appendChild(header);
+      this.contents.appendChild(body.contents);
     }
 
     _generateId()

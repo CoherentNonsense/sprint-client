@@ -2,5 +2,6 @@ export default [
   "autoSprint",
   "resourceGatherer",
   "spriteRenderer",
-  "exampleExtension"
+  "exampleExtension",
+  "logger"
 ];

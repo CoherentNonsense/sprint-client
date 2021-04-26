@@ -113,7 +113,7 @@ const UI = {
           extension.icon,
           () => { UI.consoleInfoMenu.open(extension.name, extension.about, [
             { name: extension.active ? "turn off" : "turn on", onclick: () => { _client.extensionManager.toggle(extension.id); } },
-            ...(extension._settings ? [{ name: "settings", onclick: () => { extension._settings(_client) } }] : []),
+            ...(extension._settings ? [{ name: extension.settings || "settings", onclick: () => { extension._settings(_client) } }] : []),
             { name: "remove", onclick: () => { _client.extensionManager.remove(extension.id); } }
           ]) },
           !extension.active

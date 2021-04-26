@@ -238,6 +238,7 @@ const ExtensionManager = function(client) {
     });
   }
 
+
   return {
     load,
     add,
