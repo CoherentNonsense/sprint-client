@@ -1,5 +1,3 @@
-import availableExtensions from "../availableExtensions.js";
-
 /**
  * @file moduleManager.js
  * @description Manages the storage, loading, and uploading of modules
@@ -209,8 +207,12 @@ const ExtensionManager = function(client) {
     _client.ui.updateExtensions(_extensions);
   }
 
-  function renderStore()
+  async function renderStore()
   {
+    const availableExtensionsModule = await import("../availableExtensions.js");
+    const availableExtensions = availableExtensionsModule.default;
+    console.log(availableExtensions);
+
     _client.popup.build("Extension List", (build) => {
       // Show external extensions if safe mode is turned off
       if (!_safe_mode)
