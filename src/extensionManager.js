@@ -151,7 +151,14 @@ const ExtensionManager = function(client) {
     _extensions.forEach((extension) => {
       if (extension.active)
       {
-        extension._update(client, data);
+        try
+        {
+          extension._update(client, data);
+        }
+        catch (e)
+        {
+          _client.log(`${extension.name} has an error in its update loop: ${e}`);
+        }
       }
     });
   }

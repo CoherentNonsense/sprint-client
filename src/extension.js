@@ -33,13 +33,20 @@ class Extension
 
   toggle(client, value)
   {
-    if (typeof value === "boolean")
+    try
     {
-      value ? this._start(client) : this._stop(client);
+      if (typeof value === "boolean")
+      {
+        value ? this._start(client) : this._stop(client);
+      }
+      else
+      {
+        this.active ? this._stop(client) : this._start(client);
+      }
     }
-    else
+    catch (e)
     {
-      this.active ? this._stop(client) : this._start(client);
+      client.log(`${this.name} has an error in its start or stop method: ${e}`);
     }
 
     this.active = !this.active;
