@@ -36,7 +36,7 @@ extension.onStart((client) => {
 });
 
 extension.onUpdate((client) => {
-  const { position } = client.traveler;
+  const position = client.traveler.getPosition();
 
   for (let x = position.x - 15; x < position.x + 16; ++x)
   {

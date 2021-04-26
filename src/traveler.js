@@ -16,6 +16,7 @@ const Traveler = function(client) {
   function getSpeed() { return XP.sp; }
   function getMaxCarry() { return XP.max_carry; }
   function getCarry() { return XP.carry; }
+  function getPosition() { return { x: YOU.x, y: YOU.y }}
 
 
   /**
@@ -128,6 +129,7 @@ const Traveler = function(client) {
     getMaxCarry,
     getCarry,
     getSpeed,
+    getPosition,
     canSprint,
     sprint,
     move,
