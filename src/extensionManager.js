@@ -218,7 +218,6 @@ const ExtensionManager = function(client) {
   {
     const availableExtensionsModule = await import("../availableExtensions.js");
     const availableExtensions = availableExtensionsModule.default;
-    console.log(availableExtensions);
 
     _client.popup.build("Extension List", (build) => {
       // Show external extensions if safe mode is turned off
