@@ -13,18 +13,29 @@ let eventLogs = [];
 
 let engineLog = null;
 
-extension.onStart(() => {
+extension.onStart((client) => {
   // Get logs from storage
   logs = getLogs();
   eventLogs = getEventLogs();
 
   // Get engine logs
+  const position = client.traveler.getPosition();
   engineLog = ENGINE.log;
   ENGINE.log = (text, replaceOldSame) => {
-    eventLogs.push(text);
-    saveEventLogs();
-
     engineLog(text, replaceOldSame);
+    console.log(text);
+
+    // Some logs that aren't useful
+    if (
+      !text ||
+      text.contains("you earned") ||
+      text.contains("the hot air rests") ||
+      text.contains("maybe there's some") ||
+      text.contains("need 10")
+    ) return
+
+    eventLogs.push(`(${position.x}, ${position.y}) ${text}`);
+    saveEventLogs();
   };
 });
 
