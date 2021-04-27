@@ -2,25 +2,30 @@ const extension = new Extension({
   id: "logger",
   name: "Location Logger",
   icon: "᭡",
-  category: "info",
+  category: "logging",
   about: "Logs special locations",
   author: "Coherent Nonsense",
   settings: "Show Logs"
 });
 
 let logs = new Map();
+let eventLogs = [];
+
+let engineLog = null;
 
 extension.onStart(() => {
-  const oldLogs = getLogs();
+  // Get logs from storage
+  logs = getLogs();
+  eventLogs = getEventLogs();
 
-  if (oldLogs)
-  {
-    logs = new Map(oldLogs);
-  }
-  else
-  {
-    saveLogs();
-  }
+  // Get engine logs
+  engineLog = ENGINE.log;
+  ENGINE.log = (text, replaceOldSame) => {
+    eventLogs.push(text);
+    saveEventLogs();
+
+    engineLog(text, replaceOldSame);
+  };
 });
 
 
@@ -78,17 +83,26 @@ extension.onUpdate((_, data) => {
 });
 
 
-extension.onSettings((client) => {
-  buildSettings(client.popup);
+extension.onStop(() => {
+  ENGINE.log = engineLog;
 });
 
-function buildSettings(popup)
+
+extension.onSettings((client) => {
+  buildLogs(client.popup);
+});
+
+function buildLogs(popup)
 {
   popup.build("Location Logger", (body) => {
     body.addButton("Clear Logs", "Clear", () => {
       logs.clear();
       saveLogs();
-      buildSettings(popup);
+      buildLogs(popup);
+    });
+
+    body.addButton("Event Logs", "Show", () => {
+      buildEventLogs(popup);
     });
 
     const objects = [];
@@ -154,6 +168,29 @@ function buildSettings(popup)
   });
 }
 
+function buildEventLogs(popup)
+{
+  popup.build("Event Logs", (body) => {
+    body.addButton("Clear Event Logs", "Clear", () => {
+      eventLogs.clear();
+      saveEventLogs();
+      buildEventLogs(popup);
+    });
+
+    body.addButton("Logs", "Show", () => {
+      buildLogs(popup);
+    });
+
+    eventLogs.forEach((log) => {
+      body.addParagraph(log);
+    });
+  });
+}
+
+
+  /////////////////
+ // Object Logs //
+/////////////////
 function saveLogs()
 {
   localStorage.setItem("sprint-logger-data", JSON.stringify(Array.from(logs.entries())));
@@ -173,10 +210,40 @@ function getLogs()
 
   if (!!data && !!data.length)
   {
+    return new Map(data);
+  }
+
+  return null;
+}
+
+
+  ////////////////
+ // Event Logs //
+////////////////
+function saveEventLogs()
+{
+  localStorage.setItem("sprint-logger-event", JSON.stringify(eventLogs));
+}
+
+function getEventLogs()
+{
+  let data;
+  try
+  {
+    data = JSON.parse(localStorage.getItem("sprint-logger-event"));
+  }
+  catch (e)
+  {
+    return null;
+  }
+
+  if (!!data && !!data.length)
+  {
     return data;
   }
 
   return null;
 }
+
 
 export default extension;

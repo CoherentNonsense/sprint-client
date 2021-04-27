@@ -10,6 +10,10 @@ const XP = {
     
 }
 
+const EVENTS = {
+    applyServerEvent: () => {}
+}
+
 const TIME = {
   year: 1,
   season: "winter",

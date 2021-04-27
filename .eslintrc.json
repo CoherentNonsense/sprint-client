@@ -20,6 +20,7 @@
         "ENGINE": true,
         "XP": true,
         "DSTEP": true,
-        "HANDS": true
+        "HANDS": true,
+        "EVENTS": true
     }
 }

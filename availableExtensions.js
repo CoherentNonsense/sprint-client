@@ -3,5 +3,6 @@ export default [
   "resourceGatherer",
   "spriteRenderer",
   "logger",
-  "streamerMode"
+  "cleanEvents",
+  "streamerMode",
 ];
