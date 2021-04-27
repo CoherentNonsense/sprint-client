@@ -26,3 +26,5 @@ extension.onStop(() => {
   // Restore event logs
   EVENTS.applyServerEvent = applyServerEvent;
 });
+
+export default extension;

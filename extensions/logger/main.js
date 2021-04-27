@@ -172,7 +172,7 @@ function buildEventLogs(popup)
 {
   popup.build("Event Logs", (body) => {
     body.addButton("Clear Event Logs", "Clear", () => {
-      eventLogs.clear();
+      eventLogs = [];
       saveEventLogs();
       buildEventLogs(popup);
     });
@@ -205,7 +205,7 @@ function getLogs()
   }
   catch (e)
   {
-    return null;
+    // Nothing
   }
 
   if (!!data && !!data.length)
@@ -213,7 +213,7 @@ function getLogs()
     return new Map(data);
   }
 
-  return null;
+  return new Map();
 }
 
 
@@ -234,7 +234,7 @@ function getEventLogs()
   }
   catch (e)
   {
-    return null;
+    // Nothing
   }
 
   if (!!data && !!data.length)
@@ -242,7 +242,7 @@ function getEventLogs()
     return data;
   }
 
-  return null;
+  return [];
 }
 
 
