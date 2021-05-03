@@ -24,6 +24,8 @@ class Renderer
     this.spritesheet = new Image();
     this.spritesheet.crossOrigin = "";
 
+    this.brightness = 1;
+
 
     this.textureId;
     // Download spritesheet
@@ -144,7 +146,7 @@ class Renderer
     this.vertexPtr = 0;
   }
 
-  drawSprite(u, v, x, y, brightness = 1)
+  drawSprite(u, v, x, y)
   {
     if (!this.running) return;
 
@@ -166,24 +168,24 @@ class Renderer
     // Top Left
     this.addAttribute(this.normalizePosition(x1, y1));
     this.addAttribute(this.normalizeTexture(u1, v1));
-    this.vertices[this.vertexPtr++] = brightness;
+    this.vertices[this.vertexPtr++] = this.brightness;
 
     // Bottom Left
     this.addAttribute(this.normalizePosition(x1, y2));
     this.addAttribute(this.normalizeTexture(u1, v2));
-    this.vertices[this.vertexPtr++] = brightness;
+    this.vertices[this.vertexPtr++] = this.brightness;
 
     // Top Right
     this.addAttribute(this.normalizePosition(x2, y1));
     this.addAttribute(this.normalizeTexture(u2, v1));
-    this.vertices[this.vertexPtr++] = brightness;
+    this.vertices[this.vertexPtr++] = this.brightness;
 
     // Bottom Right
     this.addAttribute(this.normalizePosition(x2, y2));
     this.addAttribute(this.normalizeTexture(u2, v2));
-    this.vertices[this.vertexPtr++] = brightness;
+    this.vertices[this.vertexPtr++] = this.brightness;
 
-
+    this.brightness = 1;
     this.indexPtr += 6;
   }
 

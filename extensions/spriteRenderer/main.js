@@ -49,6 +49,11 @@ extension.onUpdate((client, data) => {
   {
     for (let y = YOU.y + offset.y + 15; y > YOU.y + offset.y - 16; --y)
     {
+      // Darken tiles out of sight
+      const xVis = Math.abs(x - YOU.x) < 16 ? 1 : Math.max(15 / Math.abs(x - YOU.x), 0.75);
+      const yVis = Math.abs(y - YOU.y) < 16 ? 1 : Math.max(15 / Math.abs(y - YOU.y), 0.75)
+      renderer.brightness = Math.min(xVis, yVis);
+
       switch (WORLD.deriveTile(x, y))
       {
         case WORLD.TILES.sand:
