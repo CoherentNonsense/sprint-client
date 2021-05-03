@@ -14,10 +14,10 @@ extension.onStart((client) => {
   eventID = (e) => {
     switch(e.key)
     {
-      case "ArrowUp": client.camera.move(0, 1); break;
-      case "ArrowRight": client.camera.move(1, 0); break;
-      case "ArrowDown": client.camera.move(0, -1); break;
-      case "ArrowLeft": client.camera.move(-1, 0); break;
+      case "w": client.camera.move(0, 1); break;
+      case "d": client.camera.move(1, 0); break;
+      case "s": client.camera.move(0, -1); break;
+      case "a": client.camera.move(-1, 0); break;
     }
   };
   
