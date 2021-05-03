@@ -83,7 +83,7 @@ const ExtensionManager = function(client) {
       add(module_object.default, toggle);
     }
     // eslint-disable-next-line no-empty
-    catch(e){} // Maybe some user feedback when official extensions fail but that shouldn't happen
+    catch(e){console.log(e)} // Maybe some user feedback when official extensions fail but that shouldn't happen
   }
 
 
