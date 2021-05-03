@@ -20,6 +20,7 @@ class Extension
     this.about = fields.about || "";
     this.inProduction = false;
     this.settings = fields.settings;
+    this.updateOnRender = fields.updateOnRender || false;
 
     // Callbacks
     this._start = () => {};

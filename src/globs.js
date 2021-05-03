@@ -1,14 +1,66 @@
 // Global variables from the travelers until i set up an in browser editor
 
+function runGlobs()
+{
+    WORLD.initialize();
+    WORLD.otherObjs.push({char: WORLD.TILES.sign_block, x: 1, y: 0});
+    // CREATE HOUSE
+    for (let x = -10; x < 11; ++x)
+    {
+        for (let y = -10; y < 11; ++y)
+        {
+            // Fence
+            if ((x == 0 && y == -10) || (x == 0 && y == 10) || (x == -10 && y == 0) || (x == 10 && y == 0))
+            {
+                WORLD.otherObjs.push({char: WORLD.TILES.wood_door, x, y});
+                continue;
+            }
+            if (x == -10 || x == 10 || y == -10 || y == 10)
+            {
+                WORLD.otherObjs.push({char: WORLD.TILES.wood_block, x, y});
+            }
+
+            // Steel
+            if ((x == 0 && y == -5))
+            {
+                WORLD.otherObjs.push({char: WORLD.TILES.steel_door, x, y});
+                continue;
+            }
+            if ((y < 6 && y > -6) && (x < 6 && x > -6) && (x == -5 || x == 5 || y == -5 || y == 5))
+            {
+                WORLD.otherObjs.push({char: WORLD.TILES.steel_block, x, y});
+            }
+
+            // Chests
+            if (y == 4 && x < 5 && x > -5)
+            {
+                WORLD.otherObjs.push({char: WORLD.TILES.large_chest, x, y});
+            }
+
+            // ANCHOR
+            if (x == 0 && y == 1)
+            {
+                WORLD.otherObjs.push({char: WORLD.TILES.anchor, x, y});
+            }
+
+        }
+    }
+}
+
 const YOU = {
   username: "Ben",
   x: 0,
   y: 0,
+  currentTile: "",
+  getCoordString: () => YOU.x + ", " + YOU.y,
+  checkMoveLog: () => {},
+  char: "&"
 };
 
 const XP = {
     
 }
+
 
 const EVENTS = {
     applyServerEvent: () => {}
@@ -23,7 +75,7 @@ const TIME = {
 };
 
 const ENGINE = {
-  applyData: () => {}
+  applyData: () => {WORLD.build()}
 };
 
 // Simulate server
@@ -657,6 +709,10 @@ var WORLD = {
         }
     }
 };
+
+
+runGlobs();
+
 
 // I like to code as much on my own from scratch as possible, but Perlin noise
 // generation was some pretty heavy math that I couldn't figure out myself.

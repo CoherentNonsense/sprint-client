@@ -4,6 +4,7 @@ import ExtensionManager from "./extensionManager.js";
 import Popup from "./popup.js";
 import World from "./world.js";
 import Traveler from "./traveler.js";
+import Camera from "./camera.js";
 
 /**
  * @file sprintClient.js
@@ -22,10 +23,18 @@ class SprintClient
     this.popup = Popup;
     this.world = World(this);
     this.traveler = Traveler(this);
+    this.camera = Camera(this);
 
     // Data from the server
     this.data = {};
     this.doors = new Map();
+
+    // Bunch of data that the client may use
+    // This is a hacky way to have shared data across multiple extensions
+    this.options = {
+      defaultRender: true, // Calls WORLD.build every frame
+
+    };
 
     this.init();
   }
@@ -38,6 +47,24 @@ class SprintClient
     this.ui.hook();
 
 
+    this.initUpdate();
+    this.initRender();
+    
+    // Updates POPUP to allow Element objects
+    const oldCode = ["this.evTitle.innerHTML = titleText;", "this.evDesc.innerHTML = descText.split(\"\\n\").join(\"<br />\");"]
+    const newCode = "if(typeof titleText === \"string\"){" + oldCode[0] + oldCode[1] + "}else{this.evTitle.appendChild(titleText);this.evDesc.appendChild(descText);}";
+    POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[0], "// Updated By Sprint Client") + ")");
+    POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[1], newCode) + ")");
+
+    this.extensionManager.restoreLocal();
+
+    this.debug("Initialized Client");
+    this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");
+    this.alert("Although all modules are looked through for malicious content before being made public, you should always be careful when downloading something onto your computer. You can check out all the source code for this client, as well as the modules here -> www.google.com");
+  }
+
+  initUpdate()
+  {
     // Attaches extensions with the server update
     this.engineUpdate = ENGINE.applyData;
     ENGINE.applyData = (json, midCycleCall) => {
@@ -76,19 +103,48 @@ class SprintClient
       // Update modules
       this.traveler._update();
     };
+  }
 
-    
-    // Updates POPUP to allow Element objects
-    const oldCode = ["this.evTitle.innerHTML = titleText;", "this.evDesc.innerHTML = descText.split(\"\\n\").join(\"<br />\");"]
-    const newCode = "if(typeof titleText === \"string\"){" + oldCode[0] + oldCode[1] + "}else{this.evTitle.appendChild(titleText);this.evDesc.appendChild(descText);}";
-    POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[0], "// Updated By Sprint Client") + ")");
-    POPUP.new = eval("(" + POPUP.new.toString().replace(oldCode[1], newCode) + ")");
+  initRender()
+  {
+    this.engineDraw = ENGINE.build;
 
-    this.extensionManager.restoreLocal();
+    WORLD.build = () => {
+      // Copied from worldgen.js
+      if (this.options.defaultRender)
+      {
+        let count = 0;
+        for (let i = -1 * WORLD.gridRadius; i <= WORLD.gridRadius; i++) {
+          for (let j = -1 * WORLD.gridRadius; j <= WORLD.gridRadius; j++) {
+            let newX = YOU.x + this.camera.offset.x + j;
+            let newY = YOU.y + this.camera.offset.y - i;
+            let tile = WORLD.deriveTile(newX, newY);
+  
+            WORLD.tilemap[count].id = newX + "|" + newY;
+            WORLD.tilemap[count].innerHTML = tile;
+            WORLD.tilemap[count].style.fontWeight = "";
+  
+            if (newX === YOU.x && newY === YOU.y) {
+              YOU.currentTile = tile;
+              WORLD.tilemap[count].innerHTML = YOU.char;
+            }
+  
+            count++;
+          }
+        }
+      }
+      else
+      {
+        YOU.currentTile = WORLD.deriveTile(YOU.x, YOU.y);
+      }
 
-    this.debug("Initialized Client");
-    this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");
-    this.alert("Although all modules are looked through for malicious content before being made public, you should always be careful when downloading something onto your computer. You can check out all the source code for this client, as well as the modules here -> www.google.com");
+      WORLD.coordsElem.innerHTML = YOU.getCoordString();
+      WORLD.biomeElem.innerHTML = YOU.biome;
+
+      YOU.checkMoveLog();
+
+      this.extensionManager.render(this, this.data);
+    };
   }
 
 

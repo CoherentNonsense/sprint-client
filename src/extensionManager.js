@@ -163,6 +163,22 @@ const ExtensionManager = function(client) {
     });
   }
 
+  function render(client, data)
+  {
+    _extensions.forEach((extension) => {
+      if (extension.active && extension.updateOnRender)
+      {
+        try{
+          extension._update(client, data);
+        }
+        catch (e)
+        {
+          _client.log(`${extension.name} has an error in its update loop while rendering: ${e}`);
+        }
+      }
+    })
+  }
+
   function isSafeMode()
   {
     return _safe_mode;
@@ -256,6 +272,7 @@ const ExtensionManager = function(client) {
     toggleSafeMode,
     isSafeMode,
     update,
+    render,
     saveLocal,
     restoreLocal,
     renderStore

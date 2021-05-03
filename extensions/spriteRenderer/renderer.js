@@ -3,8 +3,9 @@ import { vertexShaderSource, fragmentShaderSource } from "./spriteShader.js";
 
 class Renderer
 {
-  constructor(canvas)
+  constructor(canvas, client)
   {
+    this.client = client;
     this.canvas = canvas;
     this.running = false;
 
@@ -68,7 +69,7 @@ class Renderer
     this.webGl.texImage2D(this.webGl.TEXTURE_2D, 0, this.webGl.RGBA, this.webGl.RGBA, this.webGl.UNSIGNED_BYTE, this.spritesheet);
 
     // Create vbo
-    const floatsPerVertex = 4; // u, v, x, y
+    const floatsPerVertex = 5; // u, v, x, y, brightness
     const verticesPerQuad = 4; // It's a square, you know it :|
     this.maxVertices = this.maxQuads * verticesPerQuad * floatsPerVertex;
 
@@ -96,7 +97,7 @@ class Renderer
       2,
       this.webGl.FLOAT,
       false,
-      4 * 4,
+      5 * 4,
       0
     );
 
@@ -106,8 +107,18 @@ class Renderer
       2,
       this.webGl.FLOAT,
       false,
-      4 * 4,
+      5 * 4,
       2 * 4
+    );
+
+    this.webGl.enableVertexAttribArray(this.shader.getAttribute("a_brightness"));
+    this.webGl.vertexAttribPointer(
+      this.shader.getAttribute("a_brightness"),
+      1,
+      this.webGl.FLOAT,
+      false,
+      5 * 4,
+      4 * 4
     );
 
     this.webGl.uniform1i(this.shader.getUniform("u_texture"), 0);
@@ -130,7 +141,7 @@ class Renderer
     this.vertexPtr = 0;
   }
 
-  drawSprite(u, v, x, y)
+  drawSprite(u, v, x, y, brightness = 1)
   {
     if (!this.running) return;
 
@@ -139,31 +150,36 @@ class Renderer
       this.render();
     }
 
-    const x1 = x;
-    const y1 = y;
-    const x2 = x + 1;
-    const y2 = y - 1;
+    const x1 = x - YOU.x - this.client.camera.offset.x;
+    const y1 = y - YOU.y - this.client.camera.offset.y;
+    const x2 = x - YOU.x - this.client.camera.offset.x + 1;
+    const y2 = y - YOU.y - this.client.camera.offset.y - 1;
 
-    const u1 = u + 0.05;
-    const v1 = v + 0.05;
-    const u2 = u + 0.95;
-    const v2 = v + 0.95;
+    const u1 = u + 0.03;
+    const v1 = v + 0.03;
+    const u2 = u + 0.97;
+    const v2 = v + 0.97;
 
     // Top Left
     this.addAttribute(this.normalizePosition(x1, y1));
     this.addAttribute(this.normalizeTexture(u1, v1));
+    this.vertices[this.vertexPtr++] = brightness;
 
     // Bottom Left
     this.addAttribute(this.normalizePosition(x1, y2));
     this.addAttribute(this.normalizeTexture(u1, v2));
+    this.vertices[this.vertexPtr++] = brightness;
 
     // Top Right
     this.addAttribute(this.normalizePosition(x2, y1));
     this.addAttribute(this.normalizeTexture(u2, v1));
+    this.vertices[this.vertexPtr++] = brightness;
 
     // Bottom Right
     this.addAttribute(this.normalizePosition(x2, y2));
     this.addAttribute(this.normalizeTexture(u2, v2));
+    this.vertices[this.vertexPtr++] = brightness;
+
 
     this.indexPtr += 6;
   }

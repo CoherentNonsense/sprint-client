@@ -5,4 +5,5 @@ export default [
   "logger",
   "cleanEvents",
   "streamerMode",
+  "freeCam"
 ];

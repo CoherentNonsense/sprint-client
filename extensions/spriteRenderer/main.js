@@ -1,4 +1,6 @@
 import Renderer from "./renderer.js";
+import { renderDynamicTile, renderMountain, renderDynamicObject } from "./dynamicTiles.js";
+
 
 const extension = new Extension({
   id: "spriteRenderer",
@@ -6,7 +8,8 @@ const extension = new Extension({
   icon: "▦",
   category: "graphics",
   about: "Draws the game with a spritesheet",
-  author: "CoherentNonsense"
+  author: "CoherentNonsense",
+  updateOnRender: true,
 });
 
 
@@ -18,6 +21,8 @@ let canvas;
 let renderer;
 
 extension.onStart((client) => {
+  client.options.defaultRender = false;
+
   // Create canvas element
   // canvas = ui.createElement("canvas", "sprite-renderer-canvas");
   const worldBox = document.getElementById("world-box");
@@ -31,82 +36,141 @@ extension.onStart((client) => {
   // ui.attachElementById("world-box", canvas);
 
   // Create renderer
-  renderer = new Renderer(canvas);
+  renderer = new Renderer(canvas, client);
 
 });
 
-extension.onUpdate((client) => {
-  const position = client.traveler.getPosition();
+extension.onUpdate((client, data) => {
+  const { offset } = client.camera;
 
-  for (let x = position.x - 15; x < position.x + 16; ++x)
+  // Draw Terrain
+  for (let x = YOU.x + offset.x - 15; x < YOU.x + offset.x + 16; ++x)
   {
-    for (let y = position.y + 15; y > position.y - 16; --y)
+    for (let y = YOU.y + offset.y + 15; y > YOU.y + offset.y - 16; --y)
     {
       switch (WORLD.deriveTile(x, y))
       {
         case WORLD.TILES.sand:
-          renderer.drawSprite(1, 0, x - position.x, y - position.y);
+          renderer.drawSprite(1, 0, x, y);
           break;
         case WORLD.TILES.grass:
-          renderer.drawSprite(4, 3, x - position.x, y - position.y);
+          renderer.drawSprite(4, 3, x, y);
           break;
         case WORLD.TILES.tree:
           // Draw island tree or sand tree
           if (WORLD.getPerlin(x, y + 5500, 10000) > 0.57)
           {
-              renderer.drawSprite(2, 1, x - position.x, y - position.y);
+              renderer.drawSprite(2, 1, x, y);
           }
           else
           {
-              renderer.drawSprite(1, 1, x - position.x, y - position.y);
+              renderer.drawSprite(1, 1, x, y);
           }
           break;
         case WORLD.TILES.mountain:
-          renderer.drawSprite(0, 3, x - position.x, y - position.y);
+          renderMountain(renderer, x, y);
           break;
         case WORLD.TILES.swamp:
-          renderer.drawSprite(12, 3, x - position.x, y - position.y);
+          renderer.drawSprite(12, 3, x, y);
           break;
         case WORLD.TILES.forest:
-          renderer.drawSprite(8, 3, x - position.x, y - position.y);
+          renderDynamicTile(renderer, WORLD.TILES.forest, 8, 3, x, y);
           break;
         case WORLD.TILES.water:
-          renderer.drawSprite(16, 3, x - position.x, y - position.y);
+          renderDynamicObject(renderer, WORLD.TILES.water, 16, 3, x, y);
           break;
         case WORLD.TILES.island:
-          renderer.drawSprite(2, 0, x - position.x, y - position.y);
+          renderer.drawSprite(2, 0, x, y);
           break;
         case WORLD.TILES.worldedge:
-          renderer.drawSprite(20, 3, x - position.x, y - position.y);
+          renderer.drawSprite(20, 3, x, y);
           break;
         case WORLD.TILES.house:
-          renderer.drawSprite(3, 1, x - position.x, y - position.y);
+          renderer.drawSprite(3, 1, x, y);
           break;
         case WORLD.TILES.city:
-          renderer.drawSprite(4, 1, x - position.x, y - position.y);
+          renderer.drawSprite(4, 1, x, y);
           break;
         case WORLD.TILES.startbox:
-          renderer.drawSprite(5, 1, x - position.x, y - position.y);
+          renderer.drawSprite(5, 1, x, y);
           break;
         case WORLD.TILES.monument:
-          renderer.drawSprite(0, 1, x - position.x, y - position.y)
+          renderer.drawSprite(0, 1, x, y)
           break;
         default:
-          renderer.drawSprite(0, 0, x - position.x, y - position.y);
+          renderer.drawSprite(0, 0, x, y);
       }
     }
   }
 
+
+  // Draw Objects
+  data.objects.forEach((object) => {
+    switch (object.char)
+    {
+      case WORLD.TILES.wood_block:
+        renderDynamicObject(renderer, object, 0, 7);
+        break;
+      case WORLD.TILES.scrap_block:
+        renderDynamicObject(renderer, object, 4, 7);
+        break;
+      case WORLD.TILES.steel_block:
+        renderDynamicObject(renderer, object, 8, 7);
+        break;
+      case WORLD.TILES.anchor:
+        renderer.drawSprite(7, 1, object.x, object.y);
+        break;
+      case WORLD.TILES.small_chest:
+        renderer.drawSprite(8, 1, object.x, object.y);
+        break;
+      case WORLD.TILES.large_chest:
+        renderer.drawSprite(9, 1, object.x, object.y);
+        break;
+      case WORLD.TILES.wood_door:
+        renderer.drawSprite(0 + (object.opened ? 1 : 0), 11, object.x, object.y);
+        break;
+      case WORLD.TILES.scrap_door:
+        renderer.drawSprite(4 + (object.opened ? 1 : 0), 11, object.x, object.y);
+        break;
+      case WORLD.TILES.steel_door:
+        renderer.drawSprite(8 + (object.opened ? 1 : 0), 11, object.x, object.y);
+        break;
+      case WORLD.TILES.sign_block:
+        renderer.drawSprite(10, 1, object.x, object.y);
+        break;
+      case WORLD.TILES.city:
+        renderer.drawSprite(4, 1, object.x, object.y);
+        break;
+      case WORLD.TILES.house:
+        renderer.drawSprite(3, 1, object.x, object.y);
+        break;
+      case '@':
+        renderer.drawSprite(4, 2, object.x, object.y);
+          break;
+      default:
+        renderer.drawSprite(0, 0, object.x, object.y);
+    }
+  });
+
+
+  // Draw other playesr
+  data.players.forEach((player) => {
+
+  });
+
+
   // Draw Player
-  renderer.drawSprite(0, 2, 0, 0);
+  renderer.drawSprite(0, 2, YOU.x, YOU.y);
 
 
   renderer.render();
 });
 
 extension.onStop((client) => {
+  client.options.defaultRender = true;
   canvas.remove();
   renderer = null;
+  WORLD.build();
 });
 
 export default extension;

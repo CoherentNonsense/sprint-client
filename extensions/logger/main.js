@@ -13,13 +13,12 @@ let eventLogs = [];
 
 let engineLog = null;
 
-extension.onStart((client) => {
+extension.onStart(() => {
   // Get logs from storage
   logs = getLogs();
   eventLogs = getEventLogs();
 
   // Get engine logs
-  const position = client.traveler.getPosition();
   engineLog = ENGINE.log;
   ENGINE.log = (text, replaceOldSame) => {
     engineLog(text, replaceOldSame);
@@ -34,7 +33,7 @@ extension.onStart((client) => {
       text.contains("need 10")
     ) return
 
-    eventLogs.push(`(${position.x}, ${position.y}) ${text}`);
+    eventLogs.push(`(${YOU.x}, ${YOU.y}) ${text}`);
     saveEventLogs();
   };
 });
