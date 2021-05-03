@@ -127,11 +127,7 @@ const ExtensionManager = function(client) {
     const extension = get(extension_id);
     if (extension == null) return;
     
-    if (extension.active)
-    {
-      extension._stop();
-    }
-    
+    toggle(extension_id, false);
     _extensions.delete(extension_id);
     saveLocal();
     _client.ui.updateExtensions(_extensions);
@@ -260,20 +256,35 @@ const ExtensionManager = function(client) {
         build.break();
       }
 
+
+      // Show official extensions
       build.addTitle("Download Extensions");
+      let newExtensionCount = 0;
 
-      // Show non installed extensions
-      const noninstalledExtensions = availableExtensions.filter((extensionId) => !_extensions.has(extensionId));
+      availableExtensions.forEach((category) => {
+        const noninstalledExtensions = category.extensions.filter((extensionId) => !_extensions.has(extensionId));
 
-      if (noninstalledExtensions.length === 0)
+        if (noninstalledExtensions.length === 0)
+        {
+          return;
+        }
+
+        build.addParagraph(category.name);
+  
+        noninstalledExtensions.forEach((extensionId) => {
+          ++newExtensionCount;
+          build.addButton(extensionId, "Add", async () => { await load(extensionId); renderStore(); });
+        });
+
+        build.break();
+  
+      });
+
+      if (newExtensionCount == 0)
       {
-        build.addParagraph("All extensions have been installed.");
-        return;
+        build.addParagraph("All Extensions Downloaded");
       }
 
-      noninstalledExtensions.forEach((extensionId) => {
-        build.addButton(extensionId, "Add", async () => { await load(extensionId); renderStore(); });
-      });
     });
   }
 

@@ -55,7 +55,7 @@ extension.onUpdate((client, data) => {
           renderer.drawSprite(1, 0, x, y);
           break;
         case WORLD.TILES.grass:
-          renderer.drawSprite(4, 3, x, y);
+          renderDynamicTile(renderer, WORLD.TILES.grass, 4, 3, x, y);
           break;
         case WORLD.TILES.tree:
           // Draw island tree or sand tree
@@ -72,7 +72,7 @@ extension.onUpdate((client, data) => {
           renderMountain(renderer, x, y);
           break;
         case WORLD.TILES.swamp:
-          renderer.drawSprite(12, 3, x, y);
+          renderDynamicTile(renderer, WORLD.TILES.swamp, 12, 3, x, y);
           break;
         case WORLD.TILES.forest:
           renderDynamicTile(renderer, WORLD.TILES.forest, 8, 3, x, y);
@@ -84,7 +84,7 @@ extension.onUpdate((client, data) => {
           renderer.drawSprite(2, 0, x, y);
           break;
         case WORLD.TILES.worldedge:
-          renderer.drawSprite(20, 3, x, y);
+          renderDynamicTile(renderer, WORLD.TILES.worldedge, 20, 3, x, y);
           break;
         case WORLD.TILES.house:
           renderer.drawSprite(3, 1, x, y);

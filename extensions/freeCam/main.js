@@ -3,7 +3,7 @@ const extension = new Extension({
   id: "freeCam",
   name: "Free Cam",
   icon: "📷",
-  category: "graphics",
+  category: "tools",
   about: "Draws the game with a spritesheet",
   author: "CoherentNonsense"
 });

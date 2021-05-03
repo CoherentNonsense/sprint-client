@@ -34,13 +34,12 @@ class Extension
 
   toggle(client, value)
   {
-
     try
     {
       if (typeof value === "boolean" && value != this.active)
       {
         this.active = !this.active;
-        value ? this._start(client) : this._stop(client);
+        this.active ? this._start(client) : this._stop(client);
       }
       else
       {

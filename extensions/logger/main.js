@@ -2,7 +2,7 @@ const extension = new Extension({
   id: "logger",
   name: "Location Logger",
   icon: "᭡",
-  category: "logging",
+  category: "tools",
   about: "Logs special locations",
   author: "Coherent Nonsense",
   settings: "Show Logs"

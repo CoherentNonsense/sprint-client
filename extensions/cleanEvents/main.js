@@ -3,7 +3,7 @@ const extension = new Extension({
   name: "Clean Events",
   icon: "ev",
   description: "Removes terrain and event logs from the event log.",
-  category: "logging"
+  category: "tools"
 });
 
 let checkMoveLog = null;

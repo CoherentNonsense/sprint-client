@@ -3,7 +3,7 @@ const extension = new Extension({
   name: "Streamer Mode",
   icon: "👁",
   description: "Hides your coordinates.",
-  category: "logging"
+  category: "tools"
 });
 
 extension.onStart(() => {
