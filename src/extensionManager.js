@@ -24,11 +24,11 @@ const ExtensionManager = function(client) {
    * Loads and runs the main.js file in an extension directory 
    * @param {string} extension_filepath A directory holding an extension
    */
-  async function load(extension_filepath)
+  async function load(extension_filepath, toggle = false)
   {
     if (!extension_filepath || typeof extension_filepath != "string") return;
 
-    return loadFile(`${extension_filepath}/main.js`);
+    return loadFile(`${extension_filepath}/main.js`, toggle);
   }
 
 
@@ -36,7 +36,7 @@ const ExtensionManager = function(client) {
    * Loads and runs a file.
    * @param {string} extension_filepath A file to run
    */
-  async function loadFile(extension_filepath)
+  async function loadFile(extension_filepath, toggle = false)
   {
     // Only load main.js files
     if (!extension_filepath.endsWith("/main.js")) return;
@@ -64,7 +64,7 @@ const ExtensionManager = function(client) {
         const external_module_object = await import(extension_filepath);
         external_module_object.default.url = extension_filepath;
 
-        add(external_module_object.default);
+        add(external_module_object.default, toggle);
       }
       catch(e)
       {
@@ -80,7 +80,7 @@ const ExtensionManager = function(client) {
     {
       const module_object = await import(`../extensions/${extension_id}/main.js`);
       module_object.default.url = extension_id;
-      add(module_object.default);
+      add(module_object.default, toggle);
     }
     // eslint-disable-next-line no-empty
     catch(e){} // Maybe some user feedback when official extensions fail but that shouldn't happen
@@ -91,11 +91,18 @@ const ExtensionManager = function(client) {
    * Adds an extension to the current downloads
    * @param {Extension} extension The extension to be added
    */
-  function add(extension)
+  function add(extension, tog = false)
   {
     if (!extension || get(extension.id) != null) return
     
     _extensions.set(extension.id, extension);
+    
+    if (tog)
+    {
+      toggle(extension.id);
+      return;
+    }
+
     saveLocal();
     _client.ui.updateExtensions(_extensions);
   }
@@ -144,6 +151,7 @@ const ExtensionManager = function(client) {
 
     extension.toggle(_client, value);
     _client.ui.updateExtensions(_extensions);
+    saveLocal();
   }
 
   function update(client, data)
@@ -176,7 +184,7 @@ const ExtensionManager = function(client) {
           _client.log(`${extension.name} has an error in its update loop while rendering: ${e}`);
         }
       }
-    })
+    });
   }
 
   function isSafeMode()
@@ -195,20 +203,20 @@ const ExtensionManager = function(client) {
   {
     const extension_urls = [];
     _extensions.forEach((extension) => {
-      extension_urls.push(extension.url);
+      extension_urls.push((extension.active ? "-active-" : "") + extension.url);
     });
 
-    localStorage.setItem("scextensions", JSON.stringify(extension_urls));
+    localStorage.setItem("sprint-extensions", JSON.stringify(extension_urls));
 
-    localStorage.setItem("scsafemode", JSON.stringify(_safe_mode));
+    localStorage.setItem("sprint-safe-mode", JSON.stringify(_safe_mode));
   }
 
   function restoreLocal()
   {
     _extensions.clear();
 
-    let extension_urls = JSON.parse(localStorage.getItem("scextensions"));
-    let safe_mode = JSON.parse(localStorage.getItem("scsafemode"));
+    let extension_urls = JSON.parse(localStorage.getItem("sprint-extensions"));
+    let safe_mode = JSON.parse(localStorage.getItem("sprint-safe-mode"));
 
     if (!extension_urls)
     {
@@ -224,7 +232,14 @@ const ExtensionManager = function(client) {
 
 
     extension_urls.forEach(async (extension_url) => {
-      await load(extension_url);
+      const activeExtension = extension_url.startsWith("-active-");
+
+      if (activeExtension)
+      {
+        extension_url = extension_url.substring(8);
+      }
+
+      await load(extension_url, activeExtension);
     });
 
     _client.ui.updateExtensions(_extensions);

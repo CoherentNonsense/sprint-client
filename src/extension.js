@@ -34,15 +34,18 @@ class Extension
 
   toggle(client, value)
   {
+
     try
     {
-      if (typeof value === "boolean")
+      if (typeof value === "boolean" && value != this.active)
       {
+        this.active = !this.active;
         value ? this._start(client) : this._stop(client);
       }
       else
       {
-        this.active ? this._stop(client) : this._start(client);
+        this.active = !this.active;
+        this.active ? this._start(client) : this._stop(client);
       }
     }
     catch (e)
@@ -50,7 +53,6 @@ class Extension
       client.log(`${this.name} has an error in its start or stop method: ${e}`);
     }
 
-    this.active = !this.active;
   }
 
   onStart(callback)

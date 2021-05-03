@@ -37,10 +37,11 @@ extension.onStart((client) => {
 
   // Create renderer
   renderer = new Renderer(canvas, client);
-
 });
 
 extension.onUpdate((client, data) => {
+  renderer.startDraw();
+
   const { offset } = client.camera;
 
   // Draw Terrain

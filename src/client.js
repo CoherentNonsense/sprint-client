@@ -26,7 +26,7 @@ class SprintClient
     this.camera = Camera(this);
 
     // Data from the server
-    this.data = {};
+    this.data = { objects: [], players: [], stumps: [] };
     this.doors = new Map();
 
     // Bunch of data that the client may use
@@ -107,8 +107,6 @@ class SprintClient
 
   initRender()
   {
-    this.engineDraw = ENGINE.build;
-
     WORLD.build = () => {
       // Copied from worldgen.js
       if (this.options.defaultRender)

@@ -124,12 +124,15 @@ class Renderer
     this.webGl.uniform1i(this.shader.getUniform("u_texture"), 0);
 
     this.resize();
+    this.startDraw();
 }
 
 
   startDraw()
   {
     if (!this.running) return;
+    this.webGl.clearColor(1.0, 1.0, 1.0, 1.0);
+    this.webGl.clear(this.webGl.COLOR_BUFFER_BIT);
   }
 
   render() {
