@@ -59,6 +59,12 @@ const Traveler = function(client) {
     if (movingDown) direction = "s";
     if (movingLeft) direction += "w";
     if (movingRight) direction += "e";
+    
+    // Don't repeatedly click when autowalk is enables
+    if (YOU.autowalk && YOU.dir === direction)
+    {
+      return;
+    }
     ENGINE.dir(direction, document.getElementById("arrow-" + direction));
   }
 
