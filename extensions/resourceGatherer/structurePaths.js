@@ -141,7 +141,7 @@ class Path
     const structureLoot = paths[name].loot;
     let containsLoot = false;
 
-    console.log(loot);
+    console.log(loot, structureLoot);
 
     for (let i = 0; i < structureLoot.length; ++i)
     {
