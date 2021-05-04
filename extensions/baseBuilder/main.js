@@ -15,7 +15,7 @@ let cursorIndex = 0
 const offset = { x: 0, y: 0 };
 const cursor = { char: materials[cursorIndex], x: 0, y: 0 };
 
-const blueprint = [];
+let blueprint = [];
 
 let eventId = null;
 
@@ -35,6 +35,7 @@ extension.onStart((client) => {
       case "j": --cursor.x; --offset.x; break;
       case "u": --cursorIndex; break;
       case "o": ++cursorIndex; break;
+      case "c": blueprint = []; break;
       case " ":  e.preventDefault(); placeRemoveBlueprint(client); break;
     }
     if (cursorIndex === materials.length) cursorIndex = 0;
