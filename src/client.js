@@ -70,7 +70,9 @@ class SprintClient
   {
     // Attaches extensions with the server update
     this._update = eval("(" +
-      ENGINE.applyData.toString().replace("WORLD.build()", "")
+      ENGINE.applyData.toString()
+      .replace("WORLD.build();", "")
+      .replace("WORLD.checkPlayersAndObjs();", "")
       + ")"
     );
 

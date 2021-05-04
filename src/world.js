@@ -34,7 +34,6 @@ const World = function(client) {
   {
     WORLD.otherObjs.push(object);
     _client.data.objects.push(object);
-    _client.render();
   }
 
   function removeObject(object)
