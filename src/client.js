@@ -36,6 +36,9 @@ class SprintClient
 
     };
 
+    // Private variables
+    this._hotbarButtonCount = 0;
+
     this.init();
   }
 
@@ -145,6 +148,24 @@ class SprintClient
     };
   }
 
+
+  addHotbarButton(title, onclick)
+  {
+    const button = document.createElement("span");
+    button.id = "sprint-hotbar-button-" + this._hotbarButtonCount;
+    button.className = "hotbar-btn unselectable";
+    button.innerHTML = title;
+    button.onclick = onclick;
+
+    document.getElementById("hotbar-box").append(button);
+
+    return this._hotbarButtonCount++;
+  }
+
+  removeHotbarButton(id)
+  {
+    document.getElementById("sprint-hotbar-button-" + id).remove();
+  }
 
   /**
    * Prints a message through the console

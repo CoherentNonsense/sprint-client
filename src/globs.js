@@ -63,7 +63,7 @@ const XP = {
 
 
 const EVENTS = {
-    applyServerEvent: () => {}
+  applyServerEvent: () => {}
 }
 
 const TIME = {
@@ -75,7 +75,13 @@ const TIME = {
 };
 
 const ENGINE = {
-  applyData: () => {WORLD.build()}
+  applyData: () => {WORLD.build()},
+  dir: (direction) => {
+    if (direction.includes("n")) ++YOU.y;
+    if (direction.includes("e")) ++YOU.x;
+    if (direction.includes("s")) --YOU.y;
+    if (direction.includes("w")) --YOU.x;
+  }
 };
 
 // Simulate server

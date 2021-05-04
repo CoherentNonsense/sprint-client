@@ -45,9 +45,21 @@ const Traveler = function(client) {
    * Sets the direction the traveler is moving.
    * @param {string} direction n, ne, e, se, s, sw, w, nw
    */
-  function move(direction)
+  function move(x, y)
   {
-    ENGINE.dir(direction);
+    // x and y can be any number. We move if it is greater than 0.5
+    const movingUp = y > 0.5;
+    const movingDown = y < -0.5;
+    const movingLeft = x < -0.5;
+    const movingRight = x > 0.5;
+
+    // Set the direction based on input
+    let direction = "";
+    if (movingUp) direction = "n";
+    if (movingDown) direction = "s";
+    if (movingLeft) direction += "w";
+    if (movingRight) direction += "e";
+    ENGINE.dir(direction, document.getElementById("arrow-" + direction));
   }
 
 
@@ -98,7 +110,7 @@ const Traveler = function(client) {
    */
   function moveTo(target)
   {
-    this._target = target;
+    _target = target;
   }
 
 
@@ -107,15 +119,30 @@ const Traveler = function(client) {
    */
   function stop()
   {
-    this.target = null;
+    _target = null;
   }
 
 
+  /**
+   * Simply moves towards target
+   * TODO: Better pathfinding
+   */
   function _update()
   {
-    if (this._target)
+    if (_target)
     {
-      // a* stuff
+      if (_target.x == YOU.x && _target.y == YOU.y)
+      {
+        stop();
+        return;
+      }
+
+      // Get directions. Either -1 0 or 1
+      let xDir = _target.x - YOU.x;
+      let yDir = _target.y - YOU.y;
+
+      // Move towards Target
+      move(xDir, yDir);
     }
   }
 

@@ -5,7 +5,8 @@ const extension = new Extension({
   icon: "📷",
   category: "tools",
   about: "Draws the game with a spritesheet",
-  author: "CoherentNonsense"
+  author: "CoherentNonsense",
+  settings: "help"
 });
 
 let eventID = null;
@@ -28,6 +29,13 @@ extension.onStop((client) => {
   removeEventListener("keydown", eventID);
   eventID = null;
   client.camera.set(0, 0);
+});
+
+extension.onSettings((client) => {
+  client.popup.build("Free Cam", (body) => {
+    body.addTitle("Controls");
+    body.addParagraph("WASD: Move camera");
+  });
 });
 
 export default extension;

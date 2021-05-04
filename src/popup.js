@@ -94,6 +94,27 @@ const Popup = (function() {
     {
       return `sprint-popup-${this.idCounter++}`;
     }
+
+    addDropdown(title, options, callback, current)
+    {
+      const header = createElement("span", "", title);
+
+      const dropdown = createElement("select", "sprint-dropdown");
+      options.forEach((option) => {
+        const item = createElement("option", "", option);
+        item.value = option;
+        
+        // Select current direction
+        dropdown.selectedIndex = [...dropdown.options].findIndex(o => o.text === current);
+        
+        dropdown.append(item);
+      });
+
+      dropdown.onchange = (e) => callback(e.target.options[e.target.selectedIndex].value);
+
+      this.contents.appendChild(dropdown);
+      this.contents.appendChild(header);
+    }
   }
 
   return {

@@ -161,7 +161,7 @@ extension.onUpdate((client, data) => {
 
   // Draw other playesr
   data.players.forEach((player) => {
-
+    
   });
 
 

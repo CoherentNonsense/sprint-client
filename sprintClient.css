@@ -20,6 +20,10 @@
 .sprint-popup-hidden {
     display: none;
 }
+.sprint-dropdown {
+    border: 1px solid black;
+    margin-right: 10px;;
+}
 .sprint-break {
     margin-top: 20px;
     margin-bottom: 30px;
