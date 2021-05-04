@@ -12,6 +12,7 @@ const extension = new Extension({
 let hotbarButtonId;
 let blueprintMode = false;
 let cursorIndex = 0
+const offset = { x: 0, y: 0 };
 const cursor = { char: materials[cursorIndex], x: 0, y: 0 };
 
 const blueprint = [];
@@ -28,10 +29,10 @@ extension.onStart((client) => {
 
     switch(e.key)
     {
-      case "i": ++cursor.y; break;
-      case "l": ++cursor.x; break;
-      case "k": --cursor.y; break;
-      case "j": --cursor.x; break;
+      case "i": ++cursor.y; ++offset.y; break;
+      case "l": ++cursor.x; ++offset.x; break;
+      case "k": --cursor.y; --offset.y; break;
+      case "j": --cursor.x; --offset.x; break;
       case "u": --cursorIndex; break;
       case "o": ++cursorIndex; break;
       case " ":  e.preventDefault(); placeRemoveBlueprint(client); break;
@@ -43,11 +44,18 @@ extension.onStart((client) => {
     client.render();
   };
 
+  cursor.x = YOU.x;
+  cursor.y = YOU.y;
+
   addEventListener("keydown", eventId);
 });
 
 extension.onUpdate((client) => {
   if (!blueprintMode) return;
+
+  // Move Cursor
+  cursor.x = YOU.x + offset.x;
+  cursor.y = YOU.y + offset.y;
 
   // Render blueprint
   blueprint.forEach((object) => {
@@ -61,8 +69,8 @@ extension.onUpdate((client) => {
 extension.onStop((client) => {
   blueprintMode = false;
   cursor.charIndex = 0;
-  cursor.x = 0;
-  cursor.y = 0;
+  offset.x = 0;
+  offset.y = 0;
   client.removeHotbarButton(hotbarButtonId);
   addEventListener("keydown", eventId);
 });
