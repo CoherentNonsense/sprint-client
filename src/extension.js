@@ -20,12 +20,12 @@ class Extension
     this.about = fields.about || "";
     this.inProduction = false;
     this.settings = fields.settings;
-    this.updateOnRender = fields.updateOnRender || false;
 
     // Callbacks
     this._start = () => {};
     this._stop = () => {};
     this._update = () => {};
+    this._render = () => {};
     this._settings = null;
 
     // Data
@@ -67,6 +67,11 @@ class Extension
   onUpdate(callback)
   {
     this._update = callback;
+  }
+
+  onRender(callback)
+  {
+    this._render = callback;
   }
 
   onSettings(callback)

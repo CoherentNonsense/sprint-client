@@ -30,6 +30,11 @@ const World = function(client) {
     }
   }
 
+  function addTile(char, x, y)
+  {
+    WORLD.otherObjs.push({char, x, y});
+  }
+
 
   function currentTile()
   {
@@ -44,7 +49,8 @@ const World = function(client) {
 
   return {
     currentTile,
-    getTile
+    getTile,
+    addTile,
   };
 
 };

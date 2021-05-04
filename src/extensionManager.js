@@ -170,10 +170,10 @@ const ExtensionManager = function(client) {
   function render(client, data)
   {
     _extensions.forEach((extension) => {
-      if (extension.active && extension.updateOnRender)
+      if (extension.active)
       {
         try{
-          extension._update(client, data);
+          extension._render(client, data);
         }
         catch (e)
         {

@@ -9,7 +9,6 @@ const extension = new Extension({
   category: "graphics",
   about: "Draws the game with a spritesheet",
   author: "CoherentNonsense",
-  updateOnRender: true,
 });
 
 
@@ -39,7 +38,7 @@ extension.onStart((client) => {
   renderer = new Renderer(canvas, client);
 });
 
-extension.onUpdate((client, data) => {
+extension.onRender((client, data) => {
   renderer.startDraw();
 
   const { offset } = client.camera;
@@ -153,6 +152,9 @@ extension.onUpdate((client, data) => {
       case '@':
         renderer.drawSprite(4, 2, object.x, object.y);
           break;
+      case "n":
+        renderer.drawSprite(5, 1, object.x, object.y);
+        break;
       default:
         renderer.drawSprite(0, 0, object.x, object.y);
     }
