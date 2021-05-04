@@ -34,11 +34,10 @@ const ids = [
   "wood_stick"
 ];
 
-const resources = ids.map((id) => {
-  return {
-    id,
-    active: false
-  };
+const resources = {};
+
+ids.forEach((id) => {
+  resources[id] = false;
 });
 
 export default resources;

@@ -71,15 +71,17 @@ extension.onSettings((client) => {
     // Select All
     body.addCheckbox("All", (state) => {
       gatherAll = state;
-      resources.forEach((resource) => {
-        resource.active = state;
-        extension._settings(client);
-      });
+      for (const id in resources)
+      {
+        resources[id] = state;
+      }
+      extension._settings(client);
     }, gatherAll);
 
-    resources.forEach((resource) => {
-      body.addCheckbox(resource.id, (state) => {
-        resource.active = state;
+    for (const id in resources)
+    {
+      body.addCheckbox(id, (state) => {
+        resources[id] = state;
 
         // Update All Button
         if (!state && gatherAll)
@@ -87,9 +89,9 @@ extension.onSettings((client) => {
           gatherAll = false;
         }
 
-        extension._settings(client)
-      }, resource.active);
-    });
+        extension._settings(client);
+      }, resources[id]);
+    }
   });
 });
 
