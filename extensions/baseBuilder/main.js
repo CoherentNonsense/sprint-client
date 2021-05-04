@@ -27,12 +27,17 @@ extension.onStart((client) => {
   eventId = (e) => {
     if (!blueprintMode) return;
 
+    const xMax = YOU.x + client.camera.offset.x + 15;
+    const xMin = YOU.x + client.camera.offset.x - 15;
+    const yMax = YOU.y + client.camera.offset.y + 15;
+    const yMin = YOU.y + client.camera.offset.y - 15;  
+
     switch(e.key)
     {
-      case "i": ++cursor.y; ++offset.y; break;
-      case "l": ++cursor.x; ++offset.x; break;
-      case "k": --cursor.y; --offset.y; break;
-      case "j": --cursor.x; --offset.x; break;
+      case "i": if (cursor.y < yMax) {++cursor.y; ++offset.y}; break;
+      case "l": if (cursor.x < xMax) {++cursor.x; ++offset.x}; break;
+      case "k": if (cursor.y > yMin) {--cursor.y; --offset.y}; break;
+      case "j": if (cursor.x > xMin) {--cursor.x; --offset.x}; break;
       case "u": --cursorIndex; break;
       case "o": ++cursorIndex; break;
       case "c": blueprint = []; break;
@@ -42,11 +47,16 @@ extension.onStart((client) => {
     if (cursorIndex === -1) cursorIndex = materials.length - 1;
     cursor.char = materials[cursorIndex];
 
+    cursor.x = YOU.x + offset.x + client.camera.offset.x;
+    cursor.y = YOU.y + offset.y + client.camera.offset.y;
+
     client.render();
   };
 
   cursor.x = YOU.x;
   cursor.y = YOU.y;
+  offset.x = 0;
+  offset.y = 0;
 
   addEventListener("keydown", eventId);
 });
@@ -55,8 +65,9 @@ extension.onUpdate((client) => {
   if (!blueprintMode) return;
 
   // Move Cursor
-  cursor.x = YOU.x + offset.x;
-  cursor.y = YOU.y + offset.y;
+  cursor.x = YOU.x + offset.x + client.camera.offset.x;
+  cursor.y = YOU.y + offset.y + client.camera.offset.y;
+
 
   // Render blueprint
   blueprint.forEach((object) => {
@@ -84,6 +95,7 @@ extension.onSettings((client) => {
     body.addParagraph("IJKL - Move cursor");
     body.addParagraph("U and O - Switch current material.");
     body.addParagraph("Space - place or remove material.");
+    body.addParagraph("C - Clears blueprint.");
     body.break();
     body.addParagraph("NOTE: This extension is much more preformant if used with the sprite renderer.");
   });
