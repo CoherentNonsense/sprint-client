@@ -69,10 +69,13 @@ class SprintClient
   initUpdate()
   {
     // Attaches extensions with the server update
-    this.engineUpdate = ENGINE.applyData;
-    ENGINE.applyData = (json, midCycleCall) => {
-      this.engineUpdate(json, midCycleCall);
+    this._update = eval("(" +
+      ENGINE.applyData.toString().replace("WORLD.build()", "")
+      + ")"
+    );
 
+    ENGINE.applyData = (json, midCycleDataCall) => {
+      this._update(json, midCycleDataCall);
 
       // Build server data
       this.doors.clear();
@@ -105,6 +108,9 @@ class SprintClient
 
       // Update modules
       this.traveler._update();
+
+      // Render
+      this.render();
     };
   }
 
@@ -148,14 +154,31 @@ class SprintClient
     };
   }
 
+  render()
+  {
+    WORLD.build();
+    WORLD.checkPlayersAndObjs();
+  }
 
-  addHotbarButton(title, onclick)
+
+  addHotbarButton(title, onclick, toggle)
   {
     const button = document.createElement("span");
     button.id = "sprint-hotbar-button-" + this._hotbarButtonCount;
     button.className = "hotbar-btn unselectable";
     button.innerHTML = title;
-    button.onclick = onclick;
+
+    if (toggle)
+    {
+      button.onclick = () => {
+        button.classList.toggle("active");
+        onclick();
+      };
+    }
+    else
+    {
+      button.onclick = onclick;
+    }
 
     document.getElementById("hotbar-box").append(button);
 

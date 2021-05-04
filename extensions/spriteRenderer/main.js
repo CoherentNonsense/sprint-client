@@ -178,7 +178,7 @@ extension.onStop((client) => {
   client.options.defaultRender = true;
   canvas.remove();
   renderer = null;
-  WORLD.build();
+  client.render();
 });
 
 export default extension;

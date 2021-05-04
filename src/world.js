@@ -30,11 +30,32 @@ const World = function(client) {
     }
   }
 
-  function addTile(char, x, y)
+  function addObject(object)
   {
-    WORLD.otherObjs.push({char, x, y});
+    WORLD.otherObjs.push(object);
+    _client.data.objects.push(object);
+    _client.render();
   }
 
+  function removeObject(object)
+  {
+    const objectIndex = WORLD.otherObjs.findIndex((tile) => (
+      tile.char === object.char &&
+      tile.x === object.x &&
+      tile.y === object.y
+    ));
+
+    if (objectIndex < 0) return;
+
+    const dataIndex = _client.data.objects.findIndex((tile) => (
+      tile.char === object.char &&
+      tile.x === object.x &&
+      tile.y === object.y
+    ));
+
+    WORLD.otherObjs.splice(objectIndex, 1);
+    _client.data.objects.splice(dataIndex, 1);
+  }
 
   function currentTile()
   {
@@ -50,7 +71,8 @@ const World = function(client) {
   return {
     currentTile,
     getTile,
-    addTile,
+    addObject,
+    removeObject
   };
 
 };

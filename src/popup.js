@@ -36,7 +36,7 @@ const Popup = (function() {
 
     addParagraph(text)
     {
-      const p = createElement("p", "unselectable", text);
+      const p = createElement("p", "unselectable sprint-para", text);
       this.contents.appendChild(p);
     }
 

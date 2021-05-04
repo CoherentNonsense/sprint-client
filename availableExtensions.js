@@ -1,7 +1,7 @@
 export default [
   {
     name: "bots",
-    extensions: ["autoSprint", "resourceGatherer"]
+    extensions: ["autoSprint", "resourceGatherer", "baseBuilder"]
   },
   {
     name: "tools",

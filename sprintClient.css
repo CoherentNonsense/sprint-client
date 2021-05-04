@@ -5,6 +5,9 @@
 .tab-text {
     padding: 0 6px;
 }
+.sprint-para {
+    margin-bottom: 10px;
+}
 .sprint-popup-label {
     display: flex;
     align-items: center;

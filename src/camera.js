@@ -1,4 +1,4 @@
-export default (function() {
+export default (function(client) {
   
   const offset = { x: 0, y: 0 };
 
@@ -6,14 +6,14 @@ export default (function() {
   {
     offset.x += x;
     offset.y += y;
-    WORLD.build();
+    client.render();
   }
 
   function set(x, y)
   {
     offset.x = x;
     offset.y = y;
-    WORLD.build();
+    client.render();
   }
 
   return {
