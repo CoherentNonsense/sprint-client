@@ -126,7 +126,7 @@ const paths = {
 
 class Path
 {
-  constructor(name, loot, dontHave = [])
+  constructor(name, loot, dontHave = {})
   {
     this.loot = loot;
     this.step = 0;
@@ -140,6 +140,8 @@ class Path
 
     const structureLoot = paths[name].loot;
     let containsLoot = false;
+
+    console.log(loot);
 
     for (let i = 0; i < structureLoot.length; ++i)
     {
