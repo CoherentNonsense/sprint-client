@@ -83,7 +83,7 @@ extension.onUpdate((client, data) => {
           renderDynamicTile(renderer, WORLD.TILES.forest, 8, 3, x, y);
           break;
         case WORLD.TILES.water:
-          renderDynamicObject(renderer, WORLD.TILES.water, 16, 3, x, y);
+          renderDynamicTile(renderer, WORLD.TILES.water, 16, 3, x, y);
           break;
         case WORLD.TILES.island:
           renderer.drawSprite(2, 0, x, y);
