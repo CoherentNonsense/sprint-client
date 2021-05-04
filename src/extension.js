@@ -41,7 +41,7 @@ class Extension
         this.active = !this.active;
         this.active ? this._start(client) : this._stop(client);
       }
-      else
+      else if (typeof value !== "boolean")
       {
         this.active = !this.active;
         this.active ? this._start(client) : this._stop(client);
@@ -51,7 +51,6 @@ class Extension
     {
       client.log(`${this.name} has an error in its start or stop method: ${e}`);
     }
-
   }
 
   onStart(callback)
