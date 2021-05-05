@@ -31,7 +31,6 @@ extension.onStart((client) => {
     const xMin = YOU.x + client.camera.offset.x - 15;
     const yMax = YOU.y + client.camera.offset.y + 15;
     const yMin = YOU.y + client.camera.offset.y - 15;  
-
     switch(e.key)
     {
       case "i": if (cursor.y < yMax) {++cursor.y; ++offset.y}; break;
@@ -84,7 +83,7 @@ extension.onStop((client) => {
   offset.x = 0;
   offset.y = 0;
   client.removeHotbarButton(hotbarButtonId);
-  addEventListener("keydown", eventId);
+  removeEventListener("keydown", eventId);
 });
 
 extension.onSettings((client) => {

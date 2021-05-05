@@ -88,7 +88,7 @@ class SprintClient
         });
       }
 
-      const objects = WORLD.otherObjs.map((object) => {
+      let objects = WORLD.otherObjs.map((object) => {
         if (this.doors.has(object.x + "|" + object.y))
         {
           object.opened = true;
@@ -97,12 +97,19 @@ class SprintClient
         return object;
       });
 
-      this.data = {
-        stumps: WORLD.otherStumps,
-        objects,
-        players: WORLD.otherPlayers
-      };
+      // Remember object out of view but not too far
+      const unchangedObjects = this.data.objects.filter((object) => (
+        (object.x > YOU.x + 15 && object.x < YOU.x + 500) ||
+        (object.x < YOU.x - 15 && object.x > YOU.y - 500) ||
+        (object.y > YOU.y + 15 && object.y < YOU.y + 500) ||
+        (object.x < YOU.y - 15 && object.y > YOU.y - 500)
+      ));
 
+      objects = [...unchangedObjects, ...objects];
+
+      this.data.players = WORLD.otherPlayers;
+      this.data.stumps = WORLD.otherStumps;
+      this.data.objects = objects;
 
       // Updates extensions
       this.extensionManager.update(this, this.data);
@@ -118,8 +125,78 @@ class SprintClient
 
   initRender()
   {
+    // Copied and modified from worldgen.js
+    WORLD.checkPlayersAndObjs = () => {
+      for (let i = 0; i < this.data.stumps.length; i++)
+      {
+        let x = this.data.stumps[i].x;
+        let y = this.data.stumps[i].y;
+
+        if (YOU.x === x && YOU.y === y)
+        {
+          YOU.currentTile = WORLD.TILES.grass;
+        }
+        else
+        {
+          WORLD.changeTile(x, y, WORLD.TILES.grass);
+        }
+      }
+
+      for (let i = 0; i < this.data.players.length; i++)
+      {
+        let x = this.data.players[i].x,
+        y = this.data.players[i].y;
+
+        // in case you forget, this will not need to include future building types, only ones that are generated in the clientside worldgen
+        WORLD.changeTile(x, y, WORLD.TILES.traveler, true);
+      }
+
+      let atop = false,
+      atop_and_above = false;
+      HANDS.breakBtnEl.style.display = "none";
+      for (let i = 0; i < this.data.objects.length; i++) {
+        let x = this.data.objects[i].x,
+          y = this.data.objects[i].y,
+          char = this.data.objects[i].char,
+          canWalkOver = this.data.objects[i].walk_over;
+
+        if (char === "H") { // texturepack compatibility
+            char = WORLD.TILES.house;
+        }
+        if (char === "C") {
+            char = WORLD.TILES.city;
+        }
+
+        // if it's breakable and next to you, show "dismantle" button
+        if (Math.abs(x - YOU.x) <= 1 && Math.abs(y - YOU.y) <= 1 && (this.data.objects[i].is_breakable || this.data.objects[i].is_door)) {
+            HANDS.breakBtnEl.style.display = "";
+        }
+
+        if (canWalkOver) {
+          if ((YOU.x !== x || YOU.y !== y)) {
+            if (document.getElementById(x + "|" + y).innerHTML !== WORLD.TILES.traveler) {
+              WORLD.changeTile(x, y, char);
+            }
+          }
+
+          if (YOU.x === x && YOU.y === y) {
+            atop_and_above = true;
+          }
+        } else {
+          WORLD.changeTile(x, y, char);
+
+          if (YOU.x === x && YOU.y === y) {
+            atop = true;
+          }
+        }
+      }
+      
+      ENGINE.atop_another = atop;
+      ENGINE.atop_obj_and_above = atop_and_above;
+    }
+    
+    // Copied from worldgen.js
     WORLD.build = () => {
-      // Copied from worldgen.js
       if (this.options.defaultRender)
       {
         let count = 0;
