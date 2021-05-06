@@ -116,13 +116,13 @@ extension.onRender((client, data) => {
     switch (object.char)
     {
       case WORLD.TILES.wood_block:
-        renderDynamicObject(renderer, object, 0, 7);
+        renderDynamicObject(renderer, data.objects, object, 0, 7);
         break;
       case WORLD.TILES.scrap_block:
-        renderDynamicObject(renderer, object, 4, 7);
+        renderDynamicObject(renderer, data.objects, object, 4, 7);
         break;
       case WORLD.TILES.steel_block:
-        renderDynamicObject(renderer, object, 8, 7);
+        renderDynamicObject(renderer, data.objects, object, 8, 7);
         break;
       case WORLD.TILES.anchor:
         renderer.drawSprite(7, 1, object.x, object.y);

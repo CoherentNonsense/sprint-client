@@ -37,10 +37,10 @@ export function renderDynamicTile(renderer, char, u, v, x, y)
   renderFromNeighbors(renderer, neighbors, u, v, x, y);
 }
 
-export function renderDynamicObject(renderer, object, u, v)
+export function renderDynamicObject(renderer, objects, object, u, v)
 {
   let neighbors = 0;
-  WORLD.otherObjs.forEach((neighbor) => {
+  objects.forEach((neighbor) => {
     if (neighbor.char != object.char) return;
 
     neighbors |= (object.x == neighbor.x && object.y + 1 == neighbor.y) ? TILE_ENUM.n : 0;
