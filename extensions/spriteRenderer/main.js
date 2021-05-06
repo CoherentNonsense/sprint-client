@@ -163,9 +163,14 @@ extension.onRender((client, data) => {
   });
 
 
+  data.stumps.forEach((stump) => {
+    renderer.drawSprite(1, 0, stump.x, stump.y);
+  });
+
+
   // Draw other playesr
   data.players.forEach((player) => {
-    
+    renderer.drawSprite(1, 2, player.x, player.y);
   });
 
 

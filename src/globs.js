@@ -165,6 +165,7 @@ var HANDS = { // weird name right?
         });
     },
     reenter_engine_process: function (movechanged) {
+        return;
         if (ENGINE.isFirstConnect || (YOU.state === "travel" && (YOU.prevState === "event" || YOU.prevState === "looting"))) {
             for (let i = 0; i < WORLD.otherObjs.length; i++) {
                 if (WORLD.otherObjs[i].x === YOU.x && WORLD.otherObjs[i].y === YOU.y) {
@@ -322,7 +323,16 @@ const TIME = {
 
 const ENGINE = {
   applyData: (json, midCycleDataCall) => {
-    WORLD.otherObjs = [];
+      const movechanged = true;
+
+    WORLD.build();
+
+    WORLD.checkPlayersAndObjs();
+    HANDS.reenter_engine_process(movechanged);
+    
+    YOU.prevState = YOU.state;
+    
+    ENGINE.isFirstConnect = false;
   },
   dir: (direction) => {
     if (direction.includes("n")) ++YOU.y;
@@ -331,6 +341,7 @@ const ENGINE = {
     if (direction.includes("w")) --YOU.x;
   }
 };
+
 
 // Simulate server
 setInterval(() => {

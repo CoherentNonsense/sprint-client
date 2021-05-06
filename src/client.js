@@ -69,12 +69,14 @@ class SprintClient
   initUpdate()
   {
     // Attaches extensions with the server update
-    this._update = eval("(" +
-      ENGINE.applyData.toString()
+    const updateParts = ENGINE.applyData.toString()
       .replace("WORLD.build();", "")
       .replace("WORLD.checkPlayersAndObjs();", "")
-      + ")"
-    );
+      .replace("HANDS.reenter_engine_process(movechanged);", "HANDS.reenter_engine_process(movechanged);xxx")
+      .split("xxx");
+
+    this._update = eval("(" + updateParts[0] + "})");
+    this._afterRender = eval("((json, midCycleDataCall) => {" + updateParts[1] + ")");
 
     ENGINE.applyData = (json, midCycleDataCall) => {
       this._update(json, midCycleDataCall);
@@ -120,6 +122,8 @@ class SprintClient
 
       // Render
       this.render();
+
+      this._afterRender(json, midCycleDataCall);
     };
   }
 
