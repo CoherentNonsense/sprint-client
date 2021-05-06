@@ -100,9 +100,9 @@ class SprintClient
       // Remember object out of view but not too far
       const unchangedObjects = this.data.objects.filter((object) => (
         (object.x > YOU.x + 15 && object.x < YOU.x + 500) ||
-        (object.x < YOU.x - 15 && object.x > YOU.y - 500) ||
+        (object.x < YOU.x - 15 && object.x > YOU.x - 500) ||
         (object.y > YOU.y + 15 && object.y < YOU.y + 500) ||
-        (object.x < YOU.y - 15 && object.y > YOU.y - 500)
+        (object.y < YOU.y - 15 && object.y > YOU.y - 500)
       ));
 
       objects = [...unchangedObjects, ...objects];
