@@ -111,6 +111,8 @@ extension.onRender((client, data) => {
 
   // Draw Objects
   data.objects.forEach((object) => {
+    // Not sure what the server sends for monument. Just draw the world gen one.
+    if (object.x === 0 && object.y === 0) return;
     switch (object.char)
     {
       case WORLD.TILES.wood_block:
