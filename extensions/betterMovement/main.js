@@ -13,6 +13,8 @@ let eventID;
 function onKeyDown(client, e)
 {
   e.preventDefault();
+  if (e.repeat) return;
+
   let changed = true;
   const pressed = e.type === "keydown";
 
@@ -34,6 +36,11 @@ function onKeyDown(client, e)
     if (keys.left) direction.x--;
     if (keys.right) direction.x++;
     client.traveler.move(direction.x, direction.y);
+
+    // Default behaviour is to move so the line above actually cancels it
+    // Move once more
+    // Kind of a hack ):
+    if (pressed) client.traveler.move(direction.x, direction.y);
   }
 
 }
