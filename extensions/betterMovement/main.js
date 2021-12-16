@@ -12,7 +12,6 @@ let eventID;
 
 function onKeyDown(client, e)
 {
-  e.preventDefault();
   if (e.repeat) return;
 
   let changed = true;
@@ -30,6 +29,7 @@ function onKeyDown(client, e)
   
   if (changed)
   {
+    e.preventDefault();
     const direction = { x: 0, y: 0 };
     if (keys.up) direction.y++;
     if (keys.down) direction.y--;
