@@ -5,7 +5,7 @@ export default [
   },
   {
     name: "tools",
-    extensions: ["logger", "cleanEvents", "streamerMode", "freeCam"]
+    extensions: ["logger", "cleanEvents", "streamerMode", "freeCam", "betterMovement"]
   },
   {
     name: "graphics",
