@@ -70,6 +70,14 @@ const Traveler = function(client) {
     {
       YOU.autowalk = true;
     }
+
+    if (direction === "")
+    {
+      YOU.autowalk = false;
+      ENGINE.stopPlayerServer();
+      return;
+    }
+
     ENGINE.dir(direction, document.getElementById("arrow-" + direction));
   }
 

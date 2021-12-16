@@ -2,7 +2,7 @@ const extension = new Extension({
   id: "betterMovement",
   name: "Better Movement",
   icon: "⇅",
-  category: "tool",
+  category: "tools",
   about: "Improves movement using the arrow keys",
   author: "Coherent Nonsense"
 });
