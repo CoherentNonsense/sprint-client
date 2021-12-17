@@ -173,7 +173,7 @@ extension.onRender((client, data) => {
     if (player.x === YOU.x && player.y === YOU.y) return;
 
     let playerCount = 1;
-    data.player.forEach((player2) => {
+    data.players.forEach((player2) => {
       if (player2.x === player.x && player2.y === player.y) ++playerCount;
     });
 
