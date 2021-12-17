@@ -38,12 +38,17 @@ const toggleFullScreen = () => {
   }
 };
 
-const eventID = (e) => {
+const fullscreenEvent = (e) => {
   if (e.key === "F" && !e.repeat)
   {
     toggleFullScreen();
+    renderer.resize();
   }
 };
+
+const resizeEvent = () => {
+  renderer.resize();
+}
 
 extension.onStart((client) => {
   client.options.defaultRender = false;
@@ -61,7 +66,8 @@ extension.onStart((client) => {
   // ui.attachElementById("world-box", canvas);
 
   // Events
-  addEventListener("keydown", eventID);
+  addEventListener("keydown", fullscreenEvent);
+  addEventListener("resize", resizeEvent);
 
   // Create renderer
   renderer = new Renderer(canvas, client);
@@ -250,6 +256,9 @@ extension.onStop((client) => {
   canvas.remove();
   renderer = null;
   client.render();
+
+  removeEventListener("keydown", fullscreenEvent);
+  removeEventListener("resize", resizeEvent);
 });
 
 export default extension;
