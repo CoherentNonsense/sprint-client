@@ -157,6 +157,24 @@ extension.onRender((client, data) => {
       case "u":
         renderer.drawSprite(5, 1, object.x, object.y);
         break;
+      case "o":
+        renderer.drawSprite(6, 1, object.x, object.y);
+        break;
+      case "n":
+        renderer.drawSprite(11, 1, object.x, object.y);
+        break;
+      case "O":
+        renderer.drawSprite(14, 1, object.x, object.y);
+        break;
+      case "▓":
+        renderer.drawSprite(15, 1, object.x, object.y);
+        break;
+      case "U":
+        renderer.drawSprite(12, 1, object.x, object.y);
+        break;
+      case "L":
+        renderer.drawSprite(13, 1, object.x, object.y);
+        break;
       default:
         renderer.drawSprite(0, 0, object.x, object.y);
     }
