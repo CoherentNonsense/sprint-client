@@ -154,7 +154,7 @@ extension.onRender((client, data) => {
       case '@':
         renderer.drawSprite(4, 2, object.x, object.y);
           break;
-      case "n":
+      case "u":
         renderer.drawSprite(5, 1, object.x, object.y);
         break;
       default:
@@ -170,7 +170,24 @@ extension.onRender((client, data) => {
 
   // Draw other playesr
   data.players.forEach((player) => {
-    renderer.drawSprite(1, 2, player.x, player.y);
+    if (player.x === YOU.x && player.y === YOU.y) return;
+
+    let playerCount = 1;
+    data.player.forEach((player2) => {
+      if (player2.x === player.x && player2.y === player.y) ++playerCount;
+    });
+
+    switch (playerCount)
+    {
+      case 1:
+        renderer.drawSprite(1, 2, player.x, player.y);
+        break;
+      case 2:
+        renderer.drawSprite(2, 2, player.x, player.y);
+        break;
+      default:
+        renderer.drawSprite(3, 2, player.x, player.y);
+    }
   });
 
 
