@@ -29,7 +29,7 @@ class Renderer
 
     this.textureId;
     // Download spritesheet
-    this.spritesheet.src = "https://i.ibb.co/cLJyYb4/spritesheet.png";
+    this.spritesheet.src = "https://i.ibb.co/dMqmbjw/spritesheet.png";
     this.spritesheet.addEventListener("load", () => {
       this.running = true;
       this.init();
