@@ -1,4 +1,5 @@
 import Renderer from "./renderer.js";
+import styles from "./fullscreen.js";
 import { renderDynamicTile, renderMountain, renderDynamicObject } from "./dynamicTiles.js";
 
 
@@ -19,6 +20,31 @@ const extension = new Extension({
 let canvas;
 let renderer;
 
+let isFullScreen = false;
+
+const stylesheet_html = document.createElement("style");
+stylesheet_html.innerHTML = styles; 
+
+const toggleFullScreen = () => {
+  isFullScreen = !isFullScreen;
+
+  if (isFullScreen)
+  {
+    document.head.appendChild(stylesheet_html);
+  }
+  else
+  {
+    document.head.removeChild(stylesheet_html);
+  }
+};
+
+const eventID = (e) => {
+  if (e.key === "F" && !e.repeat)
+  {
+    toggleFullScreen();
+  }
+};
+
 extension.onStart((client) => {
   client.options.defaultRender = false;
 
@@ -33,6 +59,9 @@ extension.onStart((client) => {
   worldBox.style.position = "relative";
   worldBox.appendChild(canvas);
   // ui.attachElementById("world-box", canvas);
+
+  // Events
+  addEventListener("keydown", eventID);
 
   // Create renderer
   renderer = new Renderer(canvas, client);
