@@ -180,7 +180,7 @@ class SprintClient
 
         if (canWalkOver) {
           if ((YOU.x !== x || YOU.y !== y)) {
-            if (document.getElementById(x + "|" + y).innerHTML !== WORLD.TILES.traveler) {
+            if (document.getElementById(x + "|" + y) && document.getElementById(x + "|" + y).innerHTML !== WORLD.TILES.traveler) {
               WORLD.changeTile(x, y, char);
             }
           }

@@ -246,6 +246,9 @@ extension.onRender((client, data) => {
       case "Ω":
         renderer.drawSprite(10, 12, object.x, object.y);
         break;
+      case "▋":
+        renderer.drawSprite(0, 1, object.x, object.y);
+        break;
       default:
         renderer.drawSprite(0, 0, object.x, object.y);
     }
