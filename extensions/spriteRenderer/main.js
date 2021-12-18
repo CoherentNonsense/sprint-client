@@ -210,6 +210,42 @@ extension.onRender((client, data) => {
       case "L":
         renderer.drawSprite(13, 1, object.x, object.y);
         break;
+      case "_":
+        renderer.drawSprite(16, 1, object.x, object.y);
+        break;
+      case "⊗":
+        renderer.drawSprite(0, 12, object.x, object.y);
+        break;
+      case "A":
+        renderer.drawSprite(1, 12, object.x, object.y);
+        break;
+      case "⧋":
+        renderer.drawSprite(2, 12, object.x, object.y);
+        break;
+      case "⊞":
+        renderer.drawSprite(3, 12, object.x, object.y);
+        break;
+      case "⏝":
+        renderer.drawSprite(4, 12, object.x, object.y);
+        break;
+      case "⧇":
+        renderer.drawSprite(5, 12, object.x, object.y);
+        break;
+      case "▣":
+        renderer.drawSprite(6, 12, object.x, object.y);
+        break;
+      case "⟟":
+        renderer.drawSprite(7, 12, object.x, object.y);
+        break;
+      case "⧅":
+        renderer.drawSprite(8, 12, object.x, object.y);
+        break;
+      case "⍑":
+        renderer.drawSprite(9, 12, object.x, object.y);
+        break;
+      case "Ω":
+        renderer.drawSprite(10, 12, object.x, object.y);
+        break;
       default:
         renderer.drawSprite(0, 0, object.x, object.y);
     }

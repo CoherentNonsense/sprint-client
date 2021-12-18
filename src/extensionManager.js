@@ -244,7 +244,7 @@ const ExtensionManager = function(client) {
   async function renderStore()
   {
     const availableExtensionsModule = await import("../availableExtensions.js");
-    const availableExtensions = availableExtensionsModule.default;
+    const availableExtensions = window.sprint_client_available_extensions || availableExtensionsModule.default;
 
     _client.popup.build("Extension List", (build) => {
       // Show external extensions if safe mode is turned off
