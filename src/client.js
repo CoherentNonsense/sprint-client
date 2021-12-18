@@ -65,7 +65,7 @@ class SprintClient
     this.log("-- SPRINT CLIENT --\nYou have successfully installed the Sprint Client. You can now start downloading a wide variety of travelersmmo content. Just go to the extensions tab next to the event log.\n\nYou can also learn how to make extensions here -> www.google.com");
     this.alert("Although all modules are looked through for malicious content before being made public, you should always be careful when downloading something onto your computer. You can check out all the source code for this client, as well as the modules here -> www.google.com");
   
-    //this.extensionManager.load("spriteRenderer")
+    this.extensionManager.load("spriteRenderer")
   }
 
   initUpdate()
